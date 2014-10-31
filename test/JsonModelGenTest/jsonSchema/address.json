@@ -1,0 +1,14 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "address",
+	"type": "object",
+	"javaType": "com.thomsonreuters.lib.clear.data.Address",
+	"javaInterfaces": ["java.io.Serializable"],
+	"properties": {
+		"street": { "type": "string" },
+		"city": { "type": "string" },
+		"county": { "type": "string" },
+		"state": { "type": "string" },
+		"zip": { "type": "string" }
+	}
+}

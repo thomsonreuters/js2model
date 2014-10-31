@@ -1,0 +1,13 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "name",
+	"type": "object",
+	"javaType": "com.thomsonreuters.lib.clear.data.Name",
+	"javaInterfaces": ["java.io.Serializable"],
+	"properties": {
+		"fullName": { "type": "string" },
+		"firstName": { "type": "string" },
+		"middleName": { "type": "string" },
+		"lastName": { "type": "string" }
+	}
+}

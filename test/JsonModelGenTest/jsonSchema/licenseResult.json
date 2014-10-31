@@ -1,0 +1,36 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "LicenseResult",
+	"type": "object",
+	"javaType": "com.thomsonreuters.lib.clear.data.LicenseResult",
+	"javaInterfaces": ["java.io.Serializable"],
+	"properties": {
+		"address": { "$ref": "address.json" },
+		"license": { "$ref": "#/definitions/license" },
+		"driver": {
+			"type": "object",
+			"javaInterfaces": ["java.io.Serializable"],
+			"properties": {
+				"name": { "$ref": "name.json" },
+				"sex": { "type": "string" },
+				"ssn": { "type": "string" },
+				"birthDate": { "type": "string" },
+				"foundArrestIncarcerationRecord": { "type": "boolean", "default": false },
+				"physicalInfo": {
+					"$ref": "physicalInfo.json"
+				}
+			}
+		}
+	},
+	"definitions": {
+		"license": {
+			"type": "object",
+			"javaInterfaces": ["java.io.Serializable"],
+			"properties": {
+				"id": { "type": "string" },
+				"state": { "type": "string" }
+			}
+		}
+
+	}
+}

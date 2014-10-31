@@ -1,0 +1,10 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "childResult",
+	"type": "object",
+	"javaType": "com.thomsonreuters.lib.clear.data.ChildResult",
+	"javaInterfaces": ["java.io.Serializable"],
+    "extends" : {
+        "$ref" : "personResult.json"
+    }
+}

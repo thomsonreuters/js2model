@@ -1,0 +1,14 @@
+
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "LicenseResultWrapper",
+	"type": "object",
+	"javaInterfaces": ["java.io.Serializable","com.thomsonreuters.lib.clear.data.ResultWrapper"],
+	"properties": {
+		"searchResult": { "$ref": "licenseResult.json" },
+		"searchStatistics": {
+			"type": "array",
+			"items": {"$ref": "searchStatistics.json" }
+		}
+	}
+}

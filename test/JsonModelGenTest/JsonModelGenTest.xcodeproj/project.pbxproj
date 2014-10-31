@@ -1,0 +1,744 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A345AF119D5DA9E00E3C01F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345AF019D5DA9E00E3C01F /* main.m */; };
+		0A345AF419D5DA9E00E3C01F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345AF319D5DA9E00E3C01F /* AppDelegate.m */; };
+		0A345AF719D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A345AF519D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodeld */; };
+		0A345AFA19D5DA9E00E3C01F /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345AF919D5DA9E00E3C01F /* MasterViewController.m */; };
+		0A345AFD19D5DA9E00E3C01F /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345AFC19D5DA9E00E3C01F /* DetailViewController.m */; };
+		0A345B0019D5DA9E00E3C01F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A345AFE19D5DA9E00E3C01F /* Main.storyboard */; };
+		0A345B0219D5DA9E00E3C01F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A345B0119D5DA9E00E3C01F /* Images.xcassets */; };
+		0A345B0519D5DA9E00E3C01F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A345B0319D5DA9E00E3C01F /* LaunchScreen.xib */; };
+		0A345B1119D5DA9E00E3C01F /* JsonModelGenTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B1019D5DA9E00E3C01F /* JsonModelGenTestTests.m */; };
+		0A345B9C19D5F03800E3C01F /* TRAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8419D5F03800E3C01F /* TRAddress.m */; };
+		0A345B9D19D5F03800E3C01F /* TRBookingInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8519D5F03800E3C01F /* TRBookingInfo.m */; };
+		0A345B9E19D5F03800E3C01F /* TRCharges.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8619D5F03800E3C01F /* TRCharges.m */; };
+		0A345B9F19D5F03800E3C01F /* TRDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8719D5F03800E3C01F /* TRDriver.m */; };
+		0A345BA019D5F03800E3C01F /* TRIncarcerationRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */; };
+		0A345BA119D5F03800E3C01F /* TRIncarcerationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */; };
+		0A345BA219D5F03800E3C01F /* TRIncarcerationResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */; };
+		0A345BA319D5F03800E3C01F /* TRLicense.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8B19D5F03800E3C01F /* TRLicense.m */; };
+		0A345BA419D5F03800E3C01F /* TRLicenseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */; };
+		0A345BA519D5F03800E3C01F /* TRLicenseResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */; };
+		0A345BA619D5F03800E3C01F /* TRName.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8E19D5F03800E3C01F /* TRName.m */; };
+		0A345BA719D5F03800E3C01F /* TROwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8F19D5F03800E3C01F /* TROwner.m */; };
+		0A345BA819D5F03800E3C01F /* TRPersonResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9019D5F03800E3C01F /* TRPersonResult.m */; };
+		0A345BA919D5F03800E3C01F /* TRPersonResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */; };
+		0A345BAA19D5F03800E3C01F /* TRPersonsResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */; };
+		0A345BAB19D5F03800E3C01F /* TRPhysicalInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */; };
+		0A345BAC19D5F03800E3C01F /* TRPlate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9419D5F03800E3C01F /* TRPlate.m */; };
+		0A345BAD19D5F03800E3C01F /* TRRestApiStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */; };
+		0A345BAE19D5F03800E3C01F /* TRSearchStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */; };
+		0A345BAF19D5F03800E3C01F /* TRVehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9719D5F03800E3C01F /* TRVehicle.m */; };
+		0A345BB019D5F03800E3C01F /* TRVehicleImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */; };
+		0A345BB119D5F03800E3C01F /* TRVehicleImageResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */; };
+		0A345BB219D5F03800E3C01F /* TRVehicleResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */; };
+		0A345BB319D5F03800E3C01F /* TRVehicleResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */; };
+		0A345BB619D6135B00E3C01F /* TRJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345BB519D6135B00E3C01F /* TRJsonBase.m */; };
+		0A345BB919D66EEC00E3C01F /* TRChildResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345BB819D66EEC00E3C01F /* TRChildResult.m */; };
+		0A9CA71619FAE70500C2D280 /* yajl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70719FAE70500C2D280 /* yajl.c */; };
+		0A9CA71719FAE70500C2D280 /* yajl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70719FAE70500C2D280 /* yajl.c */; };
+		0A9CA71819FAE70500C2D280 /* yajl_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70819FAE70500C2D280 /* yajl_alloc.c */; };
+		0A9CA71919FAE70500C2D280 /* yajl_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70819FAE70500C2D280 /* yajl_alloc.c */; };
+		0A9CA71A19FAE70500C2D280 /* yajl_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70A19FAE70500C2D280 /* yajl_buf.c */; };
+		0A9CA71B19FAE70500C2D280 /* yajl_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70A19FAE70500C2D280 /* yajl_buf.c */; };
+		0A9CA71C19FAE70500C2D280 /* yajl_encode.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70D19FAE70500C2D280 /* yajl_encode.c */; };
+		0A9CA71D19FAE70500C2D280 /* yajl_encode.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70D19FAE70500C2D280 /* yajl_encode.c */; };
+		0A9CA71E19FAE70500C2D280 /* yajl_gen.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70F19FAE70500C2D280 /* yajl_gen.c */; };
+		0A9CA71F19FAE70500C2D280 /* yajl_gen.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA70F19FAE70500C2D280 /* yajl_gen.c */; };
+		0A9CA72019FAE70500C2D280 /* yajl_lex.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71019FAE70500C2D280 /* yajl_lex.c */; };
+		0A9CA72119FAE70500C2D280 /* yajl_lex.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71019FAE70500C2D280 /* yajl_lex.c */; };
+		0A9CA72219FAE70500C2D280 /* yajl_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71219FAE70500C2D280 /* yajl_parser.c */; };
+		0A9CA72319FAE70500C2D280 /* yajl_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71219FAE70500C2D280 /* yajl_parser.c */; };
+		0A9CA72419FAE70500C2D280 /* yajl_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71419FAE70500C2D280 /* yajl_tree.c */; };
+		0A9CA72519FAE70500C2D280 /* yajl_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71419FAE70500C2D280 /* yajl_tree.c */; };
+		0A9CA72619FAE70500C2D280 /* yajl_version.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71519FAE70500C2D280 /* yajl_version.c */; };
+		0A9CA72719FAE70500C2D280 /* yajl_version.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA71519FAE70500C2D280 /* yajl_version.c */; };
+		0A9CA72C19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */; };
+		0A9CA72D19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */; };
+		0A9CA72E19FAE71D00C2D280 /* TRJsonInstanceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72B19FAE71D00C2D280 /* TRJsonInstanceLoader.m */; };
+		0A9CA72F19FAE71D00C2D280 /* TRJsonInstanceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72B19FAE71D00C2D280 /* TRJsonInstanceLoader.m */; };
+		6138459AD8A21C1798F3C169 /* JSONModelMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 613840EC8496E67AC6BCFABD /* JSONModelMeta.m */; };
+		6138487D68F87595175A0DCE /* JSONModelMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 613840EC8496E67AC6BCFABD /* JSONModelMeta.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0A345B0B19D5DA9E00E3C01F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A345AE319D5DA9E00E3C01F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A345AEA19D5DA9E00E3C01F;
+			remoteInfo = JsonModelGenTest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0A345AEB19D5DA9E00E3C01F /* JsonModelGenTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JsonModelGenTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A345AEF19D5DA9E00E3C01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A345AF019D5DA9E00E3C01F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0A345AF219D5DA9E00E3C01F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0A345AF319D5DA9E00E3C01F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0A345AF619D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JsonModelGenTest.xcdatamodel; sourceTree = "<group>"; };
+		0A345AF819D5DA9E00E3C01F /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		0A345AF919D5DA9E00E3C01F /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		0A345AFB19D5DA9E00E3C01F /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		0A345AFC19D5DA9E00E3C01F /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		0A345AFF19D5DA9E00E3C01F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0A345B0119D5DA9E00E3C01F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		0A345B0419D5DA9E00E3C01F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		0A345B0A19D5DA9E00E3C01F /* JsonModelGenTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonModelGenTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A345B0F19D5DA9E00E3C01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A345B1019D5DA9E00E3C01F /* JsonModelGenTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JsonModelGenTestTests.m; sourceTree = "<group>"; };
+		0A345B6C19D5F03800E3C01F /* TRAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAddress.h; sourceTree = "<group>"; };
+		0A345B6D19D5F03800E3C01F /* TRBookingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRBookingInfo.h; sourceTree = "<group>"; };
+		0A345B6E19D5F03800E3C01F /* TRCharges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCharges.h; sourceTree = "<group>"; };
+		0A345B6F19D5F03800E3C01F /* TRDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRDriver.h; sourceTree = "<group>"; };
+		0A345B7019D5F03800E3C01F /* TRIncarcerationRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationRecord.h; sourceTree = "<group>"; };
+		0A345B7119D5F03800E3C01F /* TRIncarcerationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationResult.h; sourceTree = "<group>"; };
+		0A345B7219D5F03800E3C01F /* TRIncarcerationResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationResultWrapper.h; sourceTree = "<group>"; };
+		0A345B7319D5F03800E3C01F /* TRLicense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRLicense.h; sourceTree = "<group>"; };
+		0A345B7419D5F03800E3C01F /* TRLicenseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRLicenseResult.h; sourceTree = "<group>"; };
+		0A345B7519D5F03800E3C01F /* TRLicenseResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRLicenseResultWrapper.h; sourceTree = "<group>"; };
+		0A345B7619D5F03800E3C01F /* TRName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRName.h; sourceTree = "<group>"; };
+		0A345B7719D5F03800E3C01F /* TROwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROwner.h; sourceTree = "<group>"; };
+		0A345B7819D5F03800E3C01F /* TRPersonResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPersonResult.h; sourceTree = "<group>"; };
+		0A345B7919D5F03800E3C01F /* TRPersonResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPersonResultWrapper.h; sourceTree = "<group>"; };
+		0A345B7A19D5F03800E3C01F /* TRPersonsResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPersonsResultWrapper.h; sourceTree = "<group>"; };
+		0A345B7B19D5F03800E3C01F /* TRPhysicalInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPhysicalInfo.h; sourceTree = "<group>"; };
+		0A345B7C19D5F03800E3C01F /* TRPlate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPlate.h; sourceTree = "<group>"; };
+		0A345B7D19D5F03800E3C01F /* TRRestApiStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRRestApiStatistics.h; sourceTree = "<group>"; };
+		0A345B7E19D5F03800E3C01F /* TRSearchStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRSearchStatistics.h; sourceTree = "<group>"; };
+		0A345B7F19D5F03800E3C01F /* TRVehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicle.h; sourceTree = "<group>"; };
+		0A345B8019D5F03800E3C01F /* TRVehicleImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleImageResult.h; sourceTree = "<group>"; };
+		0A345B8119D5F03800E3C01F /* TRVehicleImageResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleImageResultWrapper.h; sourceTree = "<group>"; };
+		0A345B8219D5F03800E3C01F /* TRVehicleResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleResult.h; sourceTree = "<group>"; };
+		0A345B8319D5F03800E3C01F /* TRVehicleResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleResultWrapper.h; sourceTree = "<group>"; };
+		0A345B8419D5F03800E3C01F /* TRAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRAddress.m; sourceTree = "<group>"; };
+		0A345B8519D5F03800E3C01F /* TRBookingInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRBookingInfo.m; sourceTree = "<group>"; };
+		0A345B8619D5F03800E3C01F /* TRCharges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCharges.m; sourceTree = "<group>"; };
+		0A345B8719D5F03800E3C01F /* TRDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRDriver.m; sourceTree = "<group>"; };
+		0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationRecord.m; sourceTree = "<group>"; };
+		0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationResult.m; sourceTree = "<group>"; };
+		0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationResultWrapper.m; sourceTree = "<group>"; };
+		0A345B8B19D5F03800E3C01F /* TRLicense.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRLicense.m; sourceTree = "<group>"; };
+		0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRLicenseResult.m; sourceTree = "<group>"; };
+		0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRLicenseResultWrapper.m; sourceTree = "<group>"; };
+		0A345B8E19D5F03800E3C01F /* TRName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRName.m; sourceTree = "<group>"; };
+		0A345B8F19D5F03800E3C01F /* TROwner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TROwner.m; sourceTree = "<group>"; };
+		0A345B9019D5F03800E3C01F /* TRPersonResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPersonResult.m; sourceTree = "<group>"; };
+		0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPersonResultWrapper.m; sourceTree = "<group>"; };
+		0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPersonsResultWrapper.m; sourceTree = "<group>"; };
+		0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPhysicalInfo.m; sourceTree = "<group>"; };
+		0A345B9419D5F03800E3C01F /* TRPlate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPlate.m; sourceTree = "<group>"; };
+		0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRRestApiStatistics.m; sourceTree = "<group>"; };
+		0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRSearchStatistics.m; sourceTree = "<group>"; };
+		0A345B9719D5F03800E3C01F /* TRVehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicle.m; sourceTree = "<group>"; };
+		0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleImageResult.m; sourceTree = "<group>"; };
+		0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleImageResultWrapper.m; sourceTree = "<group>"; };
+		0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleResult.m; sourceTree = "<group>"; };
+		0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleResultWrapper.m; sourceTree = "<group>"; };
+		0A345BB419D6135B00E3C01F /* TRJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRJsonBase.h; sourceTree = "<group>"; };
+		0A345BB519D6135B00E3C01F /* TRJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRJsonBase.m; sourceTree = "<group>"; };
+		0A345BB719D66EEC00E3C01F /* TRChildResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRChildResult.h; sourceTree = "<group>"; };
+		0A345BB819D66EEC00E3C01F /* TRChildResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRChildResult.m; sourceTree = "<group>"; };
+		0A9CA70219FAE70500C2D280 /* yajl_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_common.h; sourceTree = "<group>"; };
+		0A9CA70319FAE70500C2D280 /* yajl_gen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_gen.h; sourceTree = "<group>"; };
+		0A9CA70419FAE70500C2D280 /* yajl_parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_parse.h; sourceTree = "<group>"; };
+		0A9CA70519FAE70500C2D280 /* yajl_tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_tree.h; sourceTree = "<group>"; };
+		0A9CA70619FAE70500C2D280 /* yajl_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_version.h; sourceTree = "<group>"; };
+		0A9CA70719FAE70500C2D280 /* yajl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl.c; sourceTree = "<group>"; };
+		0A9CA70819FAE70500C2D280 /* yajl_alloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_alloc.c; sourceTree = "<group>"; };
+		0A9CA70919FAE70500C2D280 /* yajl_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_alloc.h; sourceTree = "<group>"; };
+		0A9CA70A19FAE70500C2D280 /* yajl_buf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_buf.c; sourceTree = "<group>"; };
+		0A9CA70B19FAE70500C2D280 /* yajl_buf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_buf.h; sourceTree = "<group>"; };
+		0A9CA70C19FAE70500C2D280 /* yajl_bytestack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_bytestack.h; sourceTree = "<group>"; };
+		0A9CA70D19FAE70500C2D280 /* yajl_encode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_encode.c; sourceTree = "<group>"; };
+		0A9CA70E19FAE70500C2D280 /* yajl_encode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_encode.h; sourceTree = "<group>"; };
+		0A9CA70F19FAE70500C2D280 /* yajl_gen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_gen.c; sourceTree = "<group>"; };
+		0A9CA71019FAE70500C2D280 /* yajl_lex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_lex.c; sourceTree = "<group>"; };
+		0A9CA71119FAE70500C2D280 /* yajl_lex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_lex.h; sourceTree = "<group>"; };
+		0A9CA71219FAE70500C2D280 /* yajl_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_parser.c; sourceTree = "<group>"; };
+		0A9CA71319FAE70500C2D280 /* yajl_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_parser.h; sourceTree = "<group>"; };
+		0A9CA71419FAE70500C2D280 /* yajl_tree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_tree.c; sourceTree = "<group>"; };
+		0A9CA71519FAE70500C2D280 /* yajl_version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_version.c; sourceTree = "<group>"; };
+		0A9CA72819FAE71D00C2D280 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		0A9CA72A19FAE71D00C2D280 /* TRJsonInstanceLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRJsonInstanceLoader.h; sourceTree = "<group>"; };
+		0A9CA72B19FAE71D00C2D280 /* TRJsonInstanceLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRJsonInstanceLoader.m; sourceTree = "<group>"; };
+		0A9CA73019FAE99000C2D280 /* JSONModelSerialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONModelSerialize.h; sourceTree = "<group>"; };
+		613840EC8496E67AC6BCFABD /* JSONModelMeta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONModelMeta.m; sourceTree = "<group>"; };
+		6138410BE39273D57BCC2034 /* JSONModelMeta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONModelMeta.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0A345AE819D5DA9E00E3C01F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A345B0719D5DA9E00E3C01F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A345AE219D5DA9E00E3C01F = {
+			isa = PBXGroup;
+			children = (
+				0A345AED19D5DA9E00E3C01F /* JsonModelGenTest */,
+				0A345B0D19D5DA9E00E3C01F /* JsonModelGenTestTests */,
+				0A345AEC19D5DA9E00E3C01F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0A345AEC19D5DA9E00E3C01F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0A345AEB19D5DA9E00E3C01F /* JsonModelGenTest.app */,
+				0A345B0A19D5DA9E00E3C01F /* JsonModelGenTestTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0A345AED19D5DA9E00E3C01F /* JsonModelGenTest */ = {
+			isa = PBXGroup;
+			children = (
+				0A9CA73019FAE99000C2D280 /* JSONModelSerialize.h */,
+				0A9CA72819FAE71D00C2D280 /* ISO8601DateFormatter.h */,
+				0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */,
+				0A9CA72A19FAE71D00C2D280 /* TRJsonInstanceLoader.h */,
+				0A9CA72B19FAE71D00C2D280 /* TRJsonInstanceLoader.m */,
+				0A9CA70019FAE70500C2D280 /* YAJL_2_0_4 */,
+				0A345B1A19D5DC7000E3C01F /* JsonModels */,
+				0A345AF219D5DA9E00E3C01F /* AppDelegate.h */,
+				0A345AF319D5DA9E00E3C01F /* AppDelegate.m */,
+				0A345AF819D5DA9E00E3C01F /* MasterViewController.h */,
+				0A345AF919D5DA9E00E3C01F /* MasterViewController.m */,
+				0A345AFB19D5DA9E00E3C01F /* DetailViewController.h */,
+				0A345AFC19D5DA9E00E3C01F /* DetailViewController.m */,
+				0A345AFE19D5DA9E00E3C01F /* Main.storyboard */,
+				0A345B0119D5DA9E00E3C01F /* Images.xcassets */,
+				0A345B0319D5DA9E00E3C01F /* LaunchScreen.xib */,
+				0A345AF519D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodeld */,
+				0A345AEE19D5DA9E00E3C01F /* Supporting Files */,
+				0A345BB419D6135B00E3C01F /* TRJsonBase.h */,
+				0A345BB519D6135B00E3C01F /* TRJsonBase.m */,
+				6138419D63294B75129EE817 /* Json Model Supporting Files */,
+			);
+			path = JsonModelGenTest;
+			sourceTree = "<group>";
+		};
+		0A345AEE19D5DA9E00E3C01F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0A345AEF19D5DA9E00E3C01F /* Info.plist */,
+				0A345AF019D5DA9E00E3C01F /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0A345B0D19D5DA9E00E3C01F /* JsonModelGenTestTests */ = {
+			isa = PBXGroup;
+			children = (
+				0A345B1019D5DA9E00E3C01F /* JsonModelGenTestTests.m */,
+				0A345B0E19D5DA9E00E3C01F /* Supporting Files */,
+			);
+			path = JsonModelGenTestTests;
+			sourceTree = "<group>";
+		};
+		0A345B0E19D5DA9E00E3C01F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0A345B0F19D5DA9E00E3C01F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0A345B1A19D5DC7000E3C01F /* JsonModels */ = {
+			isa = PBXGroup;
+			children = (
+				0A345BB719D66EEC00E3C01F /* TRChildResult.h */,
+				0A345BB819D66EEC00E3C01F /* TRChildResult.m */,
+				0A345B6C19D5F03800E3C01F /* TRAddress.h */,
+				0A345B6D19D5F03800E3C01F /* TRBookingInfo.h */,
+				0A345B6E19D5F03800E3C01F /* TRCharges.h */,
+				0A345B6F19D5F03800E3C01F /* TRDriver.h */,
+				0A345B7019D5F03800E3C01F /* TRIncarcerationRecord.h */,
+				0A345B7119D5F03800E3C01F /* TRIncarcerationResult.h */,
+				0A345B7219D5F03800E3C01F /* TRIncarcerationResultWrapper.h */,
+				0A345B7319D5F03800E3C01F /* TRLicense.h */,
+				0A345B7419D5F03800E3C01F /* TRLicenseResult.h */,
+				0A345B7519D5F03800E3C01F /* TRLicenseResultWrapper.h */,
+				0A345B7619D5F03800E3C01F /* TRName.h */,
+				0A345B7719D5F03800E3C01F /* TROwner.h */,
+				0A345B7819D5F03800E3C01F /* TRPersonResult.h */,
+				0A345B7919D5F03800E3C01F /* TRPersonResultWrapper.h */,
+				0A345B7A19D5F03800E3C01F /* TRPersonsResultWrapper.h */,
+				0A345B7B19D5F03800E3C01F /* TRPhysicalInfo.h */,
+				0A345B7C19D5F03800E3C01F /* TRPlate.h */,
+				0A345B7D19D5F03800E3C01F /* TRRestApiStatistics.h */,
+				0A345B7E19D5F03800E3C01F /* TRSearchStatistics.h */,
+				0A345B7F19D5F03800E3C01F /* TRVehicle.h */,
+				0A345B8019D5F03800E3C01F /* TRVehicleImageResult.h */,
+				0A345B8119D5F03800E3C01F /* TRVehicleImageResultWrapper.h */,
+				0A345B8219D5F03800E3C01F /* TRVehicleResult.h */,
+				0A345B8319D5F03800E3C01F /* TRVehicleResultWrapper.h */,
+				0A345B8419D5F03800E3C01F /* TRAddress.m */,
+				0A345B8519D5F03800E3C01F /* TRBookingInfo.m */,
+				0A345B8619D5F03800E3C01F /* TRCharges.m */,
+				0A345B8719D5F03800E3C01F /* TRDriver.m */,
+				0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */,
+				0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */,
+				0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */,
+				0A345B8B19D5F03800E3C01F /* TRLicense.m */,
+				0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */,
+				0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */,
+				0A345B8E19D5F03800E3C01F /* TRName.m */,
+				0A345B8F19D5F03800E3C01F /* TROwner.m */,
+				0A345B9019D5F03800E3C01F /* TRPersonResult.m */,
+				0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */,
+				0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */,
+				0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */,
+				0A345B9419D5F03800E3C01F /* TRPlate.m */,
+				0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */,
+				0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */,
+				0A345B9719D5F03800E3C01F /* TRVehicle.m */,
+				0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */,
+				0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */,
+				0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */,
+				0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */,
+			);
+			path = JsonModels;
+			sourceTree = "<group>";
+		};
+		0A9CA70019FAE70500C2D280 /* YAJL_2_0_4 */ = {
+			isa = PBXGroup;
+			children = (
+				0A9CA70119FAE70500C2D280 /* api */,
+				0A9CA70719FAE70500C2D280 /* yajl.c */,
+				0A9CA70819FAE70500C2D280 /* yajl_alloc.c */,
+				0A9CA70919FAE70500C2D280 /* yajl_alloc.h */,
+				0A9CA70A19FAE70500C2D280 /* yajl_buf.c */,
+				0A9CA70B19FAE70500C2D280 /* yajl_buf.h */,
+				0A9CA70C19FAE70500C2D280 /* yajl_bytestack.h */,
+				0A9CA70D19FAE70500C2D280 /* yajl_encode.c */,
+				0A9CA70E19FAE70500C2D280 /* yajl_encode.h */,
+				0A9CA70F19FAE70500C2D280 /* yajl_gen.c */,
+				0A9CA71019FAE70500C2D280 /* yajl_lex.c */,
+				0A9CA71119FAE70500C2D280 /* yajl_lex.h */,
+				0A9CA71219FAE70500C2D280 /* yajl_parser.c */,
+				0A9CA71319FAE70500C2D280 /* yajl_parser.h */,
+				0A9CA71419FAE70500C2D280 /* yajl_tree.c */,
+				0A9CA71519FAE70500C2D280 /* yajl_version.c */,
+			);
+			path = YAJL_2_0_4;
+			sourceTree = "<group>";
+		};
+		0A9CA70119FAE70500C2D280 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				0A9CA70219FAE70500C2D280 /* yajl_common.h */,
+				0A9CA70319FAE70500C2D280 /* yajl_gen.h */,
+				0A9CA70419FAE70500C2D280 /* yajl_parse.h */,
+				0A9CA70519FAE70500C2D280 /* yajl_tree.h */,
+				0A9CA70619FAE70500C2D280 /* yajl_version.h */,
+			);
+			path = api;
+			sourceTree = "<group>";
+		};
+		6138419D63294B75129EE817 /* Json Model Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				613840EC8496E67AC6BCFABD /* JSONModelMeta.m */,
+				6138410BE39273D57BCC2034 /* JSONModelMeta.h */,
+			);
+			path = "Json Model Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0A345AEA19D5DA9E00E3C01F /* JsonModelGenTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A345B1419D5DA9E00E3C01F /* Build configuration list for PBXNativeTarget "JsonModelGenTest" */;
+			buildPhases = (
+				0A345AE719D5DA9E00E3C01F /* Sources */,
+				0A345AE819D5DA9E00E3C01F /* Frameworks */,
+				0A345AE919D5DA9E00E3C01F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JsonModelGenTest;
+			productName = JsonModelGenTest;
+			productReference = 0A345AEB19D5DA9E00E3C01F /* JsonModelGenTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0A345B0919D5DA9E00E3C01F /* JsonModelGenTestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A345B1719D5DA9E00E3C01F /* Build configuration list for PBXNativeTarget "JsonModelGenTestTests" */;
+			buildPhases = (
+				0A345B0619D5DA9E00E3C01F /* Sources */,
+				0A345B0719D5DA9E00E3C01F /* Frameworks */,
+				0A345B0819D5DA9E00E3C01F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0A345B0C19D5DA9E00E3C01F /* PBXTargetDependency */,
+			);
+			name = JsonModelGenTestTests;
+			productName = JsonModelGenTestTests;
+			productReference = 0A345B0A19D5DA9E00E3C01F /* JsonModelGenTestTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0A345AE319D5DA9E00E3C01F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Thomson Reuters";
+				TargetAttributes = {
+					0A345AEA19D5DA9E00E3C01F = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					0A345B0919D5DA9E00E3C01F = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = 0A345AEA19D5DA9E00E3C01F;
+					};
+				};
+			};
+			buildConfigurationList = 0A345AE619D5DA9E00E3C01F /* Build configuration list for PBXProject "JsonModelGenTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0A345AE219D5DA9E00E3C01F;
+			productRefGroup = 0A345AEC19D5DA9E00E3C01F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0A345AEA19D5DA9E00E3C01F /* JsonModelGenTest */,
+				0A345B0919D5DA9E00E3C01F /* JsonModelGenTestTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0A345AE919D5DA9E00E3C01F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A345B0019D5DA9E00E3C01F /* Main.storyboard in Resources */,
+				0A345B0519D5DA9E00E3C01F /* LaunchScreen.xib in Resources */,
+				0A345B0219D5DA9E00E3C01F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A345B0819D5DA9E00E3C01F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0A345AE719D5DA9E00E3C01F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A345BAC19D5F03800E3C01F /* TRPlate.m in Sources */,
+				0A345B9C19D5F03800E3C01F /* TRAddress.m in Sources */,
+				0A345BA819D5F03800E3C01F /* TRPersonResult.m in Sources */,
+				0A345B9E19D5F03800E3C01F /* TRCharges.m in Sources */,
+				0A9CA72619FAE70500C2D280 /* yajl_version.c in Sources */,
+				0A9CA71C19FAE70500C2D280 /* yajl_encode.c in Sources */,
+				0A345BAF19D5F03800E3C01F /* TRVehicle.m in Sources */,
+				0A345B9D19D5F03800E3C01F /* TRBookingInfo.m in Sources */,
+				0A345AFD19D5DA9E00E3C01F /* DetailViewController.m in Sources */,
+				0A9CA71619FAE70500C2D280 /* yajl.c in Sources */,
+				0A345BA419D5F03800E3C01F /* TRLicenseResult.m in Sources */,
+				0A9CA72E19FAE71D00C2D280 /* TRJsonInstanceLoader.m in Sources */,
+				0A345BB619D6135B00E3C01F /* TRJsonBase.m in Sources */,
+				0A345BA119D5F03800E3C01F /* TRIncarcerationResult.m in Sources */,
+				0A345BB319D5F03800E3C01F /* TRVehicleResultWrapper.m in Sources */,
+				0A345BA319D5F03800E3C01F /* TRLicense.m in Sources */,
+				0A345AFA19D5DA9E00E3C01F /* MasterViewController.m in Sources */,
+				0A345BA019D5F03800E3C01F /* TRIncarcerationRecord.m in Sources */,
+				0A9CA71E19FAE70500C2D280 /* yajl_gen.c in Sources */,
+				0A345BB119D5F03800E3C01F /* TRVehicleImageResultWrapper.m in Sources */,
+				0A345AF419D5DA9E00E3C01F /* AppDelegate.m in Sources */,
+				0A345BB919D66EEC00E3C01F /* TRChildResult.m in Sources */,
+				0A345BA919D5F03800E3C01F /* TRPersonResultWrapper.m in Sources */,
+				0A345BA719D5F03800E3C01F /* TROwner.m in Sources */,
+				0A345BAE19D5F03800E3C01F /* TRSearchStatistics.m in Sources */,
+				0A9CA72019FAE70500C2D280 /* yajl_lex.c in Sources */,
+				0A345BA619D5F03800E3C01F /* TRName.m in Sources */,
+				0A345BAD19D5F03800E3C01F /* TRRestApiStatistics.m in Sources */,
+				0A345BAB19D5F03800E3C01F /* TRPhysicalInfo.m in Sources */,
+				0A345AF719D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodeld in Sources */,
+				0A345BB219D5F03800E3C01F /* TRVehicleResult.m in Sources */,
+				0A345BAA19D5F03800E3C01F /* TRPersonsResultWrapper.m in Sources */,
+				0A345BB019D5F03800E3C01F /* TRVehicleImageResult.m in Sources */,
+				0A9CA72C19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */,
+				0A345BA519D5F03800E3C01F /* TRLicenseResultWrapper.m in Sources */,
+				0A345BA219D5F03800E3C01F /* TRIncarcerationResultWrapper.m in Sources */,
+				0A345AF119D5DA9E00E3C01F /* main.m in Sources */,
+				0A9CA72219FAE70500C2D280 /* yajl_parser.c in Sources */,
+				0A9CA71A19FAE70500C2D280 /* yajl_buf.c in Sources */,
+				0A345B9F19D5F03800E3C01F /* TRDriver.m in Sources */,
+				0A9CA71819FAE70500C2D280 /* yajl_alloc.c in Sources */,
+				0A9CA72419FAE70500C2D280 /* yajl_tree.c in Sources */,
+				6138459AD8A21C1798F3C169 /* JSONModelMeta.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A345B0619D5DA9E00E3C01F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A345B1119D5DA9E00E3C01F /* JsonModelGenTestTests.m in Sources */,
+				0A9CA72119FAE70500C2D280 /* yajl_lex.c in Sources */,
+				0A9CA72519FAE70500C2D280 /* yajl_tree.c in Sources */,
+				0A9CA72319FAE70500C2D280 /* yajl_parser.c in Sources */,
+				0A9CA72D19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */,
+				0A9CA72719FAE70500C2D280 /* yajl_version.c in Sources */,
+				0A9CA71719FAE70500C2D280 /* yajl.c in Sources */,
+				0A9CA71919FAE70500C2D280 /* yajl_alloc.c in Sources */,
+				0A9CA71B19FAE70500C2D280 /* yajl_buf.c in Sources */,
+				0A9CA71F19FAE70500C2D280 /* yajl_gen.c in Sources */,
+				0A9CA71D19FAE70500C2D280 /* yajl_encode.c in Sources */,
+				0A9CA72F19FAE71D00C2D280 /* TRJsonInstanceLoader.m in Sources */,
+				6138487D68F87595175A0DCE /* JSONModelMeta.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0A345B0C19D5DA9E00E3C01F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A345AEA19D5DA9E00E3C01F /* JsonModelGenTest */;
+			targetProxy = 0A345B0B19D5DA9E00E3C01F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0A345AFE19D5DA9E00E3C01F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0A345AFF19D5DA9E00E3C01F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0A345B0319D5DA9E00E3C01F /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0A345B0419D5DA9E00E3C01F /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0A345B1219D5DA9E00E3C01F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0A345B1319D5DA9E00E3C01F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0A345B1519D5DA9E00E3C01F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = JsonModelGenTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0A345B1619D5DA9E00E3C01F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = JsonModelGenTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		0A345B1819D5DA9E00E3C01F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = JsonModelGenTestTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JsonModelGenTest.app/JsonModelGenTest";
+			};
+			name = Debug;
+		};
+		0A345B1919D5DA9E00E3C01F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = JsonModelGenTestTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JsonModelGenTest.app/JsonModelGenTest";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0A345AE619D5DA9E00E3C01F /* Build configuration list for PBXProject "JsonModelGenTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A345B1219D5DA9E00E3C01F /* Debug */,
+				0A345B1319D5DA9E00E3C01F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A345B1419D5DA9E00E3C01F /* Build configuration list for PBXNativeTarget "JsonModelGenTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A345B1519D5DA9E00E3C01F /* Debug */,
+				0A345B1619D5DA9E00E3C01F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A345B1719D5DA9E00E3C01F /* Build configuration list for PBXNativeTarget "JsonModelGenTestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A345B1819D5DA9E00E3C01F /* Debug */,
+				0A345B1919D5DA9E00E3C01F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0A345AF519D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0A345AF619D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodel */,
+			);
+			currentVersion = 0A345AF619D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodel */;
+			path = JsonModelGenTest.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 0A345AE319D5DA9E00E3C01F /* Project object */;
+}

@@ -1,0 +1,109 @@
+{% import '_obj-c_defs.jinja' as defs %}
+{% include '_obj-c_head_comments.jinja' %}
+
+#import "{{classDef.declName}}"
+{%- if classDef.dependencies %}
+{%- for dep in classDef.dependencies %}
+#import "{{dep}}.h"
+{%- endfor -%}
+{%- endif %}
+
+
+#define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
+
+@implementation {{classDef.name}}Meta
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+
+{%- macro metaProps(dictName, props) -%}
+{% if props|length %}
+        [self.{{dictName}} addEntriesFromDictionary: @{
+{%- for v in props %}
+                @"{{v.name}}": valueWithSel(set{{v.name|firstupper}}:),
+{%- endfor %}
+        }];
+{% endif %}
+{%- endmacro -%}
+
+{%- set objectVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|rejectattr("isArray")|list -%}
+{{ metaProps("objectSetters", objectVars) }}
+{{ metaProps("objectGetters", objectVars) }}
+
+{%- set arrayVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|selectattr("isArray")|list -%}
+{{ metaProps("arraySetters", arrayVars) }}
+{{ metaProps("arrayGetters", arrayVars) }}
+
+{{ metaProps("strings", classDef.variable_defs|selectattr("schema_type", "equalto", "string")|list) }}
+{{ metaProps("booleans", classDef.variable_defs|selectattr("schema_type", "equalto", "boolean")|list) }}
+{{ metaProps("doubles", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }}
+{{ metaProps("integers", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }}
+
+    }
+    return self;
+}
+@end
+
+static {{classDef.name}}Meta *modelMeta;
+
+@implementation {{classDef.name}}
+
+{%- if classDef.hasVarDefaults %}
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+    	// custom intialization code
+{%- for v in classDef.variable_defs -%}
+{{ defs.initVarToDefault(v) }}
+{%- endfor %}
+    }
+    return self;
+}
+{% endif %}
+
+{%- for v in classDef.variable_defs -%}
+{{ defs.lazyPropGetter(v) }}
+{%- endfor %}
+
+- (BOOL)isObjectForPropertyNamed:(NSString *)propertyName {
+    return [modelMeta propertyIsObject:propertyName];
+}
+
+- (BOOL)isArrayForPropertyNamed:(NSString *)propertyName {
+    return [modelMeta propertyIsArray:propertyName];
+}
+
+- (id <JSONModelSerialize>)getObjectForPropertyNamed:(NSString *)propertyName {
+
+    return [modelMeta getObjectForPropertyNamed:propertyName forInstance:self];
+}
+
+- (NSMutableArray *)getArrayForPropertyNamed:(NSString *)propertyName {
+    return [modelMeta getArrayForPropertyNamed:propertyName forInstance:self];
+}
+
+- (void)setString:(NSString *)val forProperty:(NSString *)propertyName {
+    [modelMeta setString:val forProperty:propertyName forInstance:self];
+}
+
+- (void)setNumber:(NSNumber *)val forProperty:(NSString *)propertyName {
+    [modelMeta setNumber:val forProperty:propertyName forInstance:self];
+}
+
+- (void)setDouble:(NSNumber *)val forProperty:(NSString *)propertyName {
+    [modelMeta setDouble:val forProperty:propertyName forInstance:self];
+}
+
+- (void)setBoolean:(NSNumber *)val forProperty:(NSString *)propertyName {
+    [modelMeta setBoolean:val forProperty:propertyName forInstance:self];
+}
+
+- (void)setNullForProperty:(NSString *)propertyName {
+    [modelMeta setNullForProperty:propertyName forInstance:self];
+}
+
+@end
+

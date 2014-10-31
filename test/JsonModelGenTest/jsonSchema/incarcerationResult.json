@@ -1,0 +1,15 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "incarcerationResult",
+	"type": "object",
+	"javaType": "com.thomsonreuters.lib.clear.data.IncarcerationResult",
+	"javaInterfaces": ["java.io.Serializable"],
+	"properties": {
+		"incarcerationRecords": {
+			"type": "array",
+			"items": { "$ref": "incarcerationRecord.json" }
+		}
+	},
+	"definitions": {
+	}
+}

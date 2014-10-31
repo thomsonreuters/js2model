@@ -1,0 +1,110 @@
+{% set typeMap = {
+	'string':  'NSString *',
+	'dict':    'NSDictionary *',
+	'integer': 'NSNumber *',
+	'number':  'NSNumber *',
+	'boolean': 'NSNumber *',
+	'null':	   'Object *',
+	'any':	   'Object *'	
+} %}
+
+{% set primitivesTypeMap = {
+	'string':  'NSString *',
+	'dict':    'NSDictionary *',
+	'integer': 'NSInteger',
+	'number':  'NSFloat',
+	'boolean': 'BOOL',
+	'null':	   'Object *',
+	'any':	   'Object *'	
+} %}
+
+{% set primitivesTypeIsRef = {
+	'string':  True,
+	'dict':    True,
+	'integer': False,
+	'number':  False,
+	'boolean': False,
+	'null':	   True,
+	'any':	   True
+} %}
+
+{% macro renderWithConvertedType(variableDef, usePrimitives=False) -%}
+
+{%- if variableDef.isArray -%}
+	{%- set varType = 'NSArray *' -%}
+	{%- set isRef = True -%}
+{%- elif usePrimitives -%}
+    {%- if variableDef.type in primitivesTypeMap -%}
+        {%- set varType = primitivesTypeMap[variableDef.type] -%}
+	    {%- set isRef = primitivesTypeIsRef[variableDef.type] -%}
+    {%- else -%}
+	    {%- set varType = variableDef.type + ' *' -%}
+    	{%- set isRef = True -%}
+    {%- endif -%}
+{%- else -%}
+	{%- set varType = variableDef.type + ' *' if not variableDef.type in typeMap else typeMap[variableDef.type] -%}
+	{%- set isRef = True -%}
+{%- endif -%}
+{{ caller(variableDef, varType, isRef) }}
+{%- endmacro %}
+
+{%- macro propertyDecl(variableDef, usePrimitives=False) -%}
+
+	{%- call(varDef, varType, isRef) renderWithConvertedType(variableDef, usePrimitives) -%}
+	@property({{'strong, ' if isRef}}nonatomic) {{ varType }} {{variableDef.name}};
+	{%- endcall -%}
+
+{%- endmacro -%}
+
+{%- macro lazyPropGetter(variableDef, usePrimitives=False) -%}
+{%- call(varDef, varType, isRef) renderWithConvertedType(variableDef, usePrimitives) -%}
+{%- if varType == "NSDictionary *" or varType == "NSArray *" -%}
+{% set propName = variableDef.name %}
+{% set ivarName = '_' + propName %}
+-({{ varType }}) {{ propName }} {
+	
+	if( ! {{ ivarName }} ) {
+		{{ ivarName }} = [{{varType|replace(' *','')}} new];
+	}
+
+	return {{ivarName}};
+}
+{%- endif -%}
+{%- endcall -%}
+{%- endmacro -%}
+
+{%- macro initVarToDefault(variableDef, usePrimitives=False) -%}
+{%- call(varDef, varType, isRef) renderWithConvertedType(variableDef, usePrimitives) -%}
+{%- if not varDef.default == None -%}
+{% set propName = variableDef.name %}
+{% set ivarName = '_' + propName %}
+{%- if not isRef -%}
+        {{ ivarName }} = {{varDef.default}};
+{% elif varType == "NSNumber *" %}
+        {%- if varDef.default == False %}
+        {{ ivarName }} = @NO;
+        {%- elif varDef.default == True %}
+        {{ ivarName }} = @YES;
+        {%- endif -%}
+{%- endif -%}
+{%- endif -%}
+{%- endcall -%}
+{%- endmacro -%}
+
+{%- macro renderMetaGetters(ivarDefs, varType) -%}
+
+{%- if varType == "array" -%}
+
+{%- for ivar in ivarDefs -%}
+{% if ivar.isArray %}
+
+{{ defs.propertyDecl(v) }}
+{% endif %}
+
+
+{%- endfor %}
+
+{%- endif -%}
+
+
+{%- endmacro -%}

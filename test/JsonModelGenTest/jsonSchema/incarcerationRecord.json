@@ -1,0 +1,32 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "incarcerationRecord",
+	"javaType": "com.thomsonreuters.lib.clear.data.IncarcerationRecord",
+	"javaInterfaces": ["java.io.Serializable"],
+	"type": "object",
+	"properties": {
+		"bookingInfo": {
+			"type": "object",
+			"javaInterfaces": ["java.io.Serializable"],
+			"properties": {
+				"arrestedDate": { "type": "string" },
+				"arrestAgency": { "type": "string" },
+				"state": { "type": "string" }
+			}
+		},
+		"charges": {
+			"type": "array",
+			"items": { "$ref": "#/definitions/charges" }
+		}
+	},
+	"definitions": {
+		"charges": {
+			"type": "object",
+			"javaInterfaces": ["java.io.Serializable"],
+			"properties" : {
+				"crimeSeverity": { "type": "string" },
+				"chargeDescription": { "type": "string" }
+			}
+		}
+	}
+} 

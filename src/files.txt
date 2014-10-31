@@ -1,0 +1,12 @@
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/__init__.py
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/__init__.py
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/jsonschema2model.py
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/templates/_obj-c_defs.jinja
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/templates/_obj-c_head_comments.jinja
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/templates/objc.h.jinja
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/templates/objc.m.jinja
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/__init__.pyc
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/__init__.pyc
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/tr/jsonschema/jsonschema2model.pyc
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/bin/js2model.py
+/Volumes/UserHD/Users/kevin/virtualenv/js2ModelTest/lib/python2.7/site-packages/js2model-0.1-py2.7.egg-info

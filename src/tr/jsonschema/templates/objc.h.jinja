@@ -1,0 +1,31 @@
+{% import '_obj-c_defs.jinja' as defs %}
+{%- include '_obj-c_head_comments.jinja' %}
+#import <Foundation/Foundation.h>
+#import "JSONModelMeta.h"
+{% if importFiles %}
+{%- for importFile in importFiles %}
+#import <{{importFile}}>
+{%- endfor -%}
+{%- endif %}
+{%- if classDef.superTypes -%}
+{%- for dep in classDef.superTypes -%}
+#import "{{dep}}.h"
+{%- endfor -%}
+{%- endif %}
+{% if classDef.dependencies %}
+{%- for dep in classDef.dependencies %}
+@class {{dep}};
+{%- endfor -%}
+{%- endif %}
+
+@interface {{classDef.name}}Meta : {{ classDef.superClasses[0] if classDef.superClasses|length > 0 else 'JSONModel' }}Meta
+
+@end
+
+@interface {{classDef.name}} : {{ classDef.superClasses[0] if classDef.superClasses|length > 0 else 'NSObject' }} {{ '<' + classDef.interfaces|join(', ') + '>' if classDef.interfaces else '' }}
+{% for v in classDef.variable_defs %}
+{{ defs.propertyDecl(v) }}
+{%- endfor %}
+
+@end
+

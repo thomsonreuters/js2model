@@ -1,0 +1,27 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-04/schema",
+	"required":false,
+	"properties":{
+		"city": {
+			"type":"string",
+			"id": "http://jsonschema.net/address/city",
+			"required":false
+		},
+		"state": {
+			"type":"string",
+			"id": "http://jsonschema.net/address/state",
+			"required":false
+		},
+		"streetAddress": {
+			"type":"string",
+			"id": "http://jsonschema.net/address/streetAddress",
+			"required":false
+		},
+		"zip": {
+			"type":"string",
+			"id": "http://jsonschema.net/address/zip",
+			"required":false
+		}
+	}
+}

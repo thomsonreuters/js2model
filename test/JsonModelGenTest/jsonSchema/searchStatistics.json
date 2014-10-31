@@ -1,0 +1,13 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "searchStatistics",
+	"type": "object",
+	"javaType": "com.thomsonreuters.lib.clear.data.SearchStatistics",
+	"javaInterfaces": ["java.io.Serializable"],
+	"properties": {
+		"restApiStatistics": { "$ref": "restApiStatistics.json" },
+		"parseTimeInMillis": { "type": "integer" }
+	},
+	"definitions": {
+	}
+}
