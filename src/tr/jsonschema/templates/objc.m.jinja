@@ -11,18 +11,32 @@
 
 #define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
 
-@implementation {{classDef.name}}Meta
+{%- set metaClassName = classDef.name + "Meta" -%}
+{%- set metaClassVar = classDef.name|firstlower + "Meta" -%}
+
+{# #}
+@implementation {{metaClassName}}
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
 
-{%- macro metaProps(dictName, props) -%}
+
+{#
+    Macro that renders code to add properties to the appropriate dictionary
+#}
+{%- macro metaProps(dictName, props, is_setter=True) -%}
 {% if props|length %}
         [self.{{dictName}} addEntriesFromDictionary: @{
 {%- for v in props %}
-                @"{{v.name}}": valueWithSel(set{{v.name|firstupper}}:),
+                @"{{v.name}}": valueWithSel(
+                {%- if is_setter -%}
+                set{{v.name|firstupper}}:
+                {%- else -%}
+                {{v.name}}
+                {%- endif -%}
+                ),
 {%- endfor %}
         }];
 {% endif %}
@@ -30,27 +44,32 @@
 
 {%- set objectVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|rejectattr("isArray")|list -%}
 {{ metaProps("objectSetters", objectVars) }}
-{{ metaProps("objectGetters", objectVars) }}
-
+{{ metaProps("objectGetters", objectVars, False) }}
 {%- set arrayVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|selectattr("isArray")|list -%}
 {{ metaProps("arraySetters", arrayVars) }}
-{{ metaProps("arrayGetters", arrayVars) }}
-
+{{ metaProps("arrayGetters", arrayVars, False) }}
 {{ metaProps("strings", classDef.variable_defs|selectattr("schema_type", "equalto", "string")|list) }}
 {{ metaProps("booleans", classDef.variable_defs|selectattr("schema_type", "equalto", "boolean")|list) }}
-{{ metaProps("doubles", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }}
+{{ metaProps("numbers", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }}
 {{ metaProps("integers", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }}
-
     }
     return self;
 }
 @end
 
-static {{classDef.name}}Meta *modelMeta;
+static {{metaClassName}} *{{metaClassVar}};
 
 @implementation {{classDef.name}}
 
-{%- if classDef.hasVarDefaults %}
++(void)initialize {
+
+    if( self == [{{classDef.name}} class] )
+    {
+        {{metaClassVar}} = [{{metaClassName}} new];
+    }
+}
+
+{% if classDef.hasVarDefaults -%}
 - (instancetype)init
 {
     self = [super init];
@@ -69,40 +88,40 @@ static {{classDef.name}}Meta *modelMeta;
 {%- endfor %}
 
 - (BOOL)isObjectForPropertyNamed:(NSString *)propertyName {
-    return [modelMeta propertyIsObject:propertyName];
+    return [{{metaClassVar}} propertyIsObject:propertyName];
 }
 
 - (BOOL)isArrayForPropertyNamed:(NSString *)propertyName {
-    return [modelMeta propertyIsArray:propertyName];
+    return [{{metaClassVar}} propertyIsArray:propertyName];
 }
 
 - (id <JSONModelSerialize>)getObjectForPropertyNamed:(NSString *)propertyName {
 
-    return [modelMeta getObjectForPropertyNamed:propertyName forInstance:self];
+    return [{{metaClassVar}} getObjectForPropertyNamed:propertyName forInstance:self];
 }
 
 - (NSMutableArray *)getArrayForPropertyNamed:(NSString *)propertyName {
-    return [modelMeta getArrayForPropertyNamed:propertyName forInstance:self];
+    return [{{metaClassVar}} getArrayForPropertyNamed:propertyName forInstance:self];
 }
 
 - (void)setString:(NSString *)val forProperty:(NSString *)propertyName {
-    [modelMeta setString:val forProperty:propertyName forInstance:self];
+    [{{metaClassVar}} setString:val forProperty:propertyName forInstance:self];
 }
 
 - (void)setNumber:(NSNumber *)val forProperty:(NSString *)propertyName {
-    [modelMeta setNumber:val forProperty:propertyName forInstance:self];
+    [{{metaClassVar}} setNumber:val forProperty:propertyName forInstance:self];
 }
 
-- (void)setDouble:(NSNumber *)val forProperty:(NSString *)propertyName {
-    [modelMeta setDouble:val forProperty:propertyName forInstance:self];
+- (void)setInteger:(NSNumber *)val forProperty:(NSString *)propertyName {
+    [{{metaClassVar}} setInteger:val forProperty:propertyName forInstance:self];
 }
 
 - (void)setBoolean:(NSNumber *)val forProperty:(NSString *)propertyName {
-    [modelMeta setBoolean:val forProperty:propertyName forInstance:self];
+    [{{metaClassVar}} setBoolean:val forProperty:propertyName forInstance:self];
 }
 
 - (void)setNullForProperty:(NSString *)propertyName {
-    [modelMeta setNullForProperty:propertyName forInstance:self];
+    [{{metaClassVar}} setNullForProperty:propertyName forInstance:self];
 }
 
 @end

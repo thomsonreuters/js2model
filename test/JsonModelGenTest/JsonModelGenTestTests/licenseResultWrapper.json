@@ -1,0 +1,131 @@
+{
+        "searchResult": {
+            "address": {
+                "city": "ST. PAUL",
+                "county": "RAMSEY",
+                "state": "MN",
+                "street": "123 MAIN STREET",
+                "zip": "00000"
+            },
+            "driver": {
+                "birthDate": "1971-12-12",
+                "name": {
+                    "firstName": "JANE",
+                    "lastName": "SAMPLE",
+                    "middleName": "E"
+                },
+                "physicalInfo": {
+                    "height": "504",
+                    "race": "WHITE",
+                    "sex": "Female"
+                },
+                "ssn": "123-45-6789"
+            },
+            "license": {
+                "id": "D12345",
+                "state": "MN"
+            }
+        },
+        "incarcerationHistory": {
+            "foundIncarcerationHistory": true,
+            "incarcerationRecords": [
+                {
+                    "bookingInfo": {
+                        "arrestAgency": "Florida Dept  Of Corrections",
+                        "arrestedDate": "2007-08-27",
+                        "state": "FL"
+                    }
+                },
+                {
+                    "bookingInfo": {
+                        "arrestAgency": "Citrus Co Sheriffs Office",
+                        "arrestedDate": "2007-03-15",
+                        "state": "FL"
+                    },
+                    "charges": [
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Misdemeanor"
+                        }
+                    ]
+                },
+                {
+                    "bookingInfo": {
+                        "arrestAgency": "Citrus Co Sheriffs Office",
+                        "arrestedDate": "2006-07-13",
+                        "state": "FL"
+                    },
+                    "charges": [
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Misdemeanor"
+                        },
+                        {
+                            "crimeSeverity": "Misdemeanor"
+                        }
+                    ]
+                },
+                {
+                    "bookingInfo": {
+                        "arrestAgency": "Lake Co Sheriffs Office",
+                        "arrestedDate": "2006-07-09",
+                        "state": "FL"
+                    },
+                    "charges": [
+                        {
+                            "chargeDescription": "RETURN FROM COURT"
+                        }
+                    ]
+                },
+                {
+                    "bookingInfo": {
+                        "arrestAgency": "Citrus Co Sheriffs Office",
+                        "arrestedDate": "2005-03-20",
+                        "state": "FL"
+                    },
+                    "charges": [
+                        {
+                            "crimeSeverity": "Misdemeanor"
+                        },
+                        {
+                            "crimeSeverity": "Misdemeanor"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        },
+                        {
+                            "crimeSeverity": "Felony"
+                        }
+                    ]
+                }
+            ]
+        }
+    }

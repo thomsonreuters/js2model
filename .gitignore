@@ -98,6 +98,9 @@ Icon
 # Thumbnails
 ._*
 
+# vim backups
+*~
+
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes

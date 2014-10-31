@@ -15,7 +15,7 @@
 @property(strong, nonatomic) NSMutableDictionary *strings;
 @property(strong, nonatomic) NSMutableDictionary *booleans;
 @property(strong, nonatomic) NSMutableDictionary *integers;
-@property(strong, nonatomic) NSMutableDictionary *doubles;
+@property(strong, nonatomic) NSMutableDictionary *numbers;
 
 -(BOOL)propertyIsObject:(NSString *)propertyName;
 
@@ -25,13 +25,16 @@
 
 -(SEL)arrayGetterSelectorForProperty:(NSString *)propertyName;
 
--(SEL)doubleSetterSelectorForProperty:(NSString *)propertyName;
+-(SEL)numberSetterSelectorForProperty:(NSString *)propertyName;
 
 -(SEL)stringSetterSelectorForProperty:(NSString *)propertyName;
 
 -(SEL)booleanSetterSelectorForProperty:(NSString *)propertyName;
 
 -(SEL)integerSetterSelectorForProperty:(NSString *)propertyName;
+
+// Searches all data types for property setter
+-(SEL)setterForProperty:(NSString *)propertyName;
 
 - (id <JSONModelSerialize>)getObjectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
 
@@ -41,7 +44,7 @@
 
 - (void)setNumber:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance;
 
-- (void)setDouble:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance;
+- (void)setInteger:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance;
 
 - (void)setBoolean:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance;
 

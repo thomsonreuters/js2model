@@ -161,7 +161,8 @@ class JsonSchema2Model(object):
         self.root_name = root_name
 
         self.jinja_env = Environment(loader=PackageLoader('tr.jsonschema.jsonschema2model', 'templates'))
-        self.jinja_env.filters['firstupper'] = firstUpperFilter
+        self.jinja_env.filters['firstupper'] = lambda value:  value[0].upper() + value[1:]
+        self.jinja_env.filters['firstlower'] = lambda value:  value[0].lower() + value[1:]
         self.jinja_env.tests['equalto'] = lambda value, other: value == other
 
         self.models = {}

@@ -28,7 +28,7 @@
 
         _integers = [NSMutableDictionary new];
 
-        _doubles = [NSMutableDictionary new];
+        _numbers = [NSMutableDictionary new];
     }
     return self;
 }
@@ -65,9 +65,9 @@
     }
 }
 
--(SEL)doubleSetterSelectorForProperty:(NSString *)propertyName {
+-(SEL)numberSetterSelectorForProperty:(NSString *)propertyName {
 
-    NSValue *value = [self.doubles valueForKey:propertyName];
+    NSValue *value = [self.numbers valueForKey:propertyName];
 
     if( value ) {
         return [value pointerValue];
@@ -112,6 +112,23 @@
         return NULL;
     }
 }
+
+
+-(SEL)setterForProperty:(NSString *)propertyName {
+
+    for (NSArray *props in @[self.objectSetters, self.arraySetters, self.integers, self.numbers, self.booleans, self.strings] ) {
+        
+        NSValue *value = [props valueForKey:propertyName];
+        
+        if( value ) {
+            return [value pointerValue];
+        }
+    }
+    
+    return NULL;
+}
+
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
@@ -154,7 +171,7 @@
 
 - (void)setNumber:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance {
 
-    SEL setter = [self stringSetterSelectorForProperty:propertyName];
+    SEL setter = [self numberSetterSelectorForProperty:propertyName];
 
     if(setter) {
         [instance performSelector:setter withObject:val];
@@ -164,9 +181,9 @@
     }
 }
 
-- (void)setDouble:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance {
+- (void)setInteger:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance {
 
-    SEL setter = [self stringSetterSelectorForProperty:propertyName];
+    SEL setter = [self integerSetterSelectorForProperty:propertyName];
 
     if(setter) {
         [instance performSelector:setter withObject:val];
@@ -179,7 +196,7 @@
 
 - (void)setBoolean:(NSNumber *)val forProperty:(NSString *)propertyName forInstance:(id)instance {
 
-    SEL setter = [self stringSetterSelectorForProperty:propertyName];
+    SEL setter = [self booleanSetterSelectorForProperty:propertyName];
 
     if(setter) {
         [instance performSelector:setter withObject:val];
@@ -192,7 +209,7 @@
 
 - (void)setNullForProperty:(NSString *)propertyName forInstance:(id)instance {
 
-    SEL setter = [self stringSetterSelectorForProperty:propertyName];
+    SEL setter = [self setterForProperty:propertyName];
 
     if(setter) {
         [instance performSelector:setter withObject:nil];

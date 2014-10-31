@@ -20,7 +20,7 @@
 
 -(void)setString:(NSString*)val forProperty:(NSString*)propertyName;
 -(void)setNumber:(NSNumber*)val forProperty:(NSString*)propertyName;
--(void)setDouble:(NSNumber*)val forProperty:(NSString*)propertyName;
+-(void)setInteger:(NSNumber*)val forProperty:(NSString*)propertyName;
 -(void)setBoolean:(NSNumber*)val forProperty:(NSString*)propertyName;
 -(void)setNullForProperty:(NSString*)propertyName;
 

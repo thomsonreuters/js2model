@@ -7,7 +7,7 @@
 // without the written authorization of TRGR is prohibited.
 //
 
-#import "TRJsonInstanceLoader.h"
+#import "TRJsonLoader.h"
 #import <CFNetwork/CFNetworkErrors.h>
 #import "yajl_parse.h"
 #import "ISO8601DateFormatter.h"
@@ -75,9 +75,9 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 @property (strong, nonatomic) NSURLConnection *urlConnection;
 @property (nonatomic) NSString *lastMapKey;
 @property (copy, nonatomic) TRJsonCompletedBlock onCompletionBlock;
-@property (nonatomic, readonly) id instance;
+@property (strong, nonatomic) id object;
 
--(id)initWithClass:(Class)cls;
+-(id)initWithObject:(id)cls;
 -(BOOL)loadData:(NSData*)jsonData error:(NSError * __autoreleasing *)error;
 -(void)loadInstancesFromData:(NSData*)jsonData ;
 
@@ -89,36 +89,34 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 
 @end
 
-@interface TRJsonInstanceLoader ()
+@interface TRJsonLoader ()
 
 @property (strong, nonatomic) TRJsonLoaderPrivate *jsonPrivLoader;
 
 @end
 
 
-@implementation TRJsonInstanceLoader
+@implementation TRJsonLoader
 
-- (id) initWithClass:(Class)cls {
+- (id) initWithClass:(id)object {
 	if(self = [super init])
     {
-        _jsonPrivLoader = [[TRJsonLoaderPrivate alloc] initWithClass:cls];
+        _jsonPrivLoader = [[TRJsonLoaderPrivate alloc] initWithObject:object];
     }
     
 	return self;
 }
 
-+ (id) loadInstanceOfClass:(Class)cls withJSONData:(NSData*)data
++ (id) load:(Class)cls withJSONData:(NSData*)data
                      error:(NSError* __autoreleasing *)error {
     
-    TRJsonInstanceLoader *jil = [[TRJsonInstanceLoader alloc] initWithClass:cls];
+    TRJsonLoader *jil = [[TRJsonLoader alloc] initWithClass:cls];
     [jil.jsonPrivLoader loadData:data error:error];
     
-    id loadedInstance = jil.jsonPrivLoader.instance;
-    
- 	return loadedInstance;
+    return jil.jsonPrivLoader.object;
 }
 
-+ (id) loadInstanceOfClass:(Class)cls
++ (id) load:(Class)cls
      withJSONFromFileNamed:(NSString*)filename
                      error:(NSError* __autoreleasing *)error {
     
@@ -132,55 +130,55 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
     
     NSData *jsonData = [NSData dataWithContentsOfFile:filePath];
     
-    return [self loadInstanceOfClass:cls withJSONData:jsonData error:error];
+    return [self load:cls withJSONData:jsonData error:error];
 }
 
-+(void) loadInstancesOfClass:(Class)cls
-                withJSONData:(NSData*)data {
-    
-    TRJsonInstanceLoader *jil = [[TRJsonInstanceLoader alloc] initWithClass:cls];
-    
-    [jil.jsonPrivLoader loadInstancesFromData:data];
-}
+//+(void) loadInstancesOfClass:(Class)cls
+//                withJSONData:(NSData*)data {
+//    
+//    TRJsonLoader *jil = [[TRJsonLoader alloc] initWithClass:cls];
+//    
+//    [jil.jsonPrivLoader loadInstancesFromData:data];
+//}
+//
+//
+//+(void) loadInstancesOfClass:(Class)cls
+//       withJSONFromFileNamed:(NSString*)filename {
+//    
+//    NSString * filePath = [[NSBundle bundleForClass:[self class] ] pathForResource:filename ofType:nil];
+//    
+//    if( filePath == nil )
+//    {
+//        NSError *error = [NSError errorWithDomain:kJSONLoadedErrorDomain code:0 userInfo:nil];
+//    }
+//    
+//    NSData *jsonData = [NSData dataWithContentsOfFile:filePath];
+//    
+//    [self loadInstancesOfClass:cls withJSONData:jsonData];
+//}
 
-
-+(void) loadInstancesOfClass:(Class)cls
-       withJSONFromFileNamed:(NSString*)filename {
-    
-    NSString * filePath = [[NSBundle bundleForClass:[self class] ] pathForResource:filename ofType:nil];
-    
-    if( filePath == nil )
-    {
-        NSError *error = [NSError errorWithDomain:kJSONLoadedErrorDomain code:0 userInfo:nil];
-    }
-    
-    NSData *jsonData = [NSData dataWithContentsOfFile:filePath];
-    
-    [self loadInstancesOfClass:cls withJSONData:jsonData];
-}
-
-+ (void) loadInstanceOfClass:(Class)cls
++ (void) load:(Class)cls
                      withUrl:(NSURL*)url
                  cachePolicy:(NSURLRequestCachePolicy)cachePolicy
            onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
     
-    TRJsonInstanceLoader *jil = [[TRJsonInstanceLoader alloc] initWithClass:cls];
+    TRJsonLoader *jil = [[TRJsonLoader alloc] initWithClass:cls];
     
     //jil.jsonPrivLoader.mapBlock = mapBlock;
     
     [jil.jsonPrivLoader loadURL:url cachePolicy:cachePolicy onCompletionBlock:onCompletionBlock];
 }
 
-+ (void) loadInstancesOfClass:(Class)cls
-                      withUrl:(NSURL*)url
-                  cachePolicy:(NSURLRequestCachePolicy)cachePolicy
-            onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock {
-    
-    return [TRJsonInstanceLoader loadInstancesOfClass:cls
-                                              withUrl:url
-                                          cachePolicy:cachePolicy
-                                    onCompletionBlock:onCompletionBlock];
-}
+//+ (void) loadInstancesOfClass:(Class)cls
+//                      withUrl:(NSURL*)url
+//                  cachePolicy:(NSURLRequestCachePolicy)cachePolicy
+//            onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock {
+//    
+//    return [TRJsonLoader loadInstancesOfClass:cls
+//                                              withUrl:url
+//                                          cachePolicy:cachePolicy
+//                                    onCompletionBlock:onCompletionBlock];
+//}
 
 +(ISO8601DateFormatter*)isoDateFormatter {
     
@@ -210,7 +208,7 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 // yes, it's a nasty #def function - but couldn't see a way to use the same block of code twice inline
 #define HANDLE_NUMBER \
     if([value isKindOfClass:[NSString class]]){ \
-        return [[TRJsonInstanceLoader numberFormatter] numberFromString:value];\
+        return [[TRJsonLoader numberFormatter] numberFromString:value];\
     } else if([value isKindOfClass:[NSNumber class]]){\
         return value;\
     }
@@ -235,7 +233,7 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
             }
         } else if (strncmp(str,"T@\"NSDate\"",10)==0){
             if([value isKindOfClass:[NSString class]]){
-                return [[TRJsonInstanceLoader isoDateFormatter] dateFromString:value];
+                return [[TRJsonLoader isoDateFormatter] dateFromString:value];
             }
         }
     } else { // dealing with a native type
@@ -278,14 +276,12 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
     NSError *_parserError;
     NSInteger _httpResponseStatusCode;
     //PropertyClassMap_t _propertyClassMap;
-    Class _instanceType;
     yajl_handle _parser_handle;
-    BOOL _multipleInstances;
     NSOperationQueue *_queue;
     NSString *_lastMapKeyNSString;
 }
 
-- (id) initWithClass:(Class)cls {
+- (id) initWithObject:(id)object {
 	if(self = [super init])
     {
         
@@ -293,12 +289,13 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
         _parser_handle = yajl_alloc(&callbacks, NULL, (__bridge void *) self);
         yajl_config(_parser_handle, yajl_allow_comments, 1);
         yajl_config(_parser_handle,yajl_allow_multiple_values,1);
-        _instanceType = cls;
         _httpResponseStatusCode = 200;
         //_skipState = 0;
         _context = [[NSMutableArray alloc] init];
         _queue = [[NSOperationQueue alloc] init];
         _lastMapKeyNSString = nil;
+        
+        _object = object;
 	}
     
 	return self;
@@ -313,9 +310,9 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
   }
 #pragma clang diagnostic pop
 
--(id)newInstance {
-    return [[_instanceType alloc] init];
-}
+//-(id)newInstance {
+//    return [[_instanceType alloc] init];
+//}
 
 -(void)setLastMapKey:(NSString*)lastMapKey {
     
@@ -336,7 +333,7 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 -(BOOL)loadData:(NSData*)jsonData error:(NSError * __autoreleasing *)error {
     
     BOOL success = YES;
-    _multipleInstances = NO;
+//    _multipleInstances = NO;
     yajl_status stat = yajl_parse(_parser_handle,(const unsigned char *) [jsonData bytes], (size_t) [jsonData length]);
     if (stat != yajl_status_ok && error != NULL){
         *error = [TRJsonLoaderPrivate createNSErrorForYAJLParser:_parser_handle usingJSON:jsonData andStatus:stat];
@@ -345,15 +342,15 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
     return success;
 }
 
--(void)loadInstancesFromData:(NSData*)jsonData {
-    
-    _multipleInstances = YES;
-    yajl_status stat = yajl_parse(_parser_handle,(const unsigned char *) [jsonData bytes], (size_t) [jsonData length]);
-    
-    if (stat != yajl_status_ok){
-        // TODO - consider correct approach for error handling here
-    }
-}
+//-(void)loadInstancesFromData:(NSData*)jsonData {
+//    
+////    _multipleInstances = YES;
+//    yajl_status stat = yajl_parse(_parser_handle,(const unsigned char *) [jsonData bytes], (size_t) [jsonData length]);
+//    
+//    if (stat != yajl_status_ok){
+//        // TODO - consider correct approach for error handling here
+//    }
+//}
 
 -(void)loadURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
 onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
@@ -372,11 +369,11 @@ onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
     
 }
 
--(void)loadInstancesFromURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
-          onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
-    _multipleInstances = YES;
-    [self loadURL:url cachePolicy:cachePolicy onCompletionBlock:onCompletionBlock];
-}
+//-(void)loadInstancesFromURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
+//          onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
+////    _multipleInstances = YES;
+//    [self loadURL:url cachePolicy:cachePolicy onCompletionBlock:onCompletionBlock];
+//}
 
 - (void) clearLastMapKey{
     self.lastMapKey = nil;
@@ -391,10 +388,10 @@ onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
     }
 }
 
-- (void)pushNewInstanceToContext {
-    id instance = [self newInstance];
-    [self pushContext:instance];
-}
+//- (void)pushNewInstanceToContext {
+//    id instance = [self newInstance];
+//    [self pushContext:instance];
+//}
 
 -(NSMutableArray*)context {
     return _context;
@@ -404,8 +401,7 @@ onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
     
     //NSLog(@"_mulitpleInstances: %d, context.count: %d", _multipleInstances, self.context.count);
     
-    return ( (_multipleInstances && [_context count] == 2) ||
-            (!_multipleInstances && [_context count] == 1)) ? YES : NO;
+    return [_context count] == 1 ? YES : NO;
 }
 
 #pragma mark -
@@ -462,17 +458,23 @@ static int _start_map(void * ctx) {
     
     __unsafe_unretained id top = [loader.context peek];
 
-    NSCAssert(top != nil, @"Not expecting empty context stack");
-    NSCAssert(loader.lastMapKey, @"Expecting a key map");
-    
-    if ([top isObjectForPropertyNamed:[loader lastMapKey]]) {
-        id<JSONModelSerialize> obj = [top getObjectForPropertyNamed:[loader lastMapKey]];
-        [loader pushContext:obj];
+    // If context is empty, then assume we are starting the top level object;
+    if (top == nil) {
+        [loader pushContext:loader.object];
     }
     else {
-        NSCAssert(NO, @"Expected an Object type");
+        NSCAssert(loader.lastMapKey, @"Expecting a key map");
+        
+        if ([top isObjectForPropertyNamed:[loader lastMapKey]]) {
+            id<JSONModelSerialize> obj = [top getObjectForPropertyNamed:[loader lastMapKey]];
+            [loader pushContext:obj];
+        }
+        else {
+            NSCAssert(NO, @"Expected an Object type");
+            return 0;
+        }
     }
-            
+    
     return 1;
 }
 
@@ -488,7 +490,7 @@ static int _end_map(void * ctx){
     // means we are done with an instance, so call the completion block.
     if ( [loader contextPopWillCompleteInstance]) {
         
-        loader->_instance = top;
+        loader.object = top;
         
 //        if( loader->_didCreateNewInstanceBlock != nil )
 //        {
@@ -611,7 +613,7 @@ static int _number(void * ctx, const char * s, size_t l){
     TRJsonLoaderPrivate *loader = (__bridge TRJsonLoaderPrivate*)ctx;
 
     NSString *st = [[NSString alloc] initWithBytes:s length:l encoding:NSUTF8StringEncoding];
-    __block NSNumber *value = [NSNumber numberWithBool:[[TRJsonInstanceLoader numberFormatter] numberFromString:st]];
+    __block NSNumber *value = [NSNumber numberWithBool:[[TRJsonLoader numberFormatter] numberFromString:st]];
     
     [loader setValue:value OnCurrentUsingBlock:^(id<JSONModelSerialize> obj, NSString *propertyName) {
         [obj setNumber:value forProperty:propertyName];
@@ -651,7 +653,7 @@ static int _double(void *ctx, double doubleVal){
     __block NSNumber *value = [NSNumber numberWithDouble:doubleVal];
     
     [loader setValue:value OnCurrentUsingBlock:^(id<JSONModelSerialize> obj, NSString *propertyName) {
-        [obj setDouble:value forProperty:propertyName];
+        [obj setNumber:value forProperty:propertyName];
     }];
 
     return 1;

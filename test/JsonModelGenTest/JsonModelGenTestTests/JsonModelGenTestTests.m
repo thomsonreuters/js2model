@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
+#import "TRJsonLoader.h"
+
 @interface JsonModelGenTestTests : XCTestCase
 
 @end
@@ -29,6 +31,34 @@
     // This is an example of a functional test case.
     XCTAssert(YES, @"Pass");
 }
+
+-(void)testLoadJson {
+    
+    NSArray *jsonPaths = [[NSBundle bundleForClass:[self class] ] pathsForResourcesOfType:@"json" inDirectory:nil];
+
+    for (NSString *jsonPath in jsonPaths) {
+        
+        NSString *jsonFilename = [jsonPath lastPathComponent];
+        
+        NSString *baseName = [jsonFilename stringByDeletingPathExtension];
+        
+        NSString *className = [NSString stringWithFormat:@"TR%@%@", [[baseName substringToIndex:1] capitalizedString], [baseName substringFromIndex:1]];
+        
+        Class cls = NSClassFromString(className);
+        
+        XCTAssertNotNil(cls, "Class %@ not found",  className);
+        
+        if( cls ) {
+            id object = [[cls alloc] init];
+            
+            NSError *error;
+            [TRJsonLoader load:object withJSONFromFileNamed:jsonFilename error:&error];
+
+            XCTAssertNil(error, @"Error while loading %@",jsonFilename);
+        }
+    }
+}
+
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
