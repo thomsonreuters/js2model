@@ -6,12 +6,18 @@
 #import <Foundation/Foundation.h>
 #import "JSONModelSerialize.h"
 
+@interface JSONPropertyMeta : NSObject
+
+@property (nonatomic) SEL getter;
+@property (nonatomic) SEL setter;
+@property (copy) id (^initBlock)(void);
+
+@end
+
 @interface JSONModelMeta : NSObject
 
-@property(strong, nonatomic) NSMutableDictionary *objectGetters;
-@property(strong, nonatomic) NSMutableDictionary *arrayGetters;
-@property(strong, nonatomic) NSMutableDictionary *objectSetters;
-@property(strong, nonatomic) NSMutableDictionary *arraySetters;
+@property(strong, nonatomic) NSMutableDictionary *objects;
+@property(strong, nonatomic) NSMutableDictionary *arrays;
 @property(strong, nonatomic) NSMutableDictionary *strings;
 @property(strong, nonatomic) NSMutableDictionary *booleans;
 @property(strong, nonatomic) NSMutableDictionary *integers;
@@ -21,24 +27,24 @@
 
 -(BOOL)propertyIsArray:(NSString *)propertyName;
 
--(SEL)objectGetterSelectorForProperty:(NSString *)propertyName;
-
--(SEL)arrayGetterSelectorForProperty:(NSString *)propertyName;
-
--(SEL)numberSetterSelectorForProperty:(NSString *)propertyName;
-
--(SEL)stringSetterSelectorForProperty:(NSString *)propertyName;
-
--(SEL)booleanSetterSelectorForProperty:(NSString *)propertyName;
-
--(SEL)integerSetterSelectorForProperty:(NSString *)propertyName;
+//-(SEL)objectGetterForProperty:(NSString *)propertyName;
+//
+//-(SEL)arrayGetterForProperty:(NSString *)propertyName;
+//
+//-(SEL)numberSetterForProperty:(NSString *)propertyName;
+//
+//-(SEL)stringSetterForProperty:(NSString *)propertyName;
+//
+//-(SEL)booleanSetterForProperty:(NSString *)propertyName;
+//
+//-(SEL)integerSetterForProperty:(NSString *)propertyName;
 
 // Searches all data types for property setter
 -(SEL)setterForProperty:(NSString *)propertyName;
 
-- (id <JSONModelSerialize>)getObjectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
+- (id <JSONModelSerialize>)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
 
-- (NSMutableArray *)getArrayForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
+- (NSMutableArray *)arrayForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
 
 - (void)setString:(NSString *)val forProperty:(NSString *)propertyName forInstance:(id)instance;
 

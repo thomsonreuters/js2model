@@ -10,31 +10,31 @@
 	<string>JsonModelGenTest</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>82AAEF48505DE0AFCD472F16774A39161F303B9C</key>
-		<string>maxmini.remote:git/jsonModelGen.git</string>
+		<key>78713A043FD899C37EBF3BA2993D8A4ABC2E58EA</key>
+		<string>maxmini.local:git/js2model.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>src/JsonModelGenTest/JsonModelGenTest.xcodeproj</string>
+	<string>test/JsonModelGenTest/JsonModelGenTest.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>82AAEF48505DE0AFCD472F16774A39161F303B9C</key>
+		<key>78713A043FD899C37EBF3BA2993D8A4ABC2E58EA</key>
 		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>maxmini.remote:git/jsonModelGen.git</string>
+	<string>maxmini.local:git/js2model.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>82AAEF48505DE0AFCD472F16774A39161F303B9C</string>
+	<string>78713A043FD899C37EBF3BA2993D8A4ABC2E58EA</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>82AAEF48505DE0AFCD472F16774A39161F303B9C</string>
+			<string>78713A043FD899C37EBF3BA2993D8A4ABC2E58EA</string>
 			<key>IDESourceControlWCCName</key>
-			<string>jsonModelGen</string>
+			<string>js2model</string>
 		</dict>
 	</array>
 </dict>
