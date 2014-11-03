@@ -15,8 +15,8 @@
 -(BOOL)isObjectForPropertyNamed:(NSString *)propertyName;
 -(BOOL)isArrayForPropertyNamed:(NSString *)propertyName;
 
--(id<JSONModelSerialize>)getObjectForPropertyNamed:(NSString*)propertyName;
--(NSMutableArray *)getArrayForPropertyNamed:(NSString*)propertyName;
+-(id<JSONModelSerialize>)objectForPropertyNamed:(NSString*)propertyName;
+-(NSMutableArray *)arrayForPropertyNamed:(NSString*)propertyName;
 
 -(void)setString:(NSString*)val forProperty:(NSString*)propertyName;
 -(void)setNumber:(NSNumber*)val forProperty:(NSString*)propertyName;

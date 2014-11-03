@@ -79,13 +79,13 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 
 -(id)initWithObject:(id)cls;
 -(BOOL)loadData:(NSData*)jsonData error:(NSError * __autoreleasing *)error;
--(void)loadInstancesFromData:(NSData*)jsonData ;
+//-(void)loadInstancesFromData:(NSData*)jsonData ;
 
 -(void)loadURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
     onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock;
 
--(void)loadInstancesFromURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
-          onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock;
+//-(void)loadInstancesFromURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
+//          onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock;
 
 @end
 
@@ -466,7 +466,7 @@ static int _start_map(void * ctx) {
         NSCAssert(loader.lastMapKey, @"Expecting a key map");
         
         if ([top isObjectForPropertyNamed:[loader lastMapKey]]) {
-            id<JSONModelSerialize> obj = [top getObjectForPropertyNamed:[loader lastMapKey]];
+            id<JSONModelSerialize> obj = [top objectForPropertyNamed:[loader lastMapKey]];
             [loader pushContext:obj];
         }
         else {
@@ -513,7 +513,7 @@ static int _start_array(void * ctx){
 
     if( [top isArrayForPropertyNamed:[loader lastMapKey]] ) {
         
-        id array = [top getArrayForPropertyNamed:[loader lastMapKey]];
+        id array = [top arrayForPropertyNamed:[loader lastMapKey]];
         [loader pushContext:array];
     }
     else {

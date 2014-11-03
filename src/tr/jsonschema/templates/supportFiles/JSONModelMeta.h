@@ -6,11 +6,19 @@
 #import <Foundation/Foundation.h>
 #import "JSONModelSerialize.h"
 
+typedef id (^initBlockType)(void);
+
 @interface JSONPropertyMeta : NSObject
 
 @property (nonatomic) SEL getter;
 @property (nonatomic) SEL setter;
-@property (copy) id (^initBlock)(void);
+@property (copy) initBlockType initBlock;
+
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock;
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter;
+
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock;
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter;
 
 @end
 

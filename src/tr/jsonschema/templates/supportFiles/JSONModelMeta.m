@@ -7,6 +7,28 @@
 
 @implementation JSONPropertyMeta
 
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock {
+    
+    self = [super init];
+    if (self) {
+        _getter = getter;
+        _setter = setter;
+        self.initBlock = initBlock;
+    }
+    return self;
+}
+
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter {
+    return [self initWithGetter:getter setter:setter initBlock:nil];
+}
+
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock {
+    return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter initBlock:initBlock];
+}
+
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter {
+    return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter];
+}
 
 @end
 
@@ -99,14 +121,20 @@
     
     JSONPropertyMeta *propMeta = [propertySet valueForKey:propertyName];
     
-    SEL getter = propMeta.getter;
+    NSAssert(propMeta.getter, @"Expecting a getter for %@", propertyName);
     
-    if (getter) {
+    if (propMeta.getter) {
         
-        id obj = [instance performSelector:getter];
+        id obj = [instance performSelector:propMeta.getter];
         
         if( !obj ) {
             obj = [propMeta initBlock];
+
+            NSAssert(propMeta.setter, @"Expecting a getter for %@", propertyName);
+            
+            if(propMeta.setter) {
+                [instance performSelector:propMeta.setter withObject:obj];
+            }
         }
         
         return obj;
