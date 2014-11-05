@@ -6,6 +6,7 @@
 	"javaInterfaces": ["java.io.Serializable","com.thomsonreuters.lib.clear.data.ResultWrapper"],
 	"properties": {
 		"searchResult": { "$ref": "licenseResult.json" },
+		"incarcerationHistory":{ "$ref": "incarcerationHistory.json" },
 		"searchStatistics": {
 			"type": "array",
 			"items": {"$ref": "searchStatistics.json" }

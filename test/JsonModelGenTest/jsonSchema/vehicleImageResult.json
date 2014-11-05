@@ -7,6 +7,4 @@
   	"properties": {
 		"plateNumber": { "type": "string" }
 	}
-
-
 }

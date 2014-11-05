@@ -22,7 +22,8 @@
 
 @end
 
-@interface {{classDef.name}} : {{ classDef.superClasses[0] if classDef.superClasses|length > 0 else 'NSObject' }} {{ '<' + classDef.interfaces|join(', ') + '>' if classDef.interfaces else '' }}
+@interface {{classDef.name}} : {{ classDef.superClasses[0] if classDef.superClasses|length > 0 else 'NSObject' }} {{ '<' + classDef.interfaces|join(', ') + '>' if classDef.interfaces else '' }}<JSONModelSerialize>
+
 {% for v in classDef.variable_defs %}
 {{ defs.propertyDecl(v) }}
 {%- endfor %}

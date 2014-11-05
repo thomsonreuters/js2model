@@ -263,8 +263,7 @@ static int context_add_value (context_t *ctx, yajl_val v)
     else
     {
         RETURN_ERROR (ctx, EINVAL, "context_add_value: Cannot add value to "
-                      "a value of type %#04x (not a composite type)",
-                      ctx->stack->value->type);
+                          "a value of type NULL (not a composite type)");
     }
 }
 
@@ -432,7 +431,7 @@ yajl_val yajl_tree_parse (const char *input,
     handle = yajl_alloc (&callbacks, NULL, &ctx);
     yajl_config(handle, yajl_allow_comments, 1);
 
-    status = yajl_parse(handle,
+    /*status = */yajl_parse(handle,
                         (unsigned char *) input,
                         strlen (input));
     status = yajl_complete_parse (handle);

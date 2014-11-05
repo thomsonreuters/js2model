@@ -160,7 +160,7 @@ class JsonSchema2Model(object):
         self.prefix = prefix
         self.root_name = root_name
 
-        self.jinja_env = Environment(loader=PackageLoader('tr.jsonschema.jsonschema2model', 'templates'))
+        self.jinja_env = Environment(loader=PackageLoader('tr.jsonschema.jsonschema2model', 'templates.' + self.lang))
         self.jinja_env.filters['firstupper'] = lambda value:  value[0].upper() + value[1:]
         self.jinja_env.filters['firstlower'] = lambda value:  value[0].lower() + value[1:]
         self.jinja_env.tests['equalto'] = lambda value, other: value == other
@@ -174,22 +174,37 @@ class JsonSchema2Model(object):
             os.makedirs(self.outdir)
 
         for classDef in self.models.values():
-            self.renderModelToFile(classDef, 'objc.h.jinja')
-            self.renderModelToFile(classDef, 'objc.m.jinja')
+            self.renderModelToFile(classDef, 'class.h.jinja')
+            self.renderModelToFile(classDef, 'class.m.jinja')
+
+        self.renderGlobalHeader(self.models.values(), 'global.h.jinja')
+
 
     def renderModelToFile(self, class_def, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        outfile_name = os.path.join(self.outdir, class_def.name + os.path.splitext(templ_name.replace('.jinja', ''))[1])
+        src_file_name =  class_def.name + os.path.splitext(templ_name.replace('.jinja', ''))[1]
+        outfile_name = os.path.join(self.outdir, src_file_name)
 
         decl_template = self.jinja_env.get_template(templ_name)
 
         with open(outfile_name, 'w') as f:
             f.write(decl_template.render(classDef=class_def, importFiles=self.import_files,
-                                         timestamp=str(datetime.date.today())))
+                                         timestamp=str(datetime.date.today()), file_name=src_file_name))
+
+    def renderGlobalHeader(self, models, templ_name):
+
+        # remove '.jinja', then use extension from the template name
+        src_file_name = self.prefix + "Models" + os.path.splitext(templ_name.replace('.jinja', ''))[1]
+        outfile_name = os.path.join(self.outdir, src_file_name)
+
+        decl_template = self.jinja_env.get_template(templ_name)
+
+        with open(outfile_name, 'w') as f:
+            f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()), file_name=src_file_name))
 
     def includeSupportFiles(self):
-        support_path = os.path.join(os.path.dirname(__file__), 'templates', 'supportFiles')
+        support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'supportFiles')
         self.copyFiles(support_path, self.outdir)
 
     @staticmethod

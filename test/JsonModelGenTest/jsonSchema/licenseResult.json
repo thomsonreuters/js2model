@@ -10,15 +10,12 @@
 		"driver": {
 			"type": "object",
 			"javaInterfaces": ["java.io.Serializable"],
+			"extends": {
+				"$ref":"person.json"
+			},
 			"properties": {
-				"name": { "$ref": "name.json" },
 				"sex": { "type": "string" },
-				"ssn": { "type": "string" },
-				"birthDate": { "type": "string" },
-				"foundArrestIncarcerationRecord": { "type": "boolean", "default": false },
-				"physicalInfo": {
-					"$ref": "physicalInfo.json"
-				}
+				"ssn": { "type": "string" }
 			}
 		}
 	},

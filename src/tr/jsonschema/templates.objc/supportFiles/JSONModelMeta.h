@@ -12,15 +12,35 @@ typedef id (^initBlockType)(void);
 
 @property (nonatomic) SEL getter;
 @property (nonatomic) SEL setter;
-@property (copy) initBlockType initBlock;
+@property (nonatomic) Class type;
+@property (nonatomic) BOOL isArray;
+@property (nonatomic) Class itemType;
 
--(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock;
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType;
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type;
 -(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter;
 
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock;
+-(id)newObject;
+-(id)newItemObject;
+
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType;
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type;
 +(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter;
 
 @end
+
+
+@interface JSONInstanceMeta : NSObject
+
+@property (strong, nonatomic) id instance;
+@property (strong, nonatomic) JSONPropertyMeta *propertyMeta;
+
+-(instancetype)initWithInstance:(id)instance propertyMeta:(JSONPropertyMeta *)propertyMeta;
+
++(instancetype)initWithInstance:(id)instance propertyMeta:(JSONPropertyMeta *)propertyMeta;
+
+@end
+
 
 @interface JSONModelMeta : NSObject
 
@@ -50,9 +70,9 @@ typedef id (^initBlockType)(void);
 // Searches all data types for property setter
 -(SEL)setterForProperty:(NSString *)propertyName;
 
-- (id <JSONModelSerialize>)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
+- (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
 
-- (NSMutableArray *)arrayForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
+- (JSONInstanceMeta *)arrayForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
 
 - (void)setString:(NSString *)val forProperty:(NSString *)propertyName forInstance:(id)instance;
 

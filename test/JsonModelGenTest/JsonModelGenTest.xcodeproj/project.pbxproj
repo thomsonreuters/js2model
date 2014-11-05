@@ -41,11 +41,13 @@
 		0A345BB219D5F03800E3C01F /* TRVehicleResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */; };
 		0A345BB319D5F03800E3C01F /* TRVehicleResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */; };
 		0A345BB619D6135B00E3C01F /* TRJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345BB519D6135B00E3C01F /* TRJsonBase.m */; };
-		0A345BB919D66EEC00E3C01F /* TRChildResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345BB819D66EEC00E3C01F /* TRChildResult.m */; };
-		0A9CA72C19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */; };
-		0A9CA72D19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */; };
-		0A9CA72E19FAE71D00C2D280 /* TRJsonLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72B19FAE71D00C2D280 /* TRJsonLoader.m */; };
-		0A9CA72F19FAE71D00C2D280 /* TRJsonLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9CA72B19FAE71D00C2D280 /* TRJsonLoader.m */; };
+		0AAE97F51A09AC5F000A2BA7 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAE97F31A09AC5F000A2BA7 /* ISO8601DateFormatter.m */; };
+		0AAE97F61A09AC5F000A2BA7 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAE97F31A09AC5F000A2BA7 /* ISO8601DateFormatter.m */; };
+		0AAE97F71A09AC5F000A2BA7 /* TRJSONModelLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAE97F41A09AC5F000A2BA7 /* TRJSONModelLoader.m */; };
+		0AAE97F81A09AC5F000A2BA7 /* TRJSONModelLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAE97F41A09AC5F000A2BA7 /* TRJSONModelLoader.m */; };
+		0AE9BD431A083EC700CF6351 /* TRIncarcerationHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD401A083EC700CF6351 /* TRIncarcerationHistory.m */; };
+		0AE9BD441A083EC700CF6351 /* TRIncarcerationSearchError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD411A083EC700CF6351 /* TRIncarcerationSearchError.m */; };
+		0AE9BD451A083EC700CF6351 /* TRPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD421A083EC700CF6351 /* TRPerson.m */; };
 		0AF028131A04118F00AAE135 /* JSONModelMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028121A04118F00AAE135 /* JSONModelMeta.m */; };
 		0AF028141A04118F00AAE135 /* JSONModelMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028121A04118F00AAE135 /* JSONModelMeta.m */; };
 		0AF028261A04129600AAE135 /* yajl_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0AF0281D1A04129600AAE135 /* yajl_alloc.c */; };
@@ -80,6 +82,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A3063F81A09460D003FC4F1 /* TRModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRModels.h; sourceTree = "<group>"; };
 		0A345AEB19D5DA9E00E3C01F /* JsonModelGenTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JsonModelGenTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A345AEF19D5DA9E00E3C01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A345AF019D5DA9E00E3C01F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -146,12 +149,16 @@
 		0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleResultWrapper.m; sourceTree = "<group>"; };
 		0A345BB419D6135B00E3C01F /* TRJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRJsonBase.h; sourceTree = "<group>"; };
 		0A345BB519D6135B00E3C01F /* TRJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRJsonBase.m; sourceTree = "<group>"; };
-		0A345BB719D66EEC00E3C01F /* TRChildResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRChildResult.h; sourceTree = "<group>"; };
-		0A345BB819D66EEC00E3C01F /* TRChildResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRChildResult.m; sourceTree = "<group>"; };
-		0A9CA72819FAE71D00C2D280 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
-		0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
-		0A9CA72A19FAE71D00C2D280 /* TRJsonLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRJsonLoader.h; sourceTree = "<group>"; };
-		0A9CA72B19FAE71D00C2D280 /* TRJsonLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRJsonLoader.m; sourceTree = "<group>"; };
+		0AAE97F11A09AC5F000A2BA7 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		0AAE97F21A09AC5F000A2BA7 /* TRJSONModelLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRJSONModelLoader.h; sourceTree = "<group>"; };
+		0AAE97F31A09AC5F000A2BA7 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		0AAE97F41A09AC5F000A2BA7 /* TRJSONModelLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRJSONModelLoader.m; sourceTree = "<group>"; };
+		0AE9BD3D1A083E4B00CF6351 /* TRIncarcerationHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationHistory.h; sourceTree = "<group>"; };
+		0AE9BD3E1A083E4B00CF6351 /* TRIncarcerationSearchError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationSearchError.h; sourceTree = "<group>"; };
+		0AE9BD3F1A083E4B00CF6351 /* TRPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPerson.h; sourceTree = "<group>"; };
+		0AE9BD401A083EC700CF6351 /* TRIncarcerationHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationHistory.m; sourceTree = "<group>"; };
+		0AE9BD411A083EC700CF6351 /* TRIncarcerationSearchError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationSearchError.m; sourceTree = "<group>"; };
+		0AE9BD421A083EC700CF6351 /* TRPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPerson.m; sourceTree = "<group>"; };
 		0AF0280D1A04118F00AAE135 /* yajl_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_common.h; sourceTree = "<group>"; };
 		0AF0280E1A04118F00AAE135 /* yajl_gen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_gen.h; sourceTree = "<group>"; };
 		0AF0280F1A04118F00AAE135 /* yajl_parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_parse.h; sourceTree = "<group>"; };
@@ -217,10 +224,6 @@
 		0A345AED19D5DA9E00E3C01F /* JsonModelGenTest */ = {
 			isa = PBXGroup;
 			children = (
-				0A9CA72819FAE71D00C2D280 /* ISO8601DateFormatter.h */,
-				0A9CA72919FAE71D00C2D280 /* ISO8601DateFormatter.m */,
-				0A9CA72A19FAE71D00C2D280 /* TRJsonLoader.h */,
-				0A9CA72B19FAE71D00C2D280 /* TRJsonLoader.m */,
 				0A345B1A19D5DC7000E3C01F /* JsonModels */,
 				0A345AF219D5DA9E00E3C01F /* AppDelegate.h */,
 				0A345AF319D5DA9E00E3C01F /* AppDelegate.m */,
@@ -271,74 +274,83 @@
 			isa = PBXGroup;
 			children = (
 				0AF0280C1A04118F00AAE135 /* api */,
-				0AF028161A04129600AAE135 /* JSONModelSerialize.h */,
+				0AAE97F11A09AC5F000A2BA7 /* ISO8601DateFormatter.h */,
+				0AAE97F21A09AC5F000A2BA7 /* TRJSONModelLoader.h */,
+				0AAE97F31A09AC5F000A2BA7 /* ISO8601DateFormatter.m */,
+				0AAE97F41A09AC5F000A2BA7 /* TRJSONModelLoader.m */,
+				0A3063F81A09460D003FC4F1 /* TRModels.h */,
 				0AF028151A04129600AAE135 /* JSONModelMeta.h */,
 				0AF028121A04118F00AAE135 /* JSONModelMeta.m */,
+				0AF028161A04129600AAE135 /* JSONModelSerialize.h */,
+				0A345B6C19D5F03800E3C01F /* TRAddress.h */,
+				0A345B8419D5F03800E3C01F /* TRAddress.m */,
+				0A345B6D19D5F03800E3C01F /* TRBookingInfo.h */,
+				0A345B8519D5F03800E3C01F /* TRBookingInfo.m */,
+				0A345B6E19D5F03800E3C01F /* TRCharges.h */,
+				0A345B8619D5F03800E3C01F /* TRCharges.m */,
+				0A345B6F19D5F03800E3C01F /* TRDriver.h */,
+				0A345B8719D5F03800E3C01F /* TRDriver.m */,
+				0AE9BD3D1A083E4B00CF6351 /* TRIncarcerationHistory.h */,
+				0AE9BD401A083EC700CF6351 /* TRIncarcerationHistory.m */,
+				0A345B7019D5F03800E3C01F /* TRIncarcerationRecord.h */,
+				0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */,
+				0A345B7119D5F03800E3C01F /* TRIncarcerationResult.h */,
+				0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */,
+				0A345B7219D5F03800E3C01F /* TRIncarcerationResultWrapper.h */,
+				0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */,
+				0AE9BD3E1A083E4B00CF6351 /* TRIncarcerationSearchError.h */,
+				0AE9BD411A083EC700CF6351 /* TRIncarcerationSearchError.m */,
+				0A345B7319D5F03800E3C01F /* TRLicense.h */,
+				0A345B8B19D5F03800E3C01F /* TRLicense.m */,
+				0A345B7419D5F03800E3C01F /* TRLicenseResult.h */,
+				0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */,
+				0A345B7519D5F03800E3C01F /* TRLicenseResultWrapper.h */,
+				0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */,
+				0A345B7619D5F03800E3C01F /* TRName.h */,
+				0A345B8E19D5F03800E3C01F /* TRName.m */,
+				0A345B7719D5F03800E3C01F /* TROwner.h */,
+				0A345B8F19D5F03800E3C01F /* TROwner.m */,
+				0AE9BD3F1A083E4B00CF6351 /* TRPerson.h */,
+				0AE9BD421A083EC700CF6351 /* TRPerson.m */,
+				0A345B7819D5F03800E3C01F /* TRPersonResult.h */,
+				0A345B9019D5F03800E3C01F /* TRPersonResult.m */,
+				0A345B7919D5F03800E3C01F /* TRPersonResultWrapper.h */,
+				0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */,
+				0A345B7A19D5F03800E3C01F /* TRPersonsResultWrapper.h */,
+				0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */,
+				0A345B7B19D5F03800E3C01F /* TRPhysicalInfo.h */,
+				0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */,
+				0A345B7C19D5F03800E3C01F /* TRPlate.h */,
+				0A345B9419D5F03800E3C01F /* TRPlate.m */,
+				0A345B7D19D5F03800E3C01F /* TRRestApiStatistics.h */,
+				0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */,
+				0A345B7E19D5F03800E3C01F /* TRSearchStatistics.h */,
+				0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */,
+				0A345B7F19D5F03800E3C01F /* TRVehicle.h */,
+				0A345B9719D5F03800E3C01F /* TRVehicle.m */,
+				0A345B8019D5F03800E3C01F /* TRVehicleImageResult.h */,
+				0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */,
+				0A345B8119D5F03800E3C01F /* TRVehicleImageResultWrapper.h */,
+				0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */,
+				0A345B8219D5F03800E3C01F /* TRVehicleResult.h */,
+				0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */,
+				0A345B8319D5F03800E3C01F /* TRVehicleResultWrapper.h */,
+				0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */,
+				0AF0281D1A04129600AAE135 /* yajl_alloc.c */,
 				0AF028171A04129600AAE135 /* yajl_alloc.h */,
+				0AF0281E1A04129600AAE135 /* yajl_buf.c */,
 				0AF028181A04129600AAE135 /* yajl_buf.h */,
 				0AF028191A04129600AAE135 /* yajl_bytestack.h */,
-				0AF0281A1A04129600AAE135 /* yajl_encode.h */,
-				0AF0281B1A04129600AAE135 /* yajl_lex.h */,
-				0AF0281C1A04129600AAE135 /* yajl_parser.h */,
-				0AF0281D1A04129600AAE135 /* yajl_alloc.c */,
-				0AF0281E1A04129600AAE135 /* yajl_buf.c */,
 				0AF0281F1A04129600AAE135 /* yajl_encode.c */,
+				0AF0281A1A04129600AAE135 /* yajl_encode.h */,
 				0AF028201A04129600AAE135 /* yajl_gen.c */,
 				0AF028211A04129600AAE135 /* yajl_lex.c */,
+				0AF0281B1A04129600AAE135 /* yajl_lex.h */,
 				0AF028221A04129600AAE135 /* yajl_parser.c */,
+				0AF0281C1A04129600AAE135 /* yajl_parser.h */,
 				0AF028231A04129600AAE135 /* yajl_tree.c */,
 				0AF028241A04129600AAE135 /* yajl_version.c */,
 				0AF028251A04129600AAE135 /* yajl.c */,
-				0A345BB719D66EEC00E3C01F /* TRChildResult.h */,
-				0A345BB819D66EEC00E3C01F /* TRChildResult.m */,
-				0A345B6C19D5F03800E3C01F /* TRAddress.h */,
-				0A345B6D19D5F03800E3C01F /* TRBookingInfo.h */,
-				0A345B6E19D5F03800E3C01F /* TRCharges.h */,
-				0A345B6F19D5F03800E3C01F /* TRDriver.h */,
-				0A345B7019D5F03800E3C01F /* TRIncarcerationRecord.h */,
-				0A345B7119D5F03800E3C01F /* TRIncarcerationResult.h */,
-				0A345B7219D5F03800E3C01F /* TRIncarcerationResultWrapper.h */,
-				0A345B7319D5F03800E3C01F /* TRLicense.h */,
-				0A345B7419D5F03800E3C01F /* TRLicenseResult.h */,
-				0A345B7519D5F03800E3C01F /* TRLicenseResultWrapper.h */,
-				0A345B7619D5F03800E3C01F /* TRName.h */,
-				0A345B7719D5F03800E3C01F /* TROwner.h */,
-				0A345B7819D5F03800E3C01F /* TRPersonResult.h */,
-				0A345B7919D5F03800E3C01F /* TRPersonResultWrapper.h */,
-				0A345B7A19D5F03800E3C01F /* TRPersonsResultWrapper.h */,
-				0A345B7B19D5F03800E3C01F /* TRPhysicalInfo.h */,
-				0A345B7C19D5F03800E3C01F /* TRPlate.h */,
-				0A345B7D19D5F03800E3C01F /* TRRestApiStatistics.h */,
-				0A345B7E19D5F03800E3C01F /* TRSearchStatistics.h */,
-				0A345B7F19D5F03800E3C01F /* TRVehicle.h */,
-				0A345B8019D5F03800E3C01F /* TRVehicleImageResult.h */,
-				0A345B8119D5F03800E3C01F /* TRVehicleImageResultWrapper.h */,
-				0A345B8219D5F03800E3C01F /* TRVehicleResult.h */,
-				0A345B8319D5F03800E3C01F /* TRVehicleResultWrapper.h */,
-				0A345B8419D5F03800E3C01F /* TRAddress.m */,
-				0A345B8519D5F03800E3C01F /* TRBookingInfo.m */,
-				0A345B8619D5F03800E3C01F /* TRCharges.m */,
-				0A345B8719D5F03800E3C01F /* TRDriver.m */,
-				0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */,
-				0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */,
-				0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */,
-				0A345B8B19D5F03800E3C01F /* TRLicense.m */,
-				0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */,
-				0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */,
-				0A345B8E19D5F03800E3C01F /* TRName.m */,
-				0A345B8F19D5F03800E3C01F /* TROwner.m */,
-				0A345B9019D5F03800E3C01F /* TRPersonResult.m */,
-				0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */,
-				0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */,
-				0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */,
-				0A345B9419D5F03800E3C01F /* TRPlate.m */,
-				0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */,
-				0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */,
-				0A345B9719D5F03800E3C01F /* TRVehicle.m */,
-				0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */,
-				0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */,
-				0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */,
-				0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */,
 			);
 			path = JsonModels;
 			sourceTree = "<group>";
@@ -481,20 +493,21 @@
 				0A345B9D19D5F03800E3C01F /* TRBookingInfo.m in Sources */,
 				0A345AFD19D5DA9E00E3C01F /* DetailViewController.m in Sources */,
 				0A345BA419D5F03800E3C01F /* TRLicenseResult.m in Sources */,
-				0A9CA72E19FAE71D00C2D280 /* TRJsonLoader.m in Sources */,
 				0A345BB619D6135B00E3C01F /* TRJsonBase.m in Sources */,
 				0A345BA119D5F03800E3C01F /* TRIncarcerationResult.m in Sources */,
 				0A345BB319D5F03800E3C01F /* TRVehicleResultWrapper.m in Sources */,
 				0A345BA319D5F03800E3C01F /* TRLicense.m in Sources */,
+				0AE9BD451A083EC700CF6351 /* TRPerson.m in Sources */,
 				0AF0282C1A04129600AAE135 /* yajl_gen.c in Sources */,
 				0A345AFA19D5DA9E00E3C01F /* MasterViewController.m in Sources */,
 				0A345BA019D5F03800E3C01F /* TRIncarcerationRecord.m in Sources */,
 				0A345BB119D5F03800E3C01F /* TRVehicleImageResultWrapper.m in Sources */,
+				0AE9BD441A083EC700CF6351 /* TRIncarcerationSearchError.m in Sources */,
+				0AE9BD431A083EC700CF6351 /* TRIncarcerationHistory.m in Sources */,
 				0AF028361A04129600AAE135 /* yajl.c in Sources */,
 				0AF028131A04118F00AAE135 /* JSONModelMeta.m in Sources */,
 				0AF0282A1A04129600AAE135 /* yajl_encode.c in Sources */,
 				0A345AF419D5DA9E00E3C01F /* AppDelegate.m in Sources */,
-				0A345BB919D66EEC00E3C01F /* TRChildResult.m in Sources */,
 				0A345BA919D5F03800E3C01F /* TRPersonResultWrapper.m in Sources */,
 				0A345BA719D5F03800E3C01F /* TROwner.m in Sources */,
 				0A345BAE19D5F03800E3C01F /* TRSearchStatistics.m in Sources */,
@@ -506,13 +519,14 @@
 				0A345BB219D5F03800E3C01F /* TRVehicleResult.m in Sources */,
 				0A345BAA19D5F03800E3C01F /* TRPersonsResultWrapper.m in Sources */,
 				0A345BB019D5F03800E3C01F /* TRVehicleImageResult.m in Sources */,
-				0A9CA72C19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */,
 				0A345BA519D5F03800E3C01F /* TRLicenseResultWrapper.m in Sources */,
+				0AAE97F51A09AC5F000A2BA7 /* ISO8601DateFormatter.m in Sources */,
 				0AF028341A04129600AAE135 /* yajl_version.c in Sources */,
 				0A345BA219D5F03800E3C01F /* TRIncarcerationResultWrapper.m in Sources */,
 				0A345AF119D5DA9E00E3C01F /* main.m in Sources */,
 				0AF028301A04129600AAE135 /* yajl_parser.c in Sources */,
 				0A345B9F19D5F03800E3C01F /* TRDriver.m in Sources */,
+				0AAE97F71A09AC5F000A2BA7 /* TRJSONModelLoader.m in Sources */,
 				0AF028261A04129600AAE135 /* yajl_alloc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,16 +536,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A345B1119D5DA9E00E3C01F /* JsonModelGenTestTests.m in Sources */,
-				0A9CA72D19FAE71D00C2D280 /* ISO8601DateFormatter.m in Sources */,
+				0AAE97F61A09AC5F000A2BA7 /* ISO8601DateFormatter.m in Sources */,
 				0AF028141A04118F00AAE135 /* JSONModelMeta.m in Sources */,
 				0AF028351A04129600AAE135 /* yajl_version.c in Sources */,
 				0AF0282F1A04129600AAE135 /* yajl_lex.c in Sources */,
 				0AF0282B1A04129600AAE135 /* yajl_encode.c in Sources */,
-				0A9CA72F19FAE71D00C2D280 /* TRJsonLoader.m in Sources */,
 				0AF028311A04129600AAE135 /* yajl_parser.c in Sources */,
 				0AF028271A04129600AAE135 /* yajl_alloc.c in Sources */,
 				0AF0282D1A04129600AAE135 /* yajl_gen.c in Sources */,
 				0AF028371A04129600AAE135 /* yajl.c in Sources */,
+				0AAE97F81A09AC5F000A2BA7 /* TRJSONModelLoader.m in Sources */,
 				0AF028291A04129600AAE135 /* yajl_buf.c in Sources */,
 				0AF028331A04129600AAE135 /* yajl_tree.c in Sources */,
 			);

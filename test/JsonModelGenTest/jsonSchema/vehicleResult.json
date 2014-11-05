@@ -28,14 +28,12 @@
 		"owner": {
 			"type": "object",
 			"javaInterfaces": ["java.io.Serializable"],
+			"extends": {
+				"$ref": "person.json"
+			},
 			"properties": {
-				"name": { "$ref": "name.json" },
-				"birthDate": { "type": "string" },
-				"address": { "$ref": "address.json" },
-				"foundArrestIncarcerationRecord": { "type": "boolean", "default": false }
+				"address": { "$ref": "address.json" }
 			}
 		}
-	},
-	"definitions": {
 	}
 }

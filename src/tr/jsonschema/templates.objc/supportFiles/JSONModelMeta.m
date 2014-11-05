@@ -7,27 +7,63 @@
 
 @implementation JSONPropertyMeta
 
--(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock {
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType {
     
     self = [super init];
     if (self) {
         _getter = getter;
         _setter = setter;
-        self.initBlock = initBlock;
+        _type = type;
+        _itemType = itemType;
+        _isArray = type == [NSMutableArray class] ? YES : NO;
     }
     return self;
 }
 
--(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter {
-    return [self initWithGetter:getter setter:setter initBlock:nil];
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type {
+    
+    return [self initWithGetter:getter setter:setter type:type itemType:nil];
 }
 
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter initBlock:(initBlockType) initBlock {
-    return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter initBlock:initBlock];
+-(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter {
+    return [self initWithGetter:getter setter:setter type:nil];
+}
+
+-(id)newObject {
+    return [[self.type alloc] init];
+}
+
+-(id)newItemObject {
+    return self.itemType ? [[self.itemType alloc] init] : nil;
+}
+
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType {
+    return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter type:type itemType:itemType];
+}
+
++(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) initBlock {
+    return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter type:initBlock];
 }
 
 +(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter {
     return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter];
+}
+
+@end
+
+@implementation JSONInstanceMeta
+
+-(instancetype)initWithInstance:(id)instance propertyMeta:(JSONPropertyMeta *)propertyMeta {
+    self = [super init];
+    if (self) {
+        _instance = instance;
+        _propertyMeta = propertyMeta;
+    }
+    return self;
+}
+
++(instancetype)initWithInstance:(id)instance propertyMeta:(JSONPropertyMeta *)propertyMeta {
+    return [[JSONInstanceMeta alloc] initWithInstance:instance propertyMeta:propertyMeta];
 }
 
 @end
@@ -117,7 +153,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
-- (id)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance from:(NSDictionary *)propertySet {
+- (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance from:(NSDictionary *)propertySet {
     
     JSONPropertyMeta *propMeta = [propertySet valueForKey:propertyName];
     
@@ -128,7 +164,7 @@
         id obj = [instance performSelector:propMeta.getter];
         
         if( !obj ) {
-            obj = [propMeta initBlock];
+            obj = [propMeta newObject];
 
             NSAssert(propMeta.setter, @"Expecting a getter for %@", propertyName);
             
@@ -137,7 +173,7 @@
             }
         }
         
-        return obj;
+        return [JSONInstanceMeta initWithInstance:obj propertyMeta:propMeta];
         
     }
     else {
@@ -146,12 +182,12 @@
     return nil;
 }
 
-- (id <JSONModelSerialize>)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance {
+- (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance {
 
     return [self objectForPropertyNamed:propertyName forInstance:instance from:self.objects];
 }
 
-- (NSMutableArray *)arrayForPropertyNamed:(NSString *)propertyName forInstance:(id)instance {
+- (JSONInstanceMeta *)arrayForPropertyNamed:(NSString *)propertyName forInstance:(id)instance {
 
     return [self objectForPropertyNamed:propertyName forInstance:instance from:self.arrays];
 }

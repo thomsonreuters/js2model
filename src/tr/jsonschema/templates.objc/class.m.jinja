@@ -7,7 +7,7 @@
 #import "{{dep}}.h"
 {%- endfor -%}
 {%- endif %}
-
+#import "TRJSONModelLoader.h"
 
 #define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
 
@@ -30,16 +30,26 @@
 {% if props|length %}
         [self.{{dictName}} addEntriesFromDictionary: @{
     {%- for v in props %}
-        {%- if v.schema_type is equalto "object" -%}
-                {%- call(varDef, varType, isRef) defs.renderWithConvertedType(v) -%}
-                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}}) setter:@selector(set{{v.name|firstupper}}:) initBlock:^id{ return [{{ varType|replace(' *','') }} new];}],
-                {%- endcall -%}
-        {%- else -%}
-                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}}) setter:@selector(set{{v.name|firstupper}}:)],
-        {%- endif -%}
+        {% if v.isArray %}
+                {% call(varDef, varType, isRef, itemsType) defs.renderWithConvertedType(v) -%}
+                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}})
+                                                             setter:@selector(set{{v.name|firstupper}}:)
+                                                             type:[{{ varType|replace(' *','') }} class]
+                                                         itemType:[{{ itemsType|replace(' *','') }} class]],
+                {%- endcall %}
+        {% elif v.schema_type is equalto "object" %}
+                {% call(varDef, varType, isRef, itemsType) defs.renderWithConvertedType(v) -%}
+                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}})
+                                                             setter:@selector(set{{v.name|firstupper}}:)
+                                                               type:[{{ varType|replace(' *','') }} class]],
+                {%- endcall %}
+        {% else %}
+                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}})
+                                                             setter:@selector(set{{v.name|firstupper}}:)],
+        {%- endif %}
     {%- endfor %}
-            }];
-{% endif %}
+        }];
+{%- endif %}
 {%- endmacro -%}
 
 {%- set objectVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|rejectattr("isArray")|list -%}
@@ -57,7 +67,9 @@
 
 static {{metaClassName}} *{{metaClassVar}};
 
-@implementation {{classDef.name}}
+@implementation {{classDef.name}}{
+    NSMutableDictionary *_additionalProperties;
+}
 
 +(void)initialize {
 
@@ -73,6 +85,8 @@ static {{metaClassName}} *{{metaClassVar}};
     self = [super init];
     if (self) {
     	// custom intialization code
+        _additionalProperties = [NSMutableDictionary new];
+
 {%- for v in classDef.variable_defs -%}
 {{ defs.initVarToDefault(v) }}
 {%- endfor %}
@@ -81,24 +95,41 @@ static {{metaClassName}} *{{metaClassVar}};
 }
 {% endif %}
 
+- (instancetype) initWithJSONData:(NSData *)data
+                            error:(NSError* __autoreleasing *)error {
+    self = [self init];
+    if (self) {
+        [TRJSONModelLoader load:self withJSONData:data error:error];
+    }
+    return self;
+}
+
+/** Parses JSON data and creates an Objective-C instance.
+
+ @param cls Class type of top-most instance.
+ @param filename Name of file with JSON data to be parsed.
+ @param error Non-nil if any parsings errors occured.
+ */
+- (instancetype) initWithJSONFromFileNamed:(NSString *)filename
+                                     error:(NSError* __autoreleasing *)error {
+
+    self = [self init];
+    if (self) {
+        [TRJSONModelLoader load:self withJSONFromFileNamed:filename error:error];
+    }
+    return self;
+}
+
 {%- for v in classDef.variable_defs -%}
 {{ defs.lazyPropGetter(v) }}
 {%- endfor %}
 
-- (BOOL)isObjectForPropertyNamed:(NSString *)propertyName {
-    return [{{metaClassVar}} propertyIsObject:propertyName];
-}
-
-- (BOOL)isArrayForPropertyNamed:(NSString *)propertyName {
-    return [{{metaClassVar}} propertyIsArray:propertyName];
-}
-
-- (id <JSONModelSerialize>)objectForPropertyNamed:(NSString *)propertyName {
+- (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName {
 
     return [{{metaClassVar}} objectForPropertyNamed:propertyName forInstance:self];
 }
 
-- (NSMutableArray *)arrayForPropertyNamed:(NSString *)propertyName {
+- (JSONInstanceMeta *)arrayForPropertyNamed:(NSString *)propertyName {
     return [{{metaClassVar}} arrayForPropertyNamed:propertyName forInstance:self];
 }
 
@@ -120,6 +151,22 @@ static {{metaClassName}} *{{metaClassVar}};
 
 - (void)setNullForProperty:(NSString *)propertyName {
     [{{metaClassVar}} setNullForProperty:propertyName forInstance:self];
+}
+
+-(JSONModelMeta *)modelMeta {
+    return {{metaClassVar}} ;
+}
+
+-(NSMutableDictionary*)additionalProperties {
+    return _additionalProperties;
+}
+
+-(void)setValue:(id)value forAdditionalProperty:(NSString*)propertyName {
+    [_additionalProperties setObject:value forKey:propertyName];
+}
+
+-(id)valueForAdditionalProperty:(NSString*)propertyName {
+    return [_additionalProperties valueForKey:propertyName];
 }
 
 @end

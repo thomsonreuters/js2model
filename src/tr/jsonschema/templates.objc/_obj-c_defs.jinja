@@ -1,6 +1,6 @@
 {% set typeMap = {
 	'string':  'NSString *',
-	'dict':    'NSDictionary *',
+	'dict':    'NSMutableDictionary *',
 	'integer': 'NSNumber *',
 	'number':  'NSNumber *',
 	'boolean': 'NSNumber *',
@@ -28,37 +28,60 @@
 	'any':	   True
 } %}
 
+{% macro convertJsTypeToObjc(jsType, usePrimitives=False) -%}
+    {%- if usePrimitives -%}
+        {%- if jsType in primitivesTypeMap -%}
+            {%- set varType = primitivesTypeMap[jsType] -%}
+            {%- set isRef = primitivesTypeIsRef[jsType] -%}
+        {%- else -%}
+            {%- set varType = variableDef.type + ' *' -%}
+            {%- set isRef = True -%}
+        {%- endif -%}
+    {%- else -%}
+        {%- set varType = jsType + ' *' if not jsType in typeMap else typeMap[jsType] -%}
+        {%- set isRef = True -%}
+    {%- endif -%}
+    {{ caller(varType, isRef) }}
+{%- endmacro -%}
+
 {% macro renderWithConvertedType(variableDef, usePrimitives=False) -%}
 
-{%- if variableDef.isArray -%}
-	{%- set varType = 'NSArray *' -%}
-	{%- set isRef = True -%}
-{%- elif usePrimitives -%}
-    {%- if variableDef.type in primitivesTypeMap -%}
-        {%- set varType = primitivesTypeMap[variableDef.type] -%}
-	    {%- set isRef = primitivesTypeIsRef[variableDef.type] -%}
+    {%- if usePrimitives -%}
+        {%- if variableDef.type in primitivesTypeMap -%}
+            {%- set objcType = primitivesTypeMap[variableDef.type] -%}
+            {%- set isRef = primitivesTypeIsRef[variableDef.type] -%}
+        {%- else -%}
+            {%- set objcType = variableDef.type + ' *' -%}
+            {%- set isRef = True -%}
+        {%- endif -%}
     {%- else -%}
-	    {%- set varType = variableDef.type + ' *' -%}
-    	{%- set isRef = True -%}
+        {%- set objcType = variableDef.type + ' *' if not variableDef.type in typeMap else typeMap[variableDef.type] -%}
+        {%- set isRef = True -%}
     {%- endif -%}
-{%- else -%}
-	{%- set varType = variableDef.type + ' *' if not variableDef.type in typeMap else typeMap[variableDef.type] -%}
-	{%- set isRef = True -%}
-{%- endif -%}
-{{ caller(variableDef, varType, isRef) }}
+
+    {%- if variableDef.isArray -%}
+         {%- set varType = "NSMutableArray *" -%}
+         {%- set itemType = objcType -%}
+    {%- else -%}
+         {%- set varType = objcType -%}
+         {%- set itemType = None -%}
+    {%- endif -%}
+
+    {{ caller(variableDef, varType, isRef, itemType) }}
+
 {%- endmacro %}
 
 {%- macro propertyDecl(variableDef, usePrimitives=False) -%}
 
-	{%- call(varDef, varType, isRef) renderWithConvertedType(variableDef, usePrimitives) -%}
+	{%- call(varDef, varType, isRef, itemsType) renderWithConvertedType(variableDef, usePrimitives) -%}
 	@property({{'strong, ' if isRef}}nonatomic) {{ varType }} {{variableDef.name}};
 	{%- endcall -%}
 
 {%- endmacro -%}
 
 {%- macro lazyPropGetter(variableDef, usePrimitives=False) -%}
-{%- call(varDef, varType, isRef) renderWithConvertedType(variableDef, usePrimitives) -%}
-{%- if varType == "NSDictionary *" or varType == "NSArray *" -%}
+{%- call(varDef, varType, isRef, itemsType) renderWithConvertedType(variableDef, usePrimitives) -%}
+{%- if varType == "NSDictionary *" or varType == "NSMutableArray *" -%}
 {% set propName = variableDef.name %}
 {% set ivarName = '_' + propName %}
 -({{ varType }}) {{ propName }} {
@@ -74,7 +97,7 @@
 {%- endmacro -%}
 
 {%- macro initVarToDefault(variableDef, usePrimitives=False) -%}
-{%- call(varDef, varType, isRef) renderWithConvertedType(variableDef, usePrimitives) -%}
+{%- call(varDef, varType, isRef, itemsType) renderWithConvertedType(variableDef, usePrimitives) -%}
 {%- if not varDef.default == None -%}
 {% set propName = variableDef.name %}
 {% set ivarName = '_' + propName %}

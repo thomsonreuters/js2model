@@ -9,13 +9,6 @@
 
 #import <UIKit/UIKit.h>
 
-//typedef enum {
-//    
-//    TRJsonInstanceLoaderOptionNone        = (1 << 0),
-//    TRJsonInstanceLoaderOptionSkipUnknown = (1 << 1)
-//    
-//} TRJsonInstanceLoaderOptions;
-
 /** Type definition for block to be called when JSON deserialization is complete.
  @param error Non-nil if any parsings errors occured.
  */
@@ -25,7 +18,7 @@ typedef void(^TRJsonCompletedBlock)(NSError *error);
  
  Uses reflection to set properties on the instances using the key-value pairs in the given JSON data.
  */
-@interface TRJsonLoader : NSObject
+@interface TRJSONModelLoader : NSObject
 
 /**---------------------------------------------------------------------------
  * @name Creating a single instance from JSON data
@@ -38,7 +31,7 @@ typedef void(^TRJsonCompletedBlock)(NSError *error);
  @param data JSON data to be parsed.
  @param error Non-nil if any parsings errors occured.
  */
-+ (id) load:(id)object
++(id) load:(id)object
               withJSONData:(NSData *)data
                      error:(NSError* __autoreleasing *)error;
 
@@ -48,7 +41,7 @@ typedef void(^TRJsonCompletedBlock)(NSError *error);
  @param filename Name of file with JSON data to be parsed.
  @param error Non-nil if any parsings errors occured.
  */
-+ (id) load:(id)object
++(id) load:(id)object
      withJSONFromFileNamed:(NSString *)filename
                      error:(NSError* __autoreleasing *)error;
 
@@ -64,7 +57,7 @@ typedef void(^TRJsonCompletedBlock)(NSError *error);
  @param cachePolicy Cache policy to be applied to NSURLRequest ued to make request.
  @param onCompletionBlock Block to be called when parsing operation completes.
  */
-+ (void) load:(id)object
++(void) load:(id)object
              withUrl:(NSURL*)url
          cachePolicy:(NSURLRequestCachePolicy)cachePolicy
     onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock;
@@ -74,6 +67,6 @@ typedef void(^TRJsonCompletedBlock)(NSError *error);
  @param input the value returned from the JSON parser
  @param str the property definition as returned from property_getAttributes
  */
-+ (id) convertJSONValue:(id) input toCorrectTypeForAttributeCString:(const char *) str;
+//+ (id) convertJSONValue:(id) input toCorrectTypeForAttributeCString:(const char *) str;
 
 @end

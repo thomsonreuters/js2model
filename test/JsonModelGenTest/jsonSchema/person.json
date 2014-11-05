@@ -1,0 +1,14 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "person",
+	"type": "object",
+	"javaType": "com.thomsonreuters.lib.clear.data.Person",
+	"javaInterfaces": ["java.io.Serializable"],
+	"properties": {
+		"name" : { "$ref": "name.json" },
+		"physicalInfo": {
+			"$ref": "physicalInfo.json"
+		},
+		"birthDate": { "type": "string" }
+	}
+}

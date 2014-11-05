@@ -4,8 +4,10 @@
 	"type": "object",
 	"javaType": "com.thomsonreuters.lib.clear.data.PersonResult",
 	"javaInterfaces": ["java.io.Serializable"],
+	"extends" : {
+		"$ref": "person.json"
+	},
 	"properties": {
-		"name" : { "$ref": "name.json" },
 		"addresses": {
 			"type": "array",
 			"items": { "$ref": "address.json" }
@@ -13,14 +15,6 @@
 		"phones": {
 			"type": "array",
 			"items": { "type": "string" }
-		},
-		"physicalInfo": {
-			"$ref": "physicalInfo.json"
-		},
-		"birthDate": { "type": "string" },
-		"foundArrestIncarcerationRecord": { "type": "boolean", "default": false }
-	},
-	"definitions": {
-
+		}
 	}
 }

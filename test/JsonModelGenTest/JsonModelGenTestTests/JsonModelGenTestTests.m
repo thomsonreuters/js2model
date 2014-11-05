@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "TRJsonLoader.h"
+#import "TRJSONModelLoader.h"
+#import "TRModels.h"
 
 @interface JsonModelGenTestTests : XCTestCase
 
@@ -36,27 +37,62 @@
     
     NSArray *jsonPaths = [[NSBundle bundleForClass:[self class] ] pathsForResourcesOfType:@"json" inDirectory:nil];
 
-    for (NSString *jsonPath in jsonPaths) {
+    [self measureBlock:^{
         
-        NSString *jsonFilename = [jsonPath lastPathComponent];
-        
-        NSString *baseName = [jsonFilename stringByDeletingPathExtension];
-        
-        NSString *className = [NSString stringWithFormat:@"TR%@%@", [[baseName substringToIndex:1] capitalizedString], [baseName substringFromIndex:1]];
-        
-        Class cls = NSClassFromString(className);
-        
-        XCTAssertNotNil(cls, "Class %@ not found",  className);
-        
-        if( cls ) {
-            id object = [[cls alloc] init];
+        for (NSString *jsonPath in jsonPaths) {
             
-            NSError *error;
-            [TRJsonLoader load:object withJSONFromFileNamed:jsonFilename error:&error];
+            NSString *jsonFilename = [jsonPath lastPathComponent];
+            
+            NSString *baseName = [jsonFilename stringByDeletingPathExtension];
+            
+            NSString *className = [NSString stringWithFormat:@"TR%@%@", [[baseName substringToIndex:1] capitalizedString], [baseName substringFromIndex:1]];
+            
+            Class cls = NSClassFromString(className);
 
-            XCTAssertNil(error, @"Error while loading %@",jsonFilename);
+            XCTAssertNotNil(cls, "Class %@ not found",  className);
+            
+            if( cls ) {
+
+                NSData *jsonData = [NSData dataWithContentsOfFile:jsonPath];
+                
+                NSError *error;
+                id<JSONModelSerialize> object = [ ((id<JSONModelSerialize>)[cls alloc]) initWithJSONData:jsonData error:&error];
+                
+                //[TRJsonLoader load:object withJSONFromFileNamed:jsonFilename error:&error];
+
+                XCTAssertNil(error, @"Error while loading %@",jsonFilename);
+
+                if (!error) {
+                    if (cls == [TRLicenseResultWrapper class]) {
+
+                        TRLicenseResultWrapper *licenseResultWrapper = (TRLicenseResultWrapper*)object;
+                        
+                        XCTAssertEqualObjects(licenseResultWrapper.searchResult.driver.name.firstName, @"JANE");
+                        XCTAssertEqualObjects(licenseResultWrapper.searchResult.driver.name.lastName, @"SAMPLE");
+                        XCTAssertEqualObjects(licenseResultWrapper.incarcerationHistory.foundIncarcerationHistory, @YES);
+                        XCTAssertEqual(licenseResultWrapper.incarcerationHistory.incarcerationRecords.count, 5);
+                        
+                        TRIncarcerationRecord *incarcerationRecord = licenseResultWrapper.incarcerationHistory.incarcerationRecords[0];
+                        
+                        XCTAssertEqual(incarcerationRecord.charges.count, 0);
+                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestAgency, @"Florida Dept  Of Corrections");
+                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestedDate, @"2007-08-27");
+                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.state, @"FL");
+                        
+                        incarcerationRecord = licenseResultWrapper.incarcerationHistory.incarcerationRecords[1];
+                        XCTAssertEqual(incarcerationRecord.charges.count, 5);
+                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestAgency, @"Citrus Co Sheriffs Office");
+                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestedDate, @"2007-03-15");
+                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.state, @"FL");
+                        TRCharges *charges = incarcerationRecord.charges[0];
+                        XCTAssertEqualObjects(charges.crimeSeverity, @"Felony");
+                        charges = incarcerationRecord.charges[4];
+                        XCTAssertEqualObjects(charges.crimeSeverity, @"Misdemeanor");
+                    }
+                }
+            }
         }
-    }
+    }];
 }
 
 
