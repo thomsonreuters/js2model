@@ -99,7 +99,7 @@ Properties for object types are declared as
 > @property(strong, nonatomic) NSNumber *myProperty;
 > </pre>
 
-Modern Objective-C auto syntheseis of a properties iVar, getter and setter is assumed by the code generation, implemetation files can usually be trivial.
+Modern Objective-C auto syntheseis of a property's iVar, getter and setter is assumed by the code generator.
 
 As a convenience, NSArrays will be initialized, but lazily -
 
