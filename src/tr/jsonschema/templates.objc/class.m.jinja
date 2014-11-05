@@ -1,5 +1,5 @@
-{% import '_obj-c_defs.jinja' as defs %}
-{% include '_obj-c_head_comments.jinja' %}
+{% import '_defs.jinja' as defs %}
+{% include '_header.jinja' %}
 
 #import "{{classDef.declName}}"
 {%- if classDef.dependencies %}

@@ -11,6 +11,7 @@ import jsonref
 from jinja2 import PackageLoader, Environment
 from jsonschema import Draft3Validator
 from shutil import copytree, copy2, rmtree
+from collections import namedtuple
 
 __author__ = 'kevin zimmerman'
 
@@ -135,6 +136,8 @@ def whiteSpaceToCamelCase(matched):
 def firstUpperFilter(var):
     return var[0].upper() + var[1:]
 
+LangTemplates = namedtuple('LangTemplates', ['class_templates', 'global_templates'])
+
 class JsonSchema2Model(object):
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
                  include_additional_properties=True,
@@ -168,16 +171,24 @@ class JsonSchema2Model(object):
         self.models = {}
         self.enums = {}
 
+        self.lang_templates = {
+
+            'objc': LangTemplates(["class.h.jinja", "class.m.jinja"], ["global.h.jinja"])
+        }
+
+
     def renderModels(self):
 
         if not os.path.exists(self.outdir):
             os.makedirs(self.outdir)
 
         for classDef in self.models.values():
-            self.renderModelToFile(classDef, 'class.h.jinja')
-            self.renderModelToFile(classDef, 'class.m.jinja')
 
-        self.renderGlobalHeader(self.models.values(), 'global.h.jinja')
+            for class_template in self.lang_templates[self.lang].class_templates:
+                self.renderModelToFile(classDef, class_template)
+
+        for global_template in self.lang_templates[self.lang].global_templates:
+            self.renderGlobalHeader(self.models.values(), global_template)
 
 
     def renderModelToFile(self, class_def, templ_name):
@@ -392,7 +403,7 @@ class JsonSchema2Model(object):
         class_name = self.makVarName(name)
         class_name = class_name[:1].upper() + class_name[1:]
 
-        if self.lang == 'objc' and self.prefix is not None:
+        if self.prefix is not None:
             class_name = self.prefix + class_name
 
         return class_name
