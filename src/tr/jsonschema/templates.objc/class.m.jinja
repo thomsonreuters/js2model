@@ -11,8 +11,8 @@
 
 #define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
 
-{%- set metaClassName = classDef.name + "Meta" -%}
-{%- set metaClassVar = classDef.name|firstlower + "Meta" -%}
+{%- set metaClassName = classDef.name + "Schema" -%}
+{%- set metaClassVar = classDef.name + "SchemaInstance" -%}
 
 {# #}
 @implementation {{metaClassName}}
@@ -153,7 +153,7 @@ static {{metaClassName}} *{{metaClassVar}};
     [{{metaClassVar}} setNullForProperty:propertyName forInstance:self];
 }
 
--(JSONModelMeta *)modelMeta {
++(JSONModelSchema *)modelSchema {
     return {{metaClassVar}} ;
 }
 

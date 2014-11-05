@@ -48,8 +48,8 @@
 		0AE9BD431A083EC700CF6351 /* TRIncarcerationHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD401A083EC700CF6351 /* TRIncarcerationHistory.m */; };
 		0AE9BD441A083EC700CF6351 /* TRIncarcerationSearchError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD411A083EC700CF6351 /* TRIncarcerationSearchError.m */; };
 		0AE9BD451A083EC700CF6351 /* TRPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD421A083EC700CF6351 /* TRPerson.m */; };
-		0AF028131A04118F00AAE135 /* JSONModelMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028121A04118F00AAE135 /* JSONModelMeta.m */; };
-		0AF028141A04118F00AAE135 /* JSONModelMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028121A04118F00AAE135 /* JSONModelMeta.m */; };
+		0AF028131A04118F00AAE135 /* JSONModelSchema.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028121A04118F00AAE135 /* JSONModelSchema.m */; };
+		0AF028141A04118F00AAE135 /* JSONModelSchema.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028121A04118F00AAE135 /* JSONModelSchema.m */; };
 		0AF028261A04129600AAE135 /* yajl_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0AF0281D1A04129600AAE135 /* yajl_alloc.c */; };
 		0AF028271A04129600AAE135 /* yajl_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0AF0281D1A04129600AAE135 /* yajl_alloc.c */; };
 		0AF028281A04129600AAE135 /* yajl_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 0AF0281E1A04129600AAE135 /* yajl_buf.c */; };
@@ -164,8 +164,8 @@
 		0AF0280F1A04118F00AAE135 /* yajl_parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_parse.h; sourceTree = "<group>"; };
 		0AF028101A04118F00AAE135 /* yajl_tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_tree.h; sourceTree = "<group>"; };
 		0AF028111A04118F00AAE135 /* yajl_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_version.h; sourceTree = "<group>"; };
-		0AF028121A04118F00AAE135 /* JSONModelMeta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONModelMeta.m; sourceTree = "<group>"; };
-		0AF028151A04129600AAE135 /* JSONModelMeta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONModelMeta.h; sourceTree = "<group>"; };
+		0AF028121A04118F00AAE135 /* JSONModelSchema.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONModelSchema.m; sourceTree = "<group>"; };
+		0AF028151A04129600AAE135 /* JSONModelSchema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONModelSchema.h; sourceTree = "<group>"; };
 		0AF028161A04129600AAE135 /* JSONModelSerialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONModelSerialize.h; sourceTree = "<group>"; };
 		0AF028171A04129600AAE135 /* yajl_alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_alloc.h; sourceTree = "<group>"; };
 		0AF028181A04129600AAE135 /* yajl_buf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_buf.h; sourceTree = "<group>"; };
@@ -279,8 +279,8 @@
 				0AAE97F31A09AC5F000A2BA7 /* ISO8601DateFormatter.m */,
 				0AAE97F41A09AC5F000A2BA7 /* TRJSONModelLoader.m */,
 				0A3063F81A09460D003FC4F1 /* TRModels.h */,
-				0AF028151A04129600AAE135 /* JSONModelMeta.h */,
-				0AF028121A04118F00AAE135 /* JSONModelMeta.m */,
+				0AF028151A04129600AAE135 /* JSONModelSchema.h */,
+				0AF028121A04118F00AAE135 /* JSONModelSchema.m */,
 				0AF028161A04129600AAE135 /* JSONModelSerialize.h */,
 				0A345B6C19D5F03800E3C01F /* TRAddress.h */,
 				0A345B8419D5F03800E3C01F /* TRAddress.m */,
@@ -505,7 +505,7 @@
 				0AE9BD441A083EC700CF6351 /* TRIncarcerationSearchError.m in Sources */,
 				0AE9BD431A083EC700CF6351 /* TRIncarcerationHistory.m in Sources */,
 				0AF028361A04129600AAE135 /* yajl.c in Sources */,
-				0AF028131A04118F00AAE135 /* JSONModelMeta.m in Sources */,
+				0AF028131A04118F00AAE135 /* JSONModelSchema.m in Sources */,
 				0AF0282A1A04129600AAE135 /* yajl_encode.c in Sources */,
 				0A345AF419D5DA9E00E3C01F /* AppDelegate.m in Sources */,
 				0A345BA919D5F03800E3C01F /* TRPersonResultWrapper.m in Sources */,
@@ -537,7 +537,7 @@
 			files = (
 				0A345B1119D5DA9E00E3C01F /* JsonModelGenTestTests.m in Sources */,
 				0AAE97F61A09AC5F000A2BA7 /* ISO8601DateFormatter.m in Sources */,
-				0AF028141A04118F00AAE135 /* JSONModelMeta.m in Sources */,
+				0AF028141A04118F00AAE135 /* JSONModelSchema.m in Sources */,
 				0AF028351A04129600AAE135 /* yajl_version.c in Sources */,
 				0AF0282F1A04129600AAE135 /* yajl_lex.c in Sources */,
 				0AF0282B1A04129600AAE135 /* yajl_encode.c in Sources */,

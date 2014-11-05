@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class JSONModelMeta;
+@class JSONModelSchema;
 @class JSONInstanceMeta;
 
 @protocol JSONModelSerialize <NSObject>
 
 @required
 
--(JSONModelMeta *)modelMeta;
++(JSONModelSchema *)modelSchema;
 
 -(JSONInstanceMeta *)objectForPropertyNamed:(NSString*)propertyName;
 -(JSONInstanceMeta *)arrayForPropertyNamed:(NSString*)propertyName;

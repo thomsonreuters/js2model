@@ -42,7 +42,7 @@ typedef id (^initBlockType)(void);
 @end
 
 
-@interface JSONModelMeta : NSObject
+@interface JSONModelSchema : NSObject
 
 @property(strong, nonatomic) NSMutableDictionary *objects;
 @property(strong, nonatomic) NSMutableDictionary *arrays;

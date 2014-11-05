@@ -12,7 +12,7 @@
 #import "yajl_parse.h"
 #import "ISO8601DateFormatter.h"
 #import "JSONModelSerialize.h"
-#import "JSONModelMeta.h"
+#import "JSONModelSchema.h"
 
 //using std::string;
 

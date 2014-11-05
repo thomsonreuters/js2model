@@ -3,7 +3,7 @@
 // Copyright (c) 2014 Thomson Reuters. All rights reserved.
 //
 
-#import "JSONModelMeta.h"
+#import "JSONModelSchema.h"
 
 @implementation JSONPropertyMeta
 
@@ -68,7 +68,7 @@
 
 @end
 
-@implementation JSONModelMeta {
+@implementation JSONModelSchema {
 
 }
 
