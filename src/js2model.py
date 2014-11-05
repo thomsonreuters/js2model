@@ -17,7 +17,7 @@ def main():
                         help='Use primitive types in favor of object wrappers')
     parser.add_argument('-x', '--noadditional', action='store_false', default=True,
                         help='Do not include additionalProperties in models')
-    parser.add_argument('-o', '--output', default='.', help='Target directory of output files')
+    parser.add_argument('-o', '--output', default='output', help='Target directory of output files')
     parser.add_argument('--implements', default=None,
                         help='Comma separated list of interface(s)|protocol(s) supported by the generated classes')
     parser.add_argument('--super', default=None, help='Comma separated list of super classes. Generated classes inherit these')
