@@ -4,11 +4,12 @@ js2Model.py Reference
 Version 0.1 Beta <font color="red"><b>DRAFT</b></span>
 
 Goal
-====
+----
 
 JSON is ubiquitous and convenient, but parsing JSON into generic data structures like dictionaries and arrays is less than ideal. The goal of js2Model.py is to generate source model classes and custom deserialization code from JSON schema definitions. Currently, only Objective-C is supported, but the source is architected in to make it easy to add new languages.
 
-## Installation
+Installation
+------------
 
 To install js2Model:
 
@@ -50,7 +51,8 @@ To install js2Model:
 >   --import IMPORTFILES  Comma separated list of files to @import
 > </pre>
 
-## A simple sample
+A simple sample
+---------------
 
 Given the JSON schema definition:
 
