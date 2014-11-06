@@ -403,13 +403,13 @@ static int _start_map(void * ctx) {
         }
         else{
             NSCAssert(loader.lastMapKey, @"Expecting a key map");
-            JSONInstanceMeta *instanceMeta = [top.instance objectForPropertyNamed:[loader lastMapKey]];
+            JSONInstanceMeta *instanceMeta = [top.instance objectForPropertyNamed:loader.lastMapKey];
             
             if ( instanceMeta ) {
                 [loader pushContext:instanceMeta];
             }
             else {
-                NSCAssert(NO, @"Expected an Object type");
+                NSLog(@"No property found in schema for %@", loader.lastMapKey);
                 return 0;
             }
         }

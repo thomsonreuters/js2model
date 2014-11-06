@@ -4,6 +4,7 @@
 //
 
 #import "JSONModelSchema.h"
+#import "JSONMorphoModel.h"
 
 @implementation JSONPropertyMeta
 
@@ -156,10 +157,25 @@
 - (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance from:(NSDictionary *)propertySet {
     
     JSONPropertyMeta *propMeta = [propertySet valueForKey:propertyName];
-    
-    NSAssert(propMeta.getter, @"Expecting a getter for %@", propertyName);
-    
-    if (propMeta.getter) {
+
+    if (!propMeta) {
+        
+        NSLog(@"Object for property named '%@' not found in schema %@. Adding to additionalProperties.", propertyName, NSStringFromClass([instance class]));
+
+        propMeta = [[JSONPropertyMeta alloc] initWithGetter:@selector(valueForKey:) setter:@selector(setValue:forKey:)];
+
+        NSMutableDictionary *additionalProperties = [instance additionalProperties];
+        
+        id obj = [additionalProperties valueForKey:propertyName];
+        
+        if( !obj ) {
+            obj = [JSONMorphoModel new];
+            [additionalProperties setValue:obj forKey:propertyName];
+        }
+        
+        return [JSONInstanceMeta initWithInstance:obj propertyMeta:propMeta];
+    }
+    else if (propMeta.getter) {
         
         id obj = [instance performSelector:propMeta.getter];
         
@@ -174,10 +190,9 @@
         }
         
         return [JSONInstanceMeta initWithInstance:obj propertyMeta:propMeta];
-        
     }
     else {
-        NSLog(@"Object for property named '%@' not found.", propertyName);
+        NSAssert(NO, @"Shouldn't get here. Something wrong for property named '%@'.", propertyName);
     }
     return nil;
 }
@@ -200,7 +215,8 @@
         [instance performSelector:setter withObject:val];
     }
     else {
-        NSLog(@"Setter for property named '%@' not found.", propertyName);
+        NSLog(@"Setter for property named '%@' not found. Adding to additionalProperties", propertyName);
+        [[instance additionalProperties] setValue:val forKey:propertyName];
     }
 }
 

@@ -69,7 +69,7 @@
 		0AF028361A04129600AAE135 /* yajl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028251A04129600AAE135 /* yajl.c */; };
 		0AF028371A04129600AAE135 /* yajl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0AF028251A04129600AAE135 /* yajl.c */; };
 		0AF028721A043F9700AAE135 /* licenseResultWrapper.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AF028711A043F9700AAE135 /* licenseResultWrapper.json */; };
-		613844ECEFA35FE0D9E562A4 /* JSONGenericModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 61384D8F47094A16BB9B3447 /* JSONGenericModel.m */; };
+		613844ECEFA35FE0D9E562A4 /* JSONMorphoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 61384D8F47094A16BB9B3447 /* JSONMorphoModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,8 +184,8 @@
 		0AF028241A04129600AAE135 /* yajl_version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_version.c; sourceTree = "<group>"; };
 		0AF028251A04129600AAE135 /* yajl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl.c; sourceTree = "<group>"; };
 		0AF028711A043F9700AAE135 /* licenseResultWrapper.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = licenseResultWrapper.json; sourceTree = "<group>"; };
-		613848C868D4C87C4EE02EC9 /* JSONGenericModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONGenericModel.h; sourceTree = "<group>"; };
-		61384D8F47094A16BB9B3447 /* JSONGenericModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONGenericModel.m; sourceTree = "<group>"; };
+		613848C868D4C87C4EE02EC9 /* JSONMorphoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONMorphoModel.h; sourceTree = "<group>"; };
+		61384D8F47094A16BB9B3447 /* JSONMorphoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONMorphoModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,8 +278,8 @@
 				0AF0280C1A04118F00AAE135 /* api */,
 				0AAE97F11A09AC5F000A2BA7 /* ISO8601DateFormatter.h */,
 				0AAE97F31A09AC5F000A2BA7 /* ISO8601DateFormatter.m */,
-				613848C868D4C87C4EE02EC9 /* JSONGenericModel.h */,
-				61384D8F47094A16BB9B3447 /* JSONGenericModel.m */,
+				613848C868D4C87C4EE02EC9 /* JSONMorphoModel.h */,
+				61384D8F47094A16BB9B3447 /* JSONMorphoModel.m */,
 				0AF028151A04129600AAE135 /* JSONModelSchema.h */,
 				0AF028121A04118F00AAE135 /* JSONModelSchema.m */,
 				0AF028161A04129600AAE135 /* JSONModelSerialize.h */,
@@ -525,7 +525,7 @@
 				0A345B9F19D5F03800E3C01F /* TRDriver.m in Sources */,
 				0AAE97F71A09AC5F000A2BA7 /* TRJSONModelLoader.m in Sources */,
 				0AF028261A04129600AAE135 /* yajl_alloc.c in Sources */,
-				613844ECEFA35FE0D9E562A4 /* JSONGenericModel.m in Sources */,
+				613844ECEFA35FE0D9E562A4 /* JSONMorphoModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

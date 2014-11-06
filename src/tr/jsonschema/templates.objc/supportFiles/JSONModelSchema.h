@@ -55,24 +55,18 @@ typedef id (^initBlockType)(void);
 
 -(BOOL)propertyIsArray:(NSString *)propertyName;
 
-//-(SEL)objectGetterForProperty:(NSString *)propertyName;
-//
-//-(SEL)arrayGetterForProperty:(NSString *)propertyName;
-//
-//-(SEL)numberSetterForProperty:(NSString *)propertyName;
-//
-//-(SEL)stringSetterForProperty:(NSString *)propertyName;
-//
-//-(SEL)booleanSetterForProperty:(NSString *)propertyName;
-//
-//-(SEL)integerSetterForProperty:(NSString *)propertyName;
-
 // Searches all data types for property setter
 -(SEL)setterForProperty:(NSString *)propertyName;
+
+-(SEL)getterForProperty:(NSString *)propertyName from:(NSDictionary*)propertieSet;
+
+-(SEL)setterForProperty:(NSString *)propertyName from:(NSDictionary*)propertieSet;
 
 - (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
 
 - (JSONInstanceMeta *)arrayForPropertyNamed:(NSString *)propertyName forInstance:(id)instance;
+
+- (void)setValue:(id)val forProperty:(NSString *)propertyName forInstance:(id)instance inPropertySet:(NSDictionary *)propertySet;
 
 - (void)setString:(NSString *)val forProperty:(NSString *)propertyName forInstance:(id)instance;
 
