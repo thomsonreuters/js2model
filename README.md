@@ -97,7 +97,7 @@ js2Model will generate the class source files:
 	    self = [super init];
 	    if (self) {
 		// custom intialization code
-		_additionalProperties = [NSMutableDictionary new];
+                 _additionalProperties = [NSMutableDictionary new];
 	    }
 	    return self;
 	}
@@ -107,7 +107,7 @@ js2Model will generate the class source files:
 				    error:(NSError* __autoreleasing *)error {
 	    self = [self init];
 	    if (self) {
-		[TRJSONModelLoader load:self withJSONData:data error:error];
+                 [TRJSONModelLoader load:self withJSONData:data error:error];
 	    }
 	    return self;
 	}
