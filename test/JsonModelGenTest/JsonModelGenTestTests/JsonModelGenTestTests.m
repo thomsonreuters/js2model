@@ -88,6 +88,15 @@
                         XCTAssertEqualObjects(charges.crimeSeverity, @"Felony");
                         charges = incarcerationRecord.charges[4];
                         XCTAssertEqualObjects(charges.crimeSeverity, @"Misdemeanor");
+                        
+                        id<JSONModelSerialize> additionalObject = [licenseResultWrapper.additionalProperties valueForKey:@"unknownObject"];
+                        XCTAssertNotNil(additionalObject);
+                        
+                        id unknowDescription = [[additionalObject additionalProperties] valueForKey:@"comment"];
+                        XCTAssertNotNil(unknowDescription);
+
+                        id unknowInteger = [[additionalObject additionalProperties] valueForKey:@"integerProperty"];
+                        XCTAssertNotNil(unknowInteger);
                     }
                 }
             }

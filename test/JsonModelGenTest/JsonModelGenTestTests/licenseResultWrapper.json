@@ -130,9 +130,9 @@
     },
     "unknownString" : "This is a property that is not in the schema",
     "unknownObject" : {
-        "description" : "This is an object that is not in the schema",
-        "integerPropery" : 44,
-        "numberPropery" : 4.4,
-        "booleanPropery" : true
+        "comment" : "This is an object that is not in the schema",
+        "integerProperty" : 44,
+        "numberProperty" : 4.4,
+        "booleanProperty" : true
     }
 }
