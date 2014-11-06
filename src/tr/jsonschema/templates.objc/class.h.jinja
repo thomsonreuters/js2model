@@ -18,7 +18,7 @@
 {%- endfor -%}
 {%- endif %}
 
-@interface {{classDef.name}}Schema : JSONModelSchema
+@interface {{classDef.name}}Meta : {{ classDef.superClasses[0] if classDef.superClasses|length > 0 else 'JSONModel' }}Schema
 
 @end
 
