@@ -1,32 +1,23 @@
-# js2Model.py Reference
+js2Model.py Reference
+======================
 
 Version 0.1 Beta <font color="red"><b>DRAFT</b></span>
 
-## Goal
+Goal
+====
 
-The goal of js2Model.py is to generate source code model classes from JSON schema definitions. Currently, only Objective-C is supported, but the script is architected in a such a way as to make it fairly easy to add new languages.
+JSON is ubiquitous and convenient, but parsing JSON into generic data structures like dictionaries and arrays is less than ideal. The goal of js2Model.py is to generate source model classes and custom deserialization code from JSON schema definitions. Currently, only Objective-C is supported, but the source is architected in to make it easy to add new languages.
 
-## Getting it
+## Installation
 
 To install js2Model:
 
-1) Clone the Mercurial repository
-
-> ```
-> $hg clone http://hg.int.thomsonreuters.com:9220/hg-wln/js2Model 
-> ```
-
+1) Clone the repository
 2) Install the python module  
 
 > ```
 > $cd js2Model
 > $python setup.py install
-> ```
-
-3) Install the dependencies
-
-> ```
-> $pip install -r dependencies.txt
 > ```
 
 ## Running it
@@ -108,7 +99,7 @@ Properties for object types are declared as
 > @property(strong, nonatomic) NSNumber *myProperty;
 > </pre>
 
-Modern Objective-C auto syntheseis of a properties iVar, getter and setter is assumed by the code generation, implemetation files can usually be trivial.
+Modern Objective-C auto syntheseis of a property's iVar, getter and setter is assumed by the code generator.
 
 As a convenience, NSArrays will be initialized, but lazily -
 
