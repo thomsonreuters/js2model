@@ -15,8 +15,8 @@ Installation
 
 To install js2Model:
 
-1) Clone the repository
-2) Install the python module  
+1.  Clone the repository
+2.  Install the python module  
 
 > ```
 > $cd js2Model
