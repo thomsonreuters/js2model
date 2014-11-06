@@ -125,8 +125,7 @@ To deserialize JSON data into an instance of Address:
 ```objc
 	NSError *error;
        
-        // get some Address JSON from somewhere
-	NSData *jsonData = 
+	NSData *jsonData = [self getSomeJSONFromSomewhere];
 	
         Address *address = [Address alloc] initWithJSONData:data error:&error]
 
