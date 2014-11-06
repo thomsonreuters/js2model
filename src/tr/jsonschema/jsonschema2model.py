@@ -215,8 +215,8 @@ class JsonSchema2Model(object):
             f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()), file_name=src_file_name))
 
     def includeSupportFiles(self):
-        support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'supportFiles')
-        self.copyFiles(support_path, self.outdir)
+        support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'dependencies')
+        self.copyFiles(support_path,  os.path.join(self.outdir, 'dependencies'))
 
     @staticmethod
     def copyFiles(src, dest):
