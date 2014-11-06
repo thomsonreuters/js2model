@@ -123,15 +123,15 @@ js2Model will generate the class source files:
 To deserialize JSON data into an instance of Address:
 
 ```objc
-	NSError *error;
+       NSError *error;
        
-	NSData *jsonData = [self getSomeJSONFromSomewhere];
-	
-        Address *address = [Address alloc] initWithJSONData:data error:&error]
-
-	if( !error ) {
-		NSLog(@"Street = %@", address.street);
-	}
+       NSData *jsonData = [self getSomeJSONFromSomewhere];
+       
+       Address *address = [Address alloc] initWithJSONData:data error:&error];
+       
+       if( !error ) {
+             NSLog(@"Street = %@", address.street);
+       }
 
 ```
 
