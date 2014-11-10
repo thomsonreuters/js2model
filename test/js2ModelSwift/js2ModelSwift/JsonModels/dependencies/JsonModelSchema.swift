@@ -8,15 +8,16 @@
 
 import Foundation
 
-protocol JsonModelSerialize {
+public protocol JsonModelSerialize {
 
-    typealias ModelType
+    typealias ModelType: JsonModelSerialize
 
     class func modelSchema() -> JsonModelSchema<ModelType>
 
     func object(forPropertyNamed propertyName:String) -> JsonInstanceMeta<ModelType, AnyObject>
     func array(forPropertyNamed propertyName:String) ->  JsonInstanceMeta<ModelType, [AnyObject]>
 
+    init()
     init(jsonData:[Byte])
     init(filename:String)
 
@@ -26,29 +27,35 @@ protocol JsonModelSerialize {
     func set(boolean val:Bool, forProperty propetyName:String)
     func setNil(forProperty propertyName:String)
 
-    var additionalProperties: [String: AnyObject] { get }
-    func value(forAdditionalProperty propertyName:String) -> AnyObject
-    func set(value:AnyObject, forAdditionalProperty propertyName:String)
+    var additionalProperties: [String: Any] { get }
+    func value(forAdditionalProperty propertyName:String) -> Any
+    func set(value:Any, forAdditionalProperty propertyName:String)
 }
 
-public class JsonPropertyMeta<M, T> {
+public class JsonPropertyMeta<M: JsonModelSerialize, T> {
     
     var getter: (M)->T?;
     var setter: (M,T)->Void;
     var newInstance: ()->T;
     var isArray: Bool = false;
-    var newItemInstance: ()->T;
+    var newItemInstance: (()->T)?;
     
-    init(getter:(M)->T, setter: (M,T)->Void, newInstance: ()->T, isArray: Bool = false, newItemInstance: ()->T ) {
+    init(newInstance: ()->T, getter:(M)->T, setter: (M,T)->Void ) {
         self.getter = getter;
         self.setter = setter;
         self.newInstance = newInstance;
-        self.isArray = isArray;
+    }
+
+    init(newArrayInstance: ()->T, newItemInstance: ()->T, getter:(M)->T, setter: (M,T)->Void) {
+        self.getter = getter;
+        self.setter = setter;
+        self.newInstance = newArrayInstance;
+        self.isArray = true;
         self.newItemInstance = newItemInstance;
     }
 }
 
-public class JsonInstanceMeta<M, T> {
+public class JsonInstanceMeta<M: JsonModelSerialize, T> {
 
     var instance: T;
     var propertyMeta: JsonPropertyMeta<M, T>;
@@ -60,7 +67,7 @@ public class JsonInstanceMeta<M, T> {
 
 }
 
-public class JsonModelSchema<M> {
+public class JsonModelSchema<M: JsonModelSerialize> {
 
 	var objects =  [String: JsonPropertyMeta<M, AnyObject>]();
 	var arrays =   [String: JsonPropertyMeta<M, [AnyObject]>]();
@@ -84,8 +91,8 @@ public class JsonModelSchema<M> {
     }
 
 
-    func object(forPropertyNamed propertyName:(String), fromInstance instance: M, fromPropertySet propertySet:[String: JsonPropertyMeta<M, AnyObject>] ) ->
-    JsonInstanceMeta<M, AnyObject> {
+    func object<T: JsonModelSerialize>(forPropertyNamed propertyName:(String), fromInstance instance: M, fromPropertySet propertySet:[String: JsonPropertyMeta<M, T>] ) ->
+    JsonInstanceMeta<M, T> {
     
         var propMeta = propertySet[propertyName];
 
@@ -104,20 +111,27 @@ public class JsonModelSchema<M> {
         else {
             //NSLog(@"Object for property named '%@' not found in schema %@. Adding to additionalProperties.", propertyName, NSStringFromClass([instance class]));
             
-            var propMeta = JsonPropertyMeta(getter: { obj in
-                self.
-            }, setter: <#(M, T) -> Void##(M, T) -> Void#>, newInstance: <#() -> T##() -> T#>, isArray: <#Bool#>, newItemInstance: <#() -> T##() -> T#>) initWithGetter:@selector(valueForKey:) setter:@selector(setValue:forKey:)];
-            
-            NSMutableDictionary *additionalProperties = [instance additionalProperties];
-            
-            id obj = [additionalProperties valueForKey:propertyName];
-            
-            if( !obj ) {
-                obj = [JSONMorphoModel new];
-                [additionalProperties setValue:obj forKey:propertyName];
+            var propGetter:(M)->(Any) = { (m: M) in
+                return m.value(forAdditionalProperty:propertyName);
             }
             
-            return [JSONInstanceMeta initWithInstance:obj propertyMeta:propMeta];
+            var propSetter:(M,Any)->(Void) = { (m: M, t: Any) in
+                m.set(t, forAdditionalProperty: propertyName);
+            }
+            
+            var newInstanceInit: ()->T = { return T() };
+            
+            var propMeta = JsonPropertyMeta(
+                newInstance: newInstanceInit,
+                getter: propGetter,
+                setter: propSetter
+                );
+            
+            var newPropInstance:T = newInstanceInit()
+            
+            propSetter(instance, newPropInstance);
+            
+            return JsonInstanceMeta<M,T>(initWithInstance: newPropInstance, propertyMeta: propMeta);
         }
     }
     

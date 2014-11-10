@@ -94,7 +94,7 @@
 		0AED39C91A0D485C008DBE2A /* yajl_version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_version.c; sourceTree = "<group>"; };
 		0AED39CA1A0D485C008DBE2A /* TRAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAddress.h; sourceTree = "<group>"; };
 		0AED39CB1A0D485C008DBE2A /* TRAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRAddress.m; sourceTree = "<group>"; };
-		0AED39E81A0D5744008DBE2A /* JsonModelSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JsonModelSchema.swift; path = ../JsonModelSchema.swift; sourceTree = "<group>"; };
+		0AED39E81A0D5744008DBE2A /* JsonModelSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonModelSchema.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				0AED39AC1A0D485C008DBE2A /* api */,
+				0AED39E81A0D5744008DBE2A /* JsonModelSchema.swift */,
 				0AED39B21A0D485C008DBE2A /* ISO8601DateFormatter.h */,
 				0AED39B31A0D485C008DBE2A /* ISO8601DateFormatter.m */,
 				0AED39B71A0D485C008DBE2A /* JSONMorphoModel.h */,
@@ -215,7 +216,6 @@
 		0AED39AC1A0D485C008DBE2A /* api */ = {
 			isa = PBXGroup;
 			children = (
-				0AED39E81A0D5744008DBE2A /* JsonModelSchema.swift */,
 				0AED39AD1A0D485C008DBE2A /* yajl_common.h */,
 				0AED39AE1A0D485C008DBE2A /* yajl_gen.h */,
 				0AED39AF1A0D485C008DBE2A /* yajl_parse.h */,
