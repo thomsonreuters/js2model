@@ -11,8 +11,9 @@ import Foundation
 public protocol JsonModelSerialize {
 
     typealias ModelType: JsonModelSerialize
+    typealias ModelSchemaType: JsonModelSchema<ModelType>
 
-    class func modelSchema() -> JsonModelSchema<ModelType>
+    class func modelSchema() -> ModelSchemaType
 
     func object(forPropertyNamed propertyName:String) -> JsonInstanceMeta<ModelType, Any>
     func array(forPropertyNamed propertyName:String) ->  JsonInstanceMeta<ModelType, [Any]>
@@ -25,9 +26,7 @@ public protocol JsonModelSerialize {
     func set(number val:Double, forProperty propertyName: String)
     func set(integer val:Int, forProperty propetyName:String)
     func set(boolean val:Bool, forProperty propetyName:String)
-    func setNil(forProperty propertyName:String)
 
-    var additionalProperties: [String: Any] { get }
     func value(forAdditionalProperty propertyName:String) -> Any
     func set(value:Any, forAdditionalProperty propertyName:String)
 }

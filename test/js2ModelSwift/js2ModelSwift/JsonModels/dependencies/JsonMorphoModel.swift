@@ -26,10 +26,10 @@ var JsonMorphoSchemaInstance: JsonMorphoModelSchema = JsonMorphoModelSchema();
 class JsonMorphoModel : JsonModelSerialize {
 
     typealias ModelType = JsonMorphoModel
+    typealias ModelSchemaType = JsonMorphoModelSchema;
 
-    var additionalProperties: [String: Any]
+    lazy var additionalProperties: [String: Any] = [String: Any]()
 
-    
     required init() {
         
     }
@@ -42,61 +42,32 @@ class JsonMorphoModel : JsonModelSerialize {
         self.init()
     }
     
-    class func modelSchema() -> JsonModelSchema<ModelType> {
+    class func modelSchema() -> JsonMorphoModelSchema {
         return JsonMorphoSchemaInstance;
     }
 
-    func set(string val:String, forProperty propertyName:String)
-    func set(number val:Double, forProperty propertyName: String)
-    func set(integer val:Int, forProperty propetyName:String)
-    func set(boolean val:Bool, forProperty propetyName:String)
-    func setNil(forProperty propertyName:String)
+    func set(string val:String, forProperty propertyName:String) {
+        JsonMorphoSchemaInstance.set(string:val, forProperty:propertyName, forInstance:self);
+    }
     
-    var additionalProperties: [String: Any] { get }
-    func value(forAdditionalProperty propertyName:String) -> Any
-    func set(value:Any, forAdditionalProperty propertyName:String)
+    func set(number val:Double, forProperty propertyName: String){
+        JsonMorphoSchemaInstance.set(string:val, forProperty:propertyName, forInstance:self);
+    }
+ 
+    func set(integer val:Int, forProperty propetyName:String){
+        JsonMorphoSchemaInstance.set(integer:val, forProperty:propertyName, forInstance:self);
+    }
     
+    func set(boolean val:Bool, forProperty propetyName:String){
+        JsonMorphoSchemaInstance.set(boolean:val, forProperty:propertyName, forInstance:self);
+    }
     
-    - (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName {
-        
-        return [JSONMorphoModelSchemaInstance objectForPropertyNamed:propertyName forInstance:self];
-        }
-        
-        - (JSONInstanceMeta *)arrayForPropertyNamed:(NSString *)propertyName {
-            return [JSONMorphoModelSchemaInstance arrayForPropertyNamed:propertyName forInstance:self];
-            }
-            
-            - (void)setString:(NSString *)val forProperty:(NSString *)propertyName {
-                [JSONMorphoModelSchemaInstance setString:val forProperty:propertyName forInstance:self];
-                }
-                
-                - (void)setNumber:(NSNumber *)val forProperty:(NSString *)propertyName {
-                    [JSONMorphoModelSchemaInstance setNumber:val forProperty:propertyName forInstance:self];
-                    }
-                    
-                    - (void)setInteger:(NSNumber *)val forProperty:(NSString *)propertyName {
-                        [JSONMorphoModelSchemaInstance setInteger:val forProperty:propertyName forInstance:self];
-                        }
-                        
-                        - (void)setBoolean:(NSNumber *)val forProperty:(NSString *)propertyName {
-                            [JSONMorphoModelSchemaInstance setBoolean:val forProperty:propertyName forInstance:self];
-                            }
-                            
-                            - (void)setNullForProperty:(NSString *)propertyName {
-                                [JSONMorphoModelSchemaInstance setNullForProperty:propertyName forInstance:self];
-                            }
-
-
--(NSMutableDictionary*)additionalProperties {
-    return _additionalProperties;
+    func value(forAdditionalProperty propertyName:String) -> Any {
+        return additionalProperties[propertyName]
+    }
+    
+    func set(value:Any, forAdditionalProperty propertyName:String) {
+        additionalProperties[propertyName] = value
+    }
+    
 }
-
--(void)setValue:(id)value forAdditionalProperty:(NSString*)propertyName {
-    [_additionalProperties setObject:value forKey:propertyName];
-}
-
--(id)valueForAdditionalProperty:(NSString*)propertyName {
-    return [_additionalProperties valueForKey:propertyName];
-}
-
-@end
