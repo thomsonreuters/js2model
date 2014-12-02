@@ -9,7 +9,8 @@ import datetime
 import re
 import jsonref
 from jinja2 import PackageLoader, Environment
-from jsonschema import Draft3Validator
+from jsonschema import Draft4Validator
+from jsonschema.exceptions import SchemaError
 from shutil import copytree, copy2, rmtree
 from collections import namedtuple
 
@@ -69,7 +70,7 @@ class ClassDef(object):
         # dependencies.add(dep)
 
         for varDef in self.variable_defs:
-            if varDef.schema_type == JsonSchemaTypes.OBJECT:
+            if varDef.schema_type == JsonSchemaTypes.OBJECT or varDef.isEnum:
                 dependencies.add(varDef.type)
 
         return dependencies if len(dependencies) else None
@@ -114,6 +115,7 @@ class VariableDef(object):
         self.storage = VariableDef.STORAGE_IVAR
         self.default = None
         self.isArray = False
+        self.isEnum = False
         self.isRequired = False
         self.uniqueItems = False
         self.maxItems = None
@@ -136,7 +138,7 @@ def whiteSpaceToCamelCase(matched):
 def firstUpperFilter(var):
     return var[0].upper() + var[1:]
 
-LangTemplates = namedtuple('LangTemplates', ['class_templates', 'global_templates'])
+LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
 
 class JsonSchema2Model(object):
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
@@ -173,7 +175,7 @@ class JsonSchema2Model(object):
 
         self.lang_templates = {
 
-            'objc': LangTemplates(["class.h.jinja", "class.m.jinja"], ["global.h.jinja"])
+            'objc': LangTemplates(["class.h.jinja", "class.m.jinja"], 'enum.h.jinja', ["global.h.jinja"])
         }
 
 
@@ -186,6 +188,10 @@ class JsonSchema2Model(object):
 
             for class_template in self.lang_templates[self.lang].class_templates:
                 self.renderModelToFile(classDef, class_template)
+
+        if self.lang_templates[self.lang].enum_template:
+            for enumDef in self.enums.values():
+                self.renderEnumToFile(enumDef, self.lang_templates[self.lang].enum_template)
 
         for global_template in self.lang_templates[self.lang].global_templates:
             self.renderGlobalHeader(self.models.values(), global_template)
@@ -201,6 +207,18 @@ class JsonSchema2Model(object):
 
         with open(outfile_name, 'w') as f:
             f.write(decl_template.render(classDef=class_def, importFiles=self.import_files,
+                                         timestamp=str(datetime.date.today()), file_name=src_file_name))
+
+    def renderEnumToFile(self, enum_def, templ_name):
+
+        # remove '.jinja', then use extension from the template name
+        src_file_name =  enum_def.name + os.path.splitext(templ_name.replace('.jinja', ''))[1]
+        outfile_name = os.path.join(self.outdir, src_file_name)
+
+        decl_template = self.jinja_env.get_template(templ_name)
+
+        with open(outfile_name, 'w') as f:
+            f.write(decl_template.render(enumDef=enum_def, importFiles=self.import_files,
                                          timestamp=str(datetime.date.today()), file_name=src_file_name))
 
     def renderGlobalHeader(self, models, templ_name):
@@ -248,14 +266,15 @@ class JsonSchema2Model(object):
 
         assert isinstance(schema_object, dict)
 
-        assert 'type' in schema_object
 
         name = self.makVarName(scope[-1])
-
-        schema_type = schema_object['type']
-
         var_def = VariableDef(name)
-        var_def.schema_type = schema_type
+
+        if 'title' in schema_object:
+            var_def.title = schema_object['title']
+
+        if 'description' in schema_object:
+            var_def.description = schema_object['description']
 
         if 'required' in schema_object:
             var_def.isRequired = schema_object['required']
@@ -284,96 +303,96 @@ class JsonSchema2Model(object):
         if 'default' in schema_object:
             var_def.default = schema_object['default']
 
-        if 'title' in schema_object:
-            var_def.title = schema_object['title']
-
-        if 'description' in schema_object:
-            var_def.description = schema_object['description']
-
         if 'format' in schema_object:
             var_def.format = schema_object['format']
 
-        if schema_type == JsonSchemaTypes.OBJECT:
+        if 'type' in schema_object:
 
-            class_def = ClassDef()
+            schema_type = schema_object['type']
 
-            # print("schema object:", schema_object)
+            var_def.schema_type = schema_type
 
-            # set class name to typeName value it it exists, else use the current scope
-            if 'typeName' in schema_object:
-                class_name = schema_object['typeName']
-            elif '__uri__' in schema_object:
-                base_name = os.path.basename(schema_object['__uri__'])
-                class_name = os.path.splitext(base_name)[0]
-            else:
-                class_name = scope[-1]
+            if schema_type == JsonSchemaTypes.OBJECT:
 
-            class_def.name = self.makClassName(class_name)
+                class_def = ClassDef()
 
-            # TODO: should I check to see if the class is already in the models dict?
+                # print("schema object:", schema_object)
 
-            # set super class, in increasing precendence
-            extended = False
-            if 'extends' in schema_object:
-                prop_var_def = self.createModel(schema_object['extends'], scope)
-                class_def.superClasses = [prop_var_def.type]
-                extended = True
-
-            elif '#superclass' in schema_object:
-                class_def.superClasses = schema_object['#superclass'].split(',')
-
-            elif len(self.super_classes):
-                class_def.superClasses = self.super_classes
-
-            if len(self.interfaces):
-                class_def.interfaces = self.interfaces
-
-            self.models[class_def.name] = class_def
-
-            if 'properties' in schema_object:
-
-                properties = schema_object['properties']
-
-                for prop in properties.keys():
-                    scope.append(prop)
-
-                    prop_var_def = self.createModel(properties[prop], scope)
-                    class_def.variable_defs.append(prop_var_def)
-
-                    scope.pop()
-
-            #
-            # support for additionalProperties
-            #
-            include_additional_properties = self.include_additional_properties if not extended else False
-
-            if 'additionalProperties' in schema_object:
-
-                additional_properties = schema_object['additionalProperties']
-
-                if type(additional_properties) is int and not additional_properties:
-                    include_additional_properties = False
+                # set class name to typeName value it it exists, else use the current scope
+                if 'typeName' in schema_object:
+                    class_name = schema_object['typeName']
+                elif '__uri__' in schema_object:
+                    base_name = os.path.basename(schema_object['__uri__'])
+                    class_name = os.path.splitext(base_name)[0]
                 else:
-                    include_additional_properties = True
+                    class_name = scope[-1]
 
-            if include_additional_properties:
-                add_prop_var_def = VariableDef('additionalProperties')
-                add_prop_var_def.type = JsonSchemaTypes.DICT
-                class_def.variable_defs.append(add_prop_var_def)
+                class_def.name = self.makClassName(class_name)
 
-            # add custom keywords
-            class_def.custom = {k: v for k, v in schema_object.items() if k.startswith('#')}
+                # TODO: should I check to see if the class is already in the models dict?
 
-            var_def.type = class_def.name
+                # set super class, in increasing precendence
+                extended = False
+                if 'extends' in schema_object:
+                    prop_var_def = self.createModel(schema_object['extends'], scope)
+                    class_def.superClasses = [prop_var_def.type]
+                    extended = True
 
-        elif schema_type == JsonSchemaTypes.ARRAY:
+                elif '#superclass' in schema_object:
+                    class_def.superClasses = schema_object['#superclass'].split(',')
 
-            assert 'items' in schema_object
+                elif len(self.super_classes):
+                    class_def.superClasses = self.super_classes
 
-            items = schema_object['items']
+                if len(self.interfaces):
+                    class_def.interfaces = self.interfaces
 
-            var_def = self.createModel(items, scope)
-            var_def.isArray = True
+                self.models[class_def.name] = class_def
+
+                if 'properties' in schema_object:
+
+                    properties = schema_object['properties']
+
+                    for prop in properties.keys():
+                        scope.append(prop)
+
+                        prop_var_def = self.createModel(properties[prop], scope)
+                        class_def.variable_defs.append(prop_var_def)
+
+                        scope.pop()
+
+                #
+                # support for additionalProperties
+                #
+                include_additional_properties = self.include_additional_properties if not extended else False
+
+                if 'additionalProperties' in schema_object:
+
+                    additional_properties = schema_object['additionalProperties']
+
+                    if type(additional_properties) is int and not additional_properties:
+                        include_additional_properties = False
+                    else:
+                        include_additional_properties = True
+
+                if include_additional_properties:
+                    add_prop_var_def = VariableDef('additionalProperties')
+                    add_prop_var_def.type = JsonSchemaTypes.DICT
+                    class_def.variable_defs.append(add_prop_var_def)
+
+                # add custom keywords
+                class_def.custom = {k: v for k, v in schema_object.items() if k.startswith('#')}
+
+                var_def.type = class_def.name
+
+            elif schema_type == JsonSchemaTypes.ARRAY:
+
+                assert 'items' in schema_object
+
+                items = schema_object['items']
+
+                var_def = self.createModel(items, scope)
+                var_def.isArray = True
 
         elif 'enum' in schema_object:
 
@@ -382,14 +401,15 @@ class JsonSchema2Model(object):
 
             # TODO: should I check to see if the enum is already in the models dict?
 
-            enum_def.type = schema_type
-            enum_def.values = schema_type['enum']
+            enum_def.type = 'int'
+            enum_def.values = schema_object['enum']
 
             self.enums[enum_def.name] = enum_def
 
             var_def.type = enum_def.name
+            var_def.isEnum = True
         else:
-            var_def.type = schema_type
+            assert False, "Unknown schema type"
 
         return var_def
 
@@ -429,7 +449,10 @@ class JsonSchema2Model(object):
                 root_schema = jsonref.load(jsonFile, base_uri=base_uri, jsonschema=True, loader=loader)
 
                 #TODO: Add exception handling
-                Draft3Validator.check_schema(root_schema)
+                try:
+                    Draft4Validator.check_schema(root_schema)
+                except SchemaError as e:
+                    print( e )
 
                 assert isinstance(root_schema, dict)
 

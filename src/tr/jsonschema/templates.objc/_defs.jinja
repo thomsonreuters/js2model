@@ -50,13 +50,21 @@
         {%- if variableDef.type in primitivesTypeMap -%}
             {%- set objcType = primitivesTypeMap[variableDef.type] -%}
             {%- set isRef = primitivesTypeIsRef[variableDef.type] -%}
+        {%- elif variableDef.isEnum -%}
+            {%- set objcType = variableDef.type -%}
+            {%- set isRef = False -%}
         {%- else -%}
             {%- set objcType = variableDef.type + ' *' -%}
             {%- set isRef = True -%}
         {%- endif -%}
     {%- else -%}
-        {%- set objcType = variableDef.type + ' *' if not variableDef.type in typeMap else typeMap[variableDef.type] -%}
-        {%- set isRef = True -%}
+        {%- if variableDef.isEnum -%}
+            {%- set objcType = variableDef.type -%}
+            {%- set isRef = False -%}
+        {%- else -%}
+            {%- set objcType = variableDef.type + ' *' if not variableDef.type in typeMap else typeMap[variableDef.type] -%}
+            {%- set isRef = True -%}
+        {%- endif-%}
     {%- endif -%}
 
     {%- if variableDef.isArray -%}
