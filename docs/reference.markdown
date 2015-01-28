@@ -26,7 +26,7 @@ To install js2Model:
 3) Install the dependencies
 
 > ```
-> $pip install -r dependencies.txt
+> $pip install -r requirements.txt
 > ```
 
 ## Running it
