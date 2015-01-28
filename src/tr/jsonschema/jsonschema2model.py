@@ -77,15 +77,15 @@ class ClassDef(object):
 
     @property
     def superTypes(self):
-        superTypes = set()
+        supertypes = set()
 
         for superClass in self.superClasses:
-            superTypes.add(superClass)
+            supertypes.add(superClass)
 
         for interface in self.interfaces:
-            superTypes.add(interface)
+            supertypes.add(interface)
 
-        return superTypes
+        return supertypes
 
     @property
     def hasVarDefaults(self):
@@ -135,15 +135,18 @@ def whiteSpaceToCamelCase(matched):
     else:
         return ''
 
+
 def firstUpperFilter(var):
     return var[0].upper() + var[1:]
 
+
 LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
+
 
 class JsonSchema2Model(object):
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
                  include_additional_properties=True,
-                 lang='objc', prefix='TR', root_name=None):
+                 lang='objc', prefix='TR', root_name=None, validate=False):
 
         """
 
@@ -156,6 +159,7 @@ class JsonSchema2Model(object):
         :param prefix:
         :param root_name:
         """
+        self.validate = validate
         self.outdir = outdir
         self.import_files = import_files
         self.super_classes = super_classes
@@ -172,6 +176,7 @@ class JsonSchema2Model(object):
 
         self.models = {}
         self.enums = {}
+        self.class_defs = {}
 
         self.lang_templates = {
 
@@ -209,10 +214,11 @@ class JsonSchema2Model(object):
             f.write(decl_template.render(classDef=class_def, importFiles=self.import_files,
                                          timestamp=str(datetime.date.today()), file_name=src_file_name))
 
+
     def renderEnumToFile(self, enum_def, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        src_file_name =  enum_def.name + os.path.splitext(templ_name.replace('.jinja', ''))[1]
+        src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.jinja', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
         decl_template = self.jinja_env.get_template(templ_name)
@@ -236,6 +242,7 @@ class JsonSchema2Model(object):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'dependencies')
         self.copyFiles(support_path,  os.path.join(self.outdir, 'dependencies'))
 
+
     @staticmethod
     def copyFiles(src, dest):
         """
@@ -257,6 +264,104 @@ class JsonSchema2Model(object):
 
                 copytree(full_file_name, full_dest_path)
 
+
+    def get_schema_id(self, schema_object, scope):
+
+        if 'id' in schema_object:
+            return schema_object['id']
+        elif '__uri__' in schema_object:
+            return schema_object['__uri__']
+        elif 'typeName' in schema_object:
+            return schema_object['typeName']
+        else:
+            assert len(scope)
+            return self.makClassName(scope[-1])
+
+
+    def create_class_def(self, schema_object, scope):
+
+        assert 'type' in schema_object and schema_object['type'] == JsonSchemaTypes.OBJECT
+
+        class_id = self.get_schema_id(schema_object, scope)
+
+        # if class already exists, use it
+        if class_id in self.class_defs:
+
+            return self.class_defs[class_id]
+
+        else:
+
+            class_def = ClassDef()
+
+            self.class_defs[class_id] = class_def
+
+            # print("schema object:", schema_object)
+
+            # set class name to typeName value it it exists, else use the current scope
+            if 'typeName' in schema_object:
+                class_name = schema_object['typeName']
+            elif '__uri__' in schema_object:
+                base_name = os.path.basename(schema_object['__uri__'])
+                class_name = os.path.splitext(base_name)[0]
+            else:
+                class_name = scope[-1]
+
+            class_def.name = self.makClassName(class_name)
+
+            # set super class, in increasing precendence
+            extended = False
+            if 'extends' in schema_object:
+                prop_var_def = self.createModel(schema_object['extends'], scope)
+                class_def.superClasses = [prop_var_def.type]
+                extended = True
+
+            elif '#superclass' in schema_object:
+                class_def.superClasses = schema_object['#superclass'].split(',')
+
+            elif len(self.super_classes):
+                class_def.superClasses = self.super_classes
+
+            if len(self.interfaces):
+                class_def.interfaces = self.interfaces
+
+            self.models[class_def.name] = class_def
+
+            if 'properties' in schema_object:
+
+                properties = schema_object['properties']
+
+                for prop in properties.keys():
+                    scope.append(prop)
+
+                    prop_var_def = self.createModel(properties[prop], scope)
+                    class_def.variable_defs.append(prop_var_def)
+
+                    scope.pop()
+
+            #
+            # support for additionalProperties
+            #
+            include_additional_properties = self.include_additional_properties if not extended else False
+
+            if 'additionalProperties' in schema_object:
+
+                additional_properties = schema_object['additionalProperties']
+
+                if type(additional_properties) is int and not additional_properties:
+                    include_additional_properties = False
+                else:
+                    include_additional_properties = True
+
+            if include_additional_properties:
+                add_prop_var_def = VariableDef('additionalProperties')
+                add_prop_var_def.type = JsonSchemaTypes.DICT
+                class_def.variable_defs.append(add_prop_var_def)
+
+            # add custom keywords
+            class_def.custom = {k: v for k, v in schema_object.items() if k.startswith('#')}
+
+            return class_def
+
     def createModel(self, schema_object, scope):
         """
 
@@ -265,7 +370,6 @@ class JsonSchema2Model(object):
         # $ref's should have already been resolved
 
         assert isinstance(schema_object, dict)
-
 
         name = self.makVarName(scope[-1])
         var_def = VariableDef(name)
@@ -314,75 +418,7 @@ class JsonSchema2Model(object):
 
             if schema_type == JsonSchemaTypes.OBJECT:
 
-                class_def = ClassDef()
-
-                # print("schema object:", schema_object)
-
-                # set class name to typeName value it it exists, else use the current scope
-                if 'typeName' in schema_object:
-                    class_name = schema_object['typeName']
-                elif '__uri__' in schema_object:
-                    base_name = os.path.basename(schema_object['__uri__'])
-                    class_name = os.path.splitext(base_name)[0]
-                else:
-                    class_name = scope[-1]
-
-                class_def.name = self.makClassName(class_name)
-
-                # TODO: should I check to see if the class is already in the models dict?
-
-                # set super class, in increasing precendence
-                extended = False
-                if 'extends' in schema_object:
-                    prop_var_def = self.createModel(schema_object['extends'], scope)
-                    class_def.superClasses = [prop_var_def.type]
-                    extended = True
-
-                elif '#superclass' in schema_object:
-                    class_def.superClasses = schema_object['#superclass'].split(',')
-
-                elif len(self.super_classes):
-                    class_def.superClasses = self.super_classes
-
-                if len(self.interfaces):
-                    class_def.interfaces = self.interfaces
-
-                self.models[class_def.name] = class_def
-
-                if 'properties' in schema_object:
-
-                    properties = schema_object['properties']
-
-                    for prop in properties.keys():
-                        scope.append(prop)
-
-                        prop_var_def = self.createModel(properties[prop], scope)
-                        class_def.variable_defs.append(prop_var_def)
-
-                        scope.pop()
-
-                #
-                # support for additionalProperties
-                #
-                include_additional_properties = self.include_additional_properties if not extended else False
-
-                if 'additionalProperties' in schema_object:
-
-                    additional_properties = schema_object['additionalProperties']
-
-                    if type(additional_properties) is int and not additional_properties:
-                        include_additional_properties = False
-                    else:
-                        include_additional_properties = True
-
-                if include_additional_properties:
-                    add_prop_var_def = VariableDef('additionalProperties')
-                    add_prop_var_def.type = JsonSchemaTypes.DICT
-                    class_def.variable_defs.append(add_prop_var_def)
-
-                # add custom keywords
-                class_def.custom = {k: v for k, v in schema_object.items() if k.startswith('#')}
-
+                class_def = self.create_class_def(schema_object, scope)
                 var_def.type = class_def.name
 
             elif schema_type == JsonSchemaTypes.ARRAY:
@@ -448,11 +484,12 @@ class JsonSchema2Model(object):
                 base_uri = 'file://' + os.path.realpath(f)
                 root_schema = jsonref.load(jsonFile, base_uri=base_uri, jsonschema=True, loader=loader)
 
-                #TODO: Add exception handling
-                try:
-                    Draft4Validator.check_schema(root_schema)
-                except SchemaError as e:
-                    print( e )
+                if self.validate:
+                    #TODO: Add exception handling
+                    try:
+                        Draft4Validator.check_schema(root_schema)
+                    except SchemaError as e:
+                        print( e )
 
                 assert isinstance(root_schema, dict)
 
