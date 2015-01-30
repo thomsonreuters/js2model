@@ -1,0 +1,111 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-04/schema",
+	"required":false,
+	"properties": {
+
+		"favoriteFruit": {
+			"type": "string"
+		},
+		"greeting": {
+			"type": "string"
+		},
+		"friends": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"id": "friend",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"range": {
+			"type": "array",
+			"items": { 
+				"type": "integer"
+			}
+		},
+		"tags": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"id": "tag"
+			}
+		},
+		"longitude": {
+			"type": "number"
+		},
+		"latitude": { 
+			"type": "number"
+		},
+		"registered": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"about": {
+			"type": "string"
+		},
+		"address": {
+			"type": "string"
+		},
+		"phone": {
+			"type": "string",
+			"format": "phone"
+		},
+		"email": {
+			"type": "string",
+			"format": "email"
+		},
+		"company": {
+			"type": "string"
+		},
+		"name": {
+			"type": "object",
+			"id": "name",
+			"properties" : {
+				"last": {
+					"type": "string"
+				},
+				"first": {
+					"type": "string"
+				}
+			}
+		},
+		"eyeColor": {
+			"type": "string",
+			"enum": [
+				"brown",
+				"blue",
+				"green"
+			]
+		},
+		"age": {
+			"type": "integer"
+		},
+		"picture": {
+			"type": "string",
+			"format": "uri"
+		},
+		"balance": {
+			"type": "string"
+		},
+		"isActive": {
+			"type": "boolean"
+		},
+		"guid": {
+			"type": "string"
+		},
+		"index": {
+			"type": "integer"
+		},
+		"_id": {
+			"type": "string"
+		}
+	}
+}

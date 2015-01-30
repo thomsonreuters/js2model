@@ -17,6 +17,7 @@ def main():
                         help='Use primitive types in favor of object wrappers')
     parser.add_argument('-x', '--noadditional', action='store_false', default=True,
                         help='Do not include additionalProperties in models')
+    parser.add_argument('--novalidate', action='store_true', default=False, help='Skip schema validation')
     parser.add_argument('-o', '--output', default='output', help='Target directory of output files')
     parser.add_argument('--implements', default=None,
                         help='Comma separated list of interface(s)|protocol(s) supported by the generated classes')
@@ -52,7 +53,8 @@ def main():
                                  import_files=args.importFiles.split(',') if args.importFiles else [],
                                  super_classes=args.super.split(',') if args.super else [],
                                  interfaces=args.implements.split(',') if args.implements else [],
-                                 include_additional_properties=not args.noadditional
+                                 include_additional_properties=not args.noadditional,
+                                 validate=args.novalidate
     )
 
     generator.generateModels(files, include_support_files=True)

@@ -1,14 +1,12 @@
 
 //
-//  TRPerson.m
+//  JSONMorphoModel.m
 //
 //  Created by js2Model on 2014-11-05.
 //  Copyright (c) 2014 Thomson Reuters. All rights reserved.
 //
 
 #import "JSONMorphoModel.h"
-#import "TRName.h"
-#import "TRPhysicalInfo.h"
 #import "TRJSONModelLoader.h"
 #import "JSONModelSerialize.h"
 

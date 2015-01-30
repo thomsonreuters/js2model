@@ -82,7 +82,14 @@
 {%- macro propertyDecl(variableDef, usePrimitives=False) -%}
 
 	{%- call(varDef, varType, isRef, itemsType) renderWithConvertedType(variableDef, usePrimitives) -%}
-	@property({{'strong, ' if isRef}}nonatomic) {{ varType }} {{variableDef.name}};
+
+	{%- if varDef.name == "id" -%}
+	    {%- set propName = "id_" -%}
+	{%- else -%}
+	    {%- set propName = varDef.name -%}
+	{%- endif-%}
+
+	@property({{'strong, ' if isRef}}nonatomic) {{ varType }} {{ propName }};
 	{%- endcall -%}
 
 {%- endmacro -%}
@@ -90,7 +97,13 @@
 {%- macro lazyPropGetter(variableDef, usePrimitives=False) -%}
 {%- call(varDef, varType, isRef, itemsType) renderWithConvertedType(variableDef, usePrimitives) -%}
 {%- if varType == "NSDictionary *" or varType == "NSMutableArray *" -%}
-{% set propName = variableDef.name %}
+
+{%- if varDef.name == "id" -%}
+    {%- set propName = "id_" -%}
+{%- else -%}
+    {%- set propName = variableDef.name -%}
+{%- endif -%}
+
 {% set ivarName = '_' + propName %}
 -({{ varType }}) {{ propName }} {
 	

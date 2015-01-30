@@ -30,22 +30,29 @@
 {% if props|length %}
         [self.{{dictName}} addEntriesFromDictionary: @{
     {%- for v in props %}
+
+        {%- if v.name == "id" -%}
+            {%- set propName = "id_" -%}
+        {%- else -%}
+            {%- set propName = v.name -%}
+        {%- endif-%}
+
         {% if v.isArray %}
                 {% call(varDef, varType, isRef, itemsType) defs.renderWithConvertedType(v) -%}
-                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}})
-                                                             setter:@selector(set{{v.name|firstupper}}:)
+                    @"{{propName}}": [JSONPropertyMeta initWithGetter:@selector({{propName}})
+                                                             setter:@selector(set{{propName|firstupper}}:)
                                                              type:[{{ varType|replace(' *','') }} class]
                                                          itemType:[{{ itemsType|replace(' *','') }} class]],
                 {%- endcall %}
         {% elif v.schema_type is equalto "object" %}
                 {% call(varDef, varType, isRef, itemsType) defs.renderWithConvertedType(v) -%}
-                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}})
-                                                             setter:@selector(set{{v.name|firstupper}}:)
+                    @"{{propName}}": [JSONPropertyMeta initWithGetter:@selector({{propName}})
+                                                             setter:@selector(set{{propName|firstupper}}:)
                                                                type:[{{ varType|replace(' *','') }} class]],
                 {%- endcall %}
         {% else %}
-                    @"{{v.name}}": [JSONPropertyMeta initWithGetter:@selector({{v.name}})
-                                                             setter:@selector(set{{v.name|firstupper}}:)],
+                    @"{{propName}}": [JSONPropertyMeta initWithGetter:@selector({{propName}})
+                                                             setter:@selector(set{{propName|firstupper}}:)],
         {%- endif %}
     {%- endfor %}
         }];

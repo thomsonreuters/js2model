@@ -63,41 +63,41 @@
                 XCTAssertNil(error, @"Error while loading %@",jsonFilename);
 
                 if (!error) {
-                    if (cls == [TRLicenseResultWrapper class]) {
-
-                        TRLicenseResultWrapper *licenseResultWrapper = (TRLicenseResultWrapper*)object;
-                        
-                        XCTAssertEqualObjects(licenseResultWrapper.searchResult.driver.name.firstName, @"JANE");
-                        XCTAssertEqualObjects(licenseResultWrapper.searchResult.driver.name.lastName, @"SAMPLE");
-                        XCTAssertEqualObjects(licenseResultWrapper.incarcerationHistory.foundIncarcerationHistory, @YES);
-                        XCTAssertEqual(licenseResultWrapper.incarcerationHistory.incarcerationRecords.count, 5);
-                        
-                        TRIncarcerationRecord *incarcerationRecord = licenseResultWrapper.incarcerationHistory.incarcerationRecords[0];
-                        
-                        XCTAssertEqual(incarcerationRecord.charges.count, 0);
-                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestAgency, @"Florida Dept  Of Corrections");
-                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestedDate, @"2007-08-27");
-                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.state, @"FL");
-                        
-                        incarcerationRecord = licenseResultWrapper.incarcerationHistory.incarcerationRecords[1];
-                        XCTAssertEqual(incarcerationRecord.charges.count, 5);
-                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestAgency, @"Citrus Co Sheriffs Office");
-                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestedDate, @"2007-03-15");
-                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.state, @"FL");
-                        TRCharges *charges = incarcerationRecord.charges[0];
-                        XCTAssertEqualObjects(charges.crimeSeverity, @"Felony");
-                        charges = incarcerationRecord.charges[4];
-                        XCTAssertEqualObjects(charges.crimeSeverity, @"Misdemeanor");
-                        
-                        id<JSONModelSerialize> additionalObject = [licenseResultWrapper.additionalProperties valueForKey:@"unknownObject"];
-                        XCTAssertNotNil(additionalObject);
-                        
-                        id unknowDescription = [[additionalObject additionalProperties] valueForKey:@"comment"];
-                        XCTAssertNotNil(unknowDescription);
-
-                        id unknowInteger = [[additionalObject additionalProperties] valueForKey:@"integerProperty"];
-                        XCTAssertNotNil(unknowInteger);
-                    }
+//                    if (cls == [TRLicenseResultWrapper class]) {
+//
+//                        TRLicenseResultWrapper *licenseResultWrapper = (TRLicenseResultWrapper*)object;
+//                        
+//                        XCTAssertEqualObjects(licenseResultWrapper.searchResult.driver.name.firstName, @"JANE");
+//                        XCTAssertEqualObjects(licenseResultWrapper.searchResult.driver.name.lastName, @"SAMPLE");
+//                        XCTAssertEqualObjects(licenseResultWrapper.incarcerationHistory.foundIncarcerationHistory, @YES);
+//                        XCTAssertEqual(licenseResultWrapper.incarcerationHistory.incarcerationRecords.count, 5);
+//                        
+//                        TRIncarcerationRecord *incarcerationRecord = licenseResultWrapper.incarcerationHistory.incarcerationRecords[0];
+//                        
+//                        XCTAssertEqual(incarcerationRecord.charges.count, 0);
+//                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestAgency, @"Florida Dept  Of Corrections");
+//                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestedDate, @"2007-08-27");
+//                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.state, @"FL");
+//                        
+//                        incarcerationRecord = licenseResultWrapper.incarcerationHistory.incarcerationRecords[1];
+//                        XCTAssertEqual(incarcerationRecord.charges.count, 5);
+//                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestAgency, @"Citrus Co Sheriffs Office");
+//                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.arrestedDate, @"2007-03-15");
+//                        XCTAssertEqualObjects(incarcerationRecord.bookingInfo.state, @"FL");
+//                        TRCharges *charges = incarcerationRecord.charges[0];
+//                        XCTAssertEqualObjects(charges.crimeSeverity, @"Felony");
+//                        charges = incarcerationRecord.charges[4];
+//                        XCTAssertEqualObjects(charges.crimeSeverity, @"Misdemeanor");
+//                        
+//                        id<JSONModelSerialize> additionalObject = [licenseResultWrapper.additionalProperties valueForKey:@"unknownObject"];
+//                        XCTAssertNotNil(additionalObject);
+//                        
+//                        id unknowDescription = [[additionalObject additionalProperties] valueForKey:@"comment"];
+//                        XCTAssertNotNil(unknowDescription);
+//
+//                        id unknowInteger = [[additionalObject additionalProperties] valueForKey:@"integerProperty"];
+//                        XCTAssertNotNil(unknowInteger);
+//                    }
                 }
             }
         }

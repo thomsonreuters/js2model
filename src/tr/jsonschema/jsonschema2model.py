@@ -144,9 +144,12 @@ LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template',
 
 
 class JsonSchema2Model(object):
+
+    SCHEMA_URI = '__uri__'
+
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
                  include_additional_properties=True,
-                 lang='objc', prefix='TR', root_name=None, validate=False):
+                 lang='objc', prefix='TR', root_name=None, validate=True):
 
         """
 
@@ -269,8 +272,8 @@ class JsonSchema2Model(object):
 
         if 'id' in schema_object:
             return schema_object['id']
-        elif '__uri__' in schema_object:
-            return schema_object['__uri__']
+        elif JsonSchema2Model.SCHEMA_URI in schema_object:
+            return schema_object[JsonSchema2Model.SCHEMA_URI]
         elif 'typeName' in schema_object:
             return schema_object['typeName']
         else:
@@ -300,9 +303,10 @@ class JsonSchema2Model(object):
             # set class name to typeName value it it exists, else use the current scope
             if 'typeName' in schema_object:
                 class_name = schema_object['typeName']
-            elif '__uri__' in schema_object:
-                base_name = os.path.basename(schema_object['__uri__'])
+            elif JsonSchema2Model.SCHEMA_URI in schema_object:
+                base_name = os.path.basename(schema_object[JsonSchema2Model.SCHEMA_URI])
                 class_name = os.path.splitext(base_name)[0]
+                class_name = class_name.replace('.schema', '')
             else:
                 class_name = scope[-1]
 
@@ -475,6 +479,7 @@ class JsonSchema2Model(object):
             else:
                 base_name = os.path.basename(f)
                 base_uri = os.path.splitext(base_name)[0]
+                base_uri = base_uri.replace('.schema', '')
                 scope = [base_uri]
 
             with open(f) as jsonFile:
@@ -492,6 +497,9 @@ class JsonSchema2Model(object):
                         print( e )
 
                 assert isinstance(root_schema, dict)
+
+                if not JsonSchema2Model.SCHEMA_URI in root_schema:
+                    root_schema[JsonSchema2Model.SCHEMA_URI] = f
 
                 self.createModel(root_schema, scope)
 

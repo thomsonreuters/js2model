@@ -16,30 +16,6 @@
 		0A345B0219D5DA9E00E3C01F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A345B0119D5DA9E00E3C01F /* Images.xcassets */; };
 		0A345B0519D5DA9E00E3C01F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A345B0319D5DA9E00E3C01F /* LaunchScreen.xib */; };
 		0A345B1119D5DA9E00E3C01F /* JsonModelGenTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B1019D5DA9E00E3C01F /* JsonModelGenTestTests.m */; };
-		0A345B9C19D5F03800E3C01F /* TRAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8419D5F03800E3C01F /* TRAddress.m */; };
-		0A345B9D19D5F03800E3C01F /* TRBookingInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8519D5F03800E3C01F /* TRBookingInfo.m */; };
-		0A345B9E19D5F03800E3C01F /* TRCharges.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8619D5F03800E3C01F /* TRCharges.m */; };
-		0A345B9F19D5F03800E3C01F /* TRDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8719D5F03800E3C01F /* TRDriver.m */; };
-		0A345BA019D5F03800E3C01F /* TRIncarcerationRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */; };
-		0A345BA119D5F03800E3C01F /* TRIncarcerationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */; };
-		0A345BA219D5F03800E3C01F /* TRIncarcerationResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */; };
-		0A345BA319D5F03800E3C01F /* TRLicense.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8B19D5F03800E3C01F /* TRLicense.m */; };
-		0A345BA419D5F03800E3C01F /* TRLicenseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */; };
-		0A345BA519D5F03800E3C01F /* TRLicenseResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */; };
-		0A345BA619D5F03800E3C01F /* TRName.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8E19D5F03800E3C01F /* TRName.m */; };
-		0A345BA719D5F03800E3C01F /* TROwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B8F19D5F03800E3C01F /* TROwner.m */; };
-		0A345BA819D5F03800E3C01F /* TRPersonResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9019D5F03800E3C01F /* TRPersonResult.m */; };
-		0A345BA919D5F03800E3C01F /* TRPersonResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */; };
-		0A345BAA19D5F03800E3C01F /* TRPersonsResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */; };
-		0A345BAB19D5F03800E3C01F /* TRPhysicalInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */; };
-		0A345BAC19D5F03800E3C01F /* TRPlate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9419D5F03800E3C01F /* TRPlate.m */; };
-		0A345BAD19D5F03800E3C01F /* TRRestApiStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */; };
-		0A345BAE19D5F03800E3C01F /* TRSearchStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */; };
-		0A345BAF19D5F03800E3C01F /* TRVehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9719D5F03800E3C01F /* TRVehicle.m */; };
-		0A345BB019D5F03800E3C01F /* TRVehicleImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */; };
-		0A345BB119D5F03800E3C01F /* TRVehicleImageResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */; };
-		0A345BB219D5F03800E3C01F /* TRVehicleResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */; };
-		0A345BB319D5F03800E3C01F /* TRVehicleResultWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */; };
 		0A345BB619D6135B00E3C01F /* TRJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A345BB519D6135B00E3C01F /* TRJsonBase.m */; };
 		0A6B8F371A0C2B10006AE8A2 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B8F201A0C2B10006AE8A2 /* ISO8601DateFormatter.m */; };
 		0A6B8F381A0C2B10006AE8A2 /* JSONModelSchema.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B8F221A0C2B10006AE8A2 /* JSONModelSchema.m */; };
@@ -54,9 +30,12 @@
 		0A6B8F411A0C2B10006AE8A2 /* yajl_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B8F331A0C2B10006AE8A2 /* yajl_parser.c */; };
 		0A6B8F421A0C2B10006AE8A2 /* yajl_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B8F351A0C2B10006AE8A2 /* yajl_tree.c */; };
 		0A6B8F431A0C2B10006AE8A2 /* yajl_version.c in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B8F361A0C2B10006AE8A2 /* yajl_version.c */; };
-		0AE9BD431A083EC700CF6351 /* TRIncarcerationHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD401A083EC700CF6351 /* TRIncarcerationHistory.m */; };
-		0AE9BD441A083EC700CF6351 /* TRIncarcerationSearchError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD411A083EC700CF6351 /* TRIncarcerationSearchError.m */; };
-		0AE9BD451A083EC700CF6351 /* TRPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9BD421A083EC700CF6351 /* TRPerson.m */; };
+		0AB0D30C1A7AFE2E00A0639D /* TRFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB0D3061A7AFE2E00A0639D /* TRFriends.m */; };
+		0AB0D30D1A7AFE2E00A0639D /* TRName.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB0D3091A7AFE2E00A0639D /* TRName.m */; };
+		0AB0D30F1A7AFE8500A0639D /* TRFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB0D3061A7AFE2E00A0639D /* TRFriends.m */; };
+		0AB0D3101A7AFE8500A0639D /* TRName.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB0D3091A7AFE2E00A0639D /* TRName.m */; };
+		0AB0D3141A7B019700A0639D /* TRTestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB0D3131A7B019700A0639D /* TRTestData.m */; };
+		0AB0D3151A7B019700A0639D /* TRTestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB0D3131A7B019700A0639D /* TRTestData.m */; };
 		0AF028721A043F9700AAE135 /* licenseResultWrapper.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AF028711A043F9700AAE135 /* licenseResultWrapper.json */; };
 /* End PBXBuildFile section */
 
@@ -71,7 +50,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A3063F81A09460D003FC4F1 /* TRModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRModels.h; sourceTree = "<group>"; };
 		0A345AEB19D5DA9E00E3C01F /* JsonModelGenTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JsonModelGenTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A345AEF19D5DA9E00E3C01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A345AF019D5DA9E00E3C01F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -88,54 +66,6 @@
 		0A345B0A19D5DA9E00E3C01F /* JsonModelGenTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonModelGenTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A345B0F19D5DA9E00E3C01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A345B1019D5DA9E00E3C01F /* JsonModelGenTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JsonModelGenTestTests.m; sourceTree = "<group>"; };
-		0A345B6C19D5F03800E3C01F /* TRAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRAddress.h; sourceTree = "<group>"; };
-		0A345B6D19D5F03800E3C01F /* TRBookingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRBookingInfo.h; sourceTree = "<group>"; };
-		0A345B6E19D5F03800E3C01F /* TRCharges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRCharges.h; sourceTree = "<group>"; };
-		0A345B6F19D5F03800E3C01F /* TRDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRDriver.h; sourceTree = "<group>"; };
-		0A345B7019D5F03800E3C01F /* TRIncarcerationRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationRecord.h; sourceTree = "<group>"; };
-		0A345B7119D5F03800E3C01F /* TRIncarcerationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationResult.h; sourceTree = "<group>"; };
-		0A345B7219D5F03800E3C01F /* TRIncarcerationResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationResultWrapper.h; sourceTree = "<group>"; };
-		0A345B7319D5F03800E3C01F /* TRLicense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRLicense.h; sourceTree = "<group>"; };
-		0A345B7419D5F03800E3C01F /* TRLicenseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRLicenseResult.h; sourceTree = "<group>"; };
-		0A345B7519D5F03800E3C01F /* TRLicenseResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRLicenseResultWrapper.h; sourceTree = "<group>"; };
-		0A345B7619D5F03800E3C01F /* TRName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRName.h; sourceTree = "<group>"; };
-		0A345B7719D5F03800E3C01F /* TROwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROwner.h; sourceTree = "<group>"; };
-		0A345B7819D5F03800E3C01F /* TRPersonResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPersonResult.h; sourceTree = "<group>"; };
-		0A345B7919D5F03800E3C01F /* TRPersonResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPersonResultWrapper.h; sourceTree = "<group>"; };
-		0A345B7A19D5F03800E3C01F /* TRPersonsResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPersonsResultWrapper.h; sourceTree = "<group>"; };
-		0A345B7B19D5F03800E3C01F /* TRPhysicalInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPhysicalInfo.h; sourceTree = "<group>"; };
-		0A345B7C19D5F03800E3C01F /* TRPlate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPlate.h; sourceTree = "<group>"; };
-		0A345B7D19D5F03800E3C01F /* TRRestApiStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRRestApiStatistics.h; sourceTree = "<group>"; };
-		0A345B7E19D5F03800E3C01F /* TRSearchStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRSearchStatistics.h; sourceTree = "<group>"; };
-		0A345B7F19D5F03800E3C01F /* TRVehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicle.h; sourceTree = "<group>"; };
-		0A345B8019D5F03800E3C01F /* TRVehicleImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleImageResult.h; sourceTree = "<group>"; };
-		0A345B8119D5F03800E3C01F /* TRVehicleImageResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleImageResultWrapper.h; sourceTree = "<group>"; };
-		0A345B8219D5F03800E3C01F /* TRVehicleResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleResult.h; sourceTree = "<group>"; };
-		0A345B8319D5F03800E3C01F /* TRVehicleResultWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRVehicleResultWrapper.h; sourceTree = "<group>"; };
-		0A345B8419D5F03800E3C01F /* TRAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRAddress.m; sourceTree = "<group>"; };
-		0A345B8519D5F03800E3C01F /* TRBookingInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRBookingInfo.m; sourceTree = "<group>"; };
-		0A345B8619D5F03800E3C01F /* TRCharges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRCharges.m; sourceTree = "<group>"; };
-		0A345B8719D5F03800E3C01F /* TRDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRDriver.m; sourceTree = "<group>"; };
-		0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationRecord.m; sourceTree = "<group>"; };
-		0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationResult.m; sourceTree = "<group>"; };
-		0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationResultWrapper.m; sourceTree = "<group>"; };
-		0A345B8B19D5F03800E3C01F /* TRLicense.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRLicense.m; sourceTree = "<group>"; };
-		0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRLicenseResult.m; sourceTree = "<group>"; };
-		0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRLicenseResultWrapper.m; sourceTree = "<group>"; };
-		0A345B8E19D5F03800E3C01F /* TRName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRName.m; sourceTree = "<group>"; };
-		0A345B8F19D5F03800E3C01F /* TROwner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TROwner.m; sourceTree = "<group>"; };
-		0A345B9019D5F03800E3C01F /* TRPersonResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPersonResult.m; sourceTree = "<group>"; };
-		0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPersonResultWrapper.m; sourceTree = "<group>"; };
-		0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPersonsResultWrapper.m; sourceTree = "<group>"; };
-		0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPhysicalInfo.m; sourceTree = "<group>"; };
-		0A345B9419D5F03800E3C01F /* TRPlate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPlate.m; sourceTree = "<group>"; };
-		0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRRestApiStatistics.m; sourceTree = "<group>"; };
-		0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRSearchStatistics.m; sourceTree = "<group>"; };
-		0A345B9719D5F03800E3C01F /* TRVehicle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicle.m; sourceTree = "<group>"; };
-		0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleImageResult.m; sourceTree = "<group>"; };
-		0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleImageResultWrapper.m; sourceTree = "<group>"; };
-		0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleResult.m; sourceTree = "<group>"; };
-		0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRVehicleResultWrapper.m; sourceTree = "<group>"; };
 		0A345BB419D6135B00E3C01F /* TRJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRJsonBase.h; sourceTree = "<group>"; };
 		0A345BB519D6135B00E3C01F /* TRJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRJsonBase.m; sourceTree = "<group>"; };
 		0A6B8F1A1A0C2B10006AE8A2 /* yajl_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_common.h; sourceTree = "<group>"; };
@@ -167,12 +97,13 @@
 		0A6B8F341A0C2B10006AE8A2 /* yajl_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_parser.h; sourceTree = "<group>"; };
 		0A6B8F351A0C2B10006AE8A2 /* yajl_tree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_tree.c; sourceTree = "<group>"; };
 		0A6B8F361A0C2B10006AE8A2 /* yajl_version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yajl_version.c; sourceTree = "<group>"; };
-		0AE9BD3D1A083E4B00CF6351 /* TRIncarcerationHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationHistory.h; sourceTree = "<group>"; };
-		0AE9BD3E1A083E4B00CF6351 /* TRIncarcerationSearchError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRIncarcerationSearchError.h; sourceTree = "<group>"; };
-		0AE9BD3F1A083E4B00CF6351 /* TRPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRPerson.h; sourceTree = "<group>"; };
-		0AE9BD401A083EC700CF6351 /* TRIncarcerationHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationHistory.m; sourceTree = "<group>"; };
-		0AE9BD411A083EC700CF6351 /* TRIncarcerationSearchError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRIncarcerationSearchError.m; sourceTree = "<group>"; };
-		0AE9BD421A083EC700CF6351 /* TRPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRPerson.m; sourceTree = "<group>"; };
+		0AB0D3051A7AFE2E00A0639D /* TRFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFriends.h; sourceTree = "<group>"; };
+		0AB0D3061A7AFE2E00A0639D /* TRFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFriends.m; sourceTree = "<group>"; };
+		0AB0D3071A7AFE2E00A0639D /* TRModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRModels.h; sourceTree = "<group>"; };
+		0AB0D3081A7AFE2E00A0639D /* TRName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRName.h; sourceTree = "<group>"; };
+		0AB0D3091A7AFE2E00A0639D /* TRName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRName.m; sourceTree = "<group>"; };
+		0AB0D3121A7B019700A0639D /* TRTestData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTestData.h; sourceTree = "<group>"; };
+		0AB0D3131A7B019700A0639D /* TRTestData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTestData.m; sourceTree = "<group>"; };
 		0AF028711A043F9700AAE135 /* licenseResultWrapper.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = licenseResultWrapper.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -263,62 +194,14 @@
 		0A345B1A19D5DC7000E3C01F /* JsonModels */ = {
 			isa = PBXGroup;
 			children = (
+				0AB0D3121A7B019700A0639D /* TRTestData.h */,
+				0AB0D3131A7B019700A0639D /* TRTestData.m */,
+				0AB0D3051A7AFE2E00A0639D /* TRFriends.h */,
+				0AB0D3061A7AFE2E00A0639D /* TRFriends.m */,
+				0AB0D3071A7AFE2E00A0639D /* TRModels.h */,
+				0AB0D3081A7AFE2E00A0639D /* TRName.h */,
+				0AB0D3091A7AFE2E00A0639D /* TRName.m */,
 				0A6B8F181A0C2B10006AE8A2 /* dependencies */,
-				0A345B6C19D5F03800E3C01F /* TRAddress.h */,
-				0A345B8419D5F03800E3C01F /* TRAddress.m */,
-				0A345B6D19D5F03800E3C01F /* TRBookingInfo.h */,
-				0A345B8519D5F03800E3C01F /* TRBookingInfo.m */,
-				0A345B6E19D5F03800E3C01F /* TRCharges.h */,
-				0A345B8619D5F03800E3C01F /* TRCharges.m */,
-				0A345B6F19D5F03800E3C01F /* TRDriver.h */,
-				0A345B8719D5F03800E3C01F /* TRDriver.m */,
-				0AE9BD3D1A083E4B00CF6351 /* TRIncarcerationHistory.h */,
-				0AE9BD401A083EC700CF6351 /* TRIncarcerationHistory.m */,
-				0A345B7019D5F03800E3C01F /* TRIncarcerationRecord.h */,
-				0A345B8819D5F03800E3C01F /* TRIncarcerationRecord.m */,
-				0A345B7119D5F03800E3C01F /* TRIncarcerationResult.h */,
-				0A345B8919D5F03800E3C01F /* TRIncarcerationResult.m */,
-				0A345B7219D5F03800E3C01F /* TRIncarcerationResultWrapper.h */,
-				0A345B8A19D5F03800E3C01F /* TRIncarcerationResultWrapper.m */,
-				0AE9BD3E1A083E4B00CF6351 /* TRIncarcerationSearchError.h */,
-				0AE9BD411A083EC700CF6351 /* TRIncarcerationSearchError.m */,
-				0A345B7319D5F03800E3C01F /* TRLicense.h */,
-				0A345B8B19D5F03800E3C01F /* TRLicense.m */,
-				0A345B7419D5F03800E3C01F /* TRLicenseResult.h */,
-				0A345B8C19D5F03800E3C01F /* TRLicenseResult.m */,
-				0A345B7519D5F03800E3C01F /* TRLicenseResultWrapper.h */,
-				0A345B8D19D5F03800E3C01F /* TRLicenseResultWrapper.m */,
-				0A3063F81A09460D003FC4F1 /* TRModels.h */,
-				0A345B7619D5F03800E3C01F /* TRName.h */,
-				0A345B8E19D5F03800E3C01F /* TRName.m */,
-				0A345B7719D5F03800E3C01F /* TROwner.h */,
-				0A345B8F19D5F03800E3C01F /* TROwner.m */,
-				0AE9BD3F1A083E4B00CF6351 /* TRPerson.h */,
-				0AE9BD421A083EC700CF6351 /* TRPerson.m */,
-				0A345B7819D5F03800E3C01F /* TRPersonResult.h */,
-				0A345B9019D5F03800E3C01F /* TRPersonResult.m */,
-				0A345B7919D5F03800E3C01F /* TRPersonResultWrapper.h */,
-				0A345B9119D5F03800E3C01F /* TRPersonResultWrapper.m */,
-				0A345B7A19D5F03800E3C01F /* TRPersonsResultWrapper.h */,
-				0A345B9219D5F03800E3C01F /* TRPersonsResultWrapper.m */,
-				0A345B7B19D5F03800E3C01F /* TRPhysicalInfo.h */,
-				0A345B9319D5F03800E3C01F /* TRPhysicalInfo.m */,
-				0A345B7C19D5F03800E3C01F /* TRPlate.h */,
-				0A345B9419D5F03800E3C01F /* TRPlate.m */,
-				0A345B7D19D5F03800E3C01F /* TRRestApiStatistics.h */,
-				0A345B9519D5F03800E3C01F /* TRRestApiStatistics.m */,
-				0A345B7E19D5F03800E3C01F /* TRSearchStatistics.h */,
-				0A345B9619D5F03800E3C01F /* TRSearchStatistics.m */,
-				0A345B7F19D5F03800E3C01F /* TRVehicle.h */,
-				0A345B9719D5F03800E3C01F /* TRVehicle.m */,
-				0A345B8019D5F03800E3C01F /* TRVehicleImageResult.h */,
-				0A345B9819D5F03800E3C01F /* TRVehicleImageResult.m */,
-				0A345B8119D5F03800E3C01F /* TRVehicleImageResultWrapper.h */,
-				0A345B9919D5F03800E3C01F /* TRVehicleImageResultWrapper.m */,
-				0A345B8219D5F03800E3C01F /* TRVehicleResult.h */,
-				0A345B9A19D5F03800E3C01F /* TRVehicleResult.m */,
-				0A345B8319D5F03800E3C01F /* TRVehicleResultWrapper.h */,
-				0A345B9B19D5F03800E3C01F /* TRVehicleResultWrapper.m */,
 			);
 			path = JsonModels;
 			sourceTree = "<group>";
@@ -476,52 +359,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A345BAC19D5F03800E3C01F /* TRPlate.m in Sources */,
-				0A345B9C19D5F03800E3C01F /* TRAddress.m in Sources */,
-				0A345BA819D5F03800E3C01F /* TRPersonResult.m in Sources */,
-				0A345B9E19D5F03800E3C01F /* TRCharges.m in Sources */,
-				0A345BAF19D5F03800E3C01F /* TRVehicle.m in Sources */,
-				0A345B9D19D5F03800E3C01F /* TRBookingInfo.m in Sources */,
 				0A345AFD19D5DA9E00E3C01F /* DetailViewController.m in Sources */,
-				0A345BA419D5F03800E3C01F /* TRLicenseResult.m in Sources */,
+				0AB0D30D1A7AFE2E00A0639D /* TRName.m in Sources */,
 				0A345BB619D6135B00E3C01F /* TRJsonBase.m in Sources */,
-				0A345BA119D5F03800E3C01F /* TRIncarcerationResult.m in Sources */,
+				0AB0D3141A7B019700A0639D /* TRTestData.m in Sources */,
 				0A6B8F371A0C2B10006AE8A2 /* ISO8601DateFormatter.m in Sources */,
-				0A345BB319D5F03800E3C01F /* TRVehicleResultWrapper.m in Sources */,
-				0A345BA319D5F03800E3C01F /* TRLicense.m in Sources */,
-				0AE9BD451A083EC700CF6351 /* TRPerson.m in Sources */,
 				0A345AFA19D5DA9E00E3C01F /* MasterViewController.m in Sources */,
-				0A345BA019D5F03800E3C01F /* TRIncarcerationRecord.m in Sources */,
-				0A345BB119D5F03800E3C01F /* TRVehicleImageResultWrapper.m in Sources */,
-				0AE9BD441A083EC700CF6351 /* TRIncarcerationSearchError.m in Sources */,
-				0AE9BD431A083EC700CF6351 /* TRIncarcerationHistory.m in Sources */,
 				0A6B8F381A0C2B10006AE8A2 /* JSONModelSchema.m in Sources */,
 				0A345AF419D5DA9E00E3C01F /* AppDelegate.m in Sources */,
-				0A345BA919D5F03800E3C01F /* TRPersonResultWrapper.m in Sources */,
 				0A6B8F3F1A0C2B10006AE8A2 /* yajl_gen.c in Sources */,
-				0A345BA719D5F03800E3C01F /* TROwner.m in Sources */,
+				0AB0D30C1A7AFE2E00A0639D /* TRFriends.m in Sources */,
 				0A6B8F3D1A0C2B10006AE8A2 /* yajl_buf.c in Sources */,
 				0A6B8F3B1A0C2B10006AE8A2 /* yajl.c in Sources */,
-				0A345BAE19D5F03800E3C01F /* TRSearchStatistics.m in Sources */,
-				0A345BA619D5F03800E3C01F /* TRName.m in Sources */,
 				0A6B8F411A0C2B10006AE8A2 /* yajl_parser.c in Sources */,
-				0A345BAD19D5F03800E3C01F /* TRRestApiStatistics.m in Sources */,
-				0A345BAB19D5F03800E3C01F /* TRPhysicalInfo.m in Sources */,
 				0A345AF719D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodeld in Sources */,
 				0A6B8F3E1A0C2B10006AE8A2 /* yajl_encode.c in Sources */,
-				0A345BB219D5F03800E3C01F /* TRVehicleResult.m in Sources */,
-				0A345BAA19D5F03800E3C01F /* TRPersonsResultWrapper.m in Sources */,
-				0A345BB019D5F03800E3C01F /* TRVehicleImageResult.m in Sources */,
 				0A6B8F3C1A0C2B10006AE8A2 /* yajl_alloc.c in Sources */,
 				0A6B8F401A0C2B10006AE8A2 /* yajl_lex.c in Sources */,
 				0A6B8F3A1A0C2B10006AE8A2 /* TRJSONModelLoader.m in Sources */,
-				0A345BA519D5F03800E3C01F /* TRLicenseResultWrapper.m in Sources */,
 				0A6B8F391A0C2B10006AE8A2 /* JSONMorphoModel.m in Sources */,
-				0A345BA219D5F03800E3C01F /* TRIncarcerationResultWrapper.m in Sources */,
 				0A345AF119D5DA9E00E3C01F /* main.m in Sources */,
 				0A6B8F421A0C2B10006AE8A2 /* yajl_tree.c in Sources */,
 				0A6B8F431A0C2B10006AE8A2 /* yajl_version.c in Sources */,
-				0A345B9F19D5F03800E3C01F /* TRDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +389,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A345B1119D5DA9E00E3C01F /* JsonModelGenTestTests.m in Sources */,
+				0AB0D3101A7AFE8500A0639D /* TRName.m in Sources */,
+				0AB0D30F1A7AFE8500A0639D /* TRFriends.m in Sources */,
+				0AB0D3151A7B019700A0639D /* TRTestData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
