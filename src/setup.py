@@ -28,7 +28,7 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=[
-        'Jinja2>=2.7',
+        'Mako>=1.0.1',
         'jsonpointer>=1.4',
         'jsonref>=0.1',
         'jsonschema>=2.4',
