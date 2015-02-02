@@ -1,8 +1,0 @@
-{% import '_defs.jinja' as defs %}
-{%- include '_header.jinja' %}
-
-typedef NS_ENUM(NS_Integer, {{enumDef.name}} ) {
-{% for v in enumDef.values %}
-    {{ v }},
-{%- endfor %}
-};

@@ -8,7 +8,10 @@ import os
 import datetime
 import re
 import jsonref
-from jinja2 import PackageLoader, Environment
+import pkg_resources
+from mako.lookup import TemplateLookup
+from mako import exceptions
+
 from jsonschema import Draft4Validator
 from jsonschema.exceptions import SchemaError
 from shutil import copytree, copy2, rmtree
@@ -136,9 +139,8 @@ def whiteSpaceToCamelCase(matched):
         return ''
 
 
-def firstUpperFilter(var):
-    return var[0].upper() + var[1:]
-
+# def firstUpperFilter(var):
+#     return var[0].upper() + var[1:]
 
 LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
 
@@ -172,10 +174,14 @@ class JsonSchema2Model(object):
         self.prefix = prefix
         self.root_name = root_name
 
-        self.jinja_env = Environment(loader=PackageLoader('tr.jsonschema.jsonschema2model', 'templates.' + self.lang))
-        self.jinja_env.filters['firstupper'] = lambda value:  value[0].upper() + value[1:]
-        self.jinja_env.filters['firstlower'] = lambda value:  value[0].lower() + value[1:]
-        self.jinja_env.tests['equalto'] = lambda value, other: value == other
+        # self.jinja_env = Environment(loader=PackageLoader('tr.jsonschema.jsonschema2model', 'templates.' + self.lang))
+        # self.jinja_env.filters['firstupper'] = lambda value:  value[0].upper() + value[1:]
+        # self.jinja_env.filters['firstlower'] = lambda value:  value[0].lower() + value[1:]
+        # self.jinja_env.tests['equalto'] = lambda value, other: value == other
+
+        template_dir = pkg_resources.resource_filename(__name__,'templates.' + self.lang)
+
+        self.makolookup = TemplateLookup(directories=[template_dir])
 
         self.models = {}
         self.enums = {}
@@ -183,7 +189,7 @@ class JsonSchema2Model(object):
 
         self.lang_templates = {
 
-            'objc': LangTemplates(["class.h.jinja", "class.m.jinja"], 'enum.h.jinja', ["global.h.jinja"])
+            'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["global.h.mako"])
         }
 
 
@@ -208,38 +214,51 @@ class JsonSchema2Model(object):
     def renderModelToFile(self, class_def, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        src_file_name =  class_def.name + os.path.splitext(templ_name.replace('.jinja', ''))[1]
+        src_file_name =  class_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
-        decl_template = self.jinja_env.get_template(templ_name)
+        decl_template = self.makolookup.get_template(templ_name)
 
         with open(outfile_name, 'w') as f:
-            f.write(decl_template.render(classDef=class_def, importFiles=self.import_files,
+
+            try:
+                f.write(decl_template.render(classDef=class_def, importFiles=self.import_files,
                                          timestamp=str(datetime.date.today()), file_name=src_file_name))
+            except:
+                print(exceptions.text_error_template().render())
 
 
     def renderEnumToFile(self, enum_def, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.jinja', ''))[1]
+        src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
-        decl_template = self.jinja_env.get_template(templ_name)
+        decl_template = self.makolookup.get_template(templ_name)
 
         with open(outfile_name, 'w') as f:
-            f.write(decl_template.render(enumDef=enum_def, importFiles=self.import_files,
+
+            try:
+                f.write(decl_template.render(enumDef=enum_def, importFiles=self.import_files,
                                          timestamp=str(datetime.date.today()), file_name=src_file_name))
+            except:
+                print(exceptions.text_error_template().render())
+
 
     def renderGlobalHeader(self, models, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        src_file_name = self.prefix + "Models" + os.path.splitext(templ_name.replace('.jinja', ''))[1]
+        src_file_name = self.prefix + "Models" + os.path.splitext(templ_name.replace('.mako', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
-        decl_template = self.jinja_env.get_template(templ_name)
+        decl_template = self.makolookup.get_template(templ_name)
 
         with open(outfile_name, 'w') as f:
-            f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()), file_name=src_file_name))
+            try:
+                f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()), file_name=src_file_name))
+            except:
+                print(exceptions.text_error_template().render())
+
 
     def includeSupportFiles(self):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'dependencies')
