@@ -174,11 +174,6 @@ class JsonSchema2Model(object):
         self.prefix = prefix
         self.root_name = root_name
 
-        # self.jinja_env = Environment(loader=PackageLoader('tr.jsonschema.jsonschema2model', 'templates.' + self.lang))
-        # self.jinja_env.filters['firstupper'] = lambda value:  value[0].upper() + value[1:]
-        # self.jinja_env.filters['firstlower'] = lambda value:  value[0].lower() + value[1:]
-        # self.jinja_env.tests['equalto'] = lambda value, other: value == other
-
         template_dir = pkg_resources.resource_filename(__name__,'templates.' + self.lang)
 
         self.makolookup = TemplateLookup(directories=[template_dir])
@@ -222,8 +217,10 @@ class JsonSchema2Model(object):
         with open(outfile_name, 'w') as f:
 
             try:
-                f.write(decl_template.render(classDef=class_def, importFiles=self.import_files,
-                                         timestamp=str(datetime.date.today()), file_name=src_file_name))
+                f.write(decl_template.render(classDef=class_def, import_files=self.import_files,
+                        include_additional_properties=self.include_additional_properties,
+                        timestamp=str(datetime.date.today()), file_name=src_file_name,
+                ))
             except:
                 print(exceptions.text_error_template().render())
 
@@ -239,8 +236,10 @@ class JsonSchema2Model(object):
         with open(outfile_name, 'w') as f:
 
             try:
-                f.write(decl_template.render(enumDef=enum_def, importFiles=self.import_files,
-                                         timestamp=str(datetime.date.today()), file_name=src_file_name))
+                f.write(decl_template.render(enumDef=enum_def, import_files=self.import_files,
+                        timestamp=str(datetime.date.today()), file_name=src_file_name,
+                        include_additional_properties=self.include_additional_properties
+                ))
             except:
                 print(exceptions.text_error_template().render())
 
@@ -255,7 +254,10 @@ class JsonSchema2Model(object):
 
         with open(outfile_name, 'w') as f:
             try:
-                f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()), file_name=src_file_name))
+                f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()),
+                        include_additional_properties=self.include_additional_properties,
+                        file_name=src_file_name
+                ))
             except:
                 print(exceptions.text_error_template().render())
 

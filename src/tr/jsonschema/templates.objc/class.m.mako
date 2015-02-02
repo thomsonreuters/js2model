@@ -28,30 +28,30 @@
     % if len(props):
         [self.${dictName} addEntriesFromDictionary: @{
         % for v in props:
-            <%
-            propName = base.attr.normalize_prop_name(v.name)
-            setter = 'set' + base.attr.firstupper(propName)
-            getter = propName
-            %>\
-            % if v.isArray:
-            <%
-                (varType, isRef, itemsType) = base.attr.convertType(v)
-            %>\
-            @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
-                                                     setter:@selector(${setter}:)
-                                                     type:[${ varType.replace(' *','') } class]
-                                                 itemType:[${ itemsType.replace(' *','') } class]],
-            % elif v.schema_type == "object":
-            <%
-                (varType, isRef, itemsType) = base.attr.convertType(v)
-            %>\
-            @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
-                                                     setter:@selector(${setter}:)
-                                                       type:[${ varType.replace(' *','') } class]],
-            % else:
-            @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
-                                                     setter:@selector(${setter}:)],
-            % endif
+        <%
+        propName = base.attr.normalize_prop_name(v.name)
+        setter = 'set' + base.attr.firstupper(propName)
+        getter = propName
+        %>\
+        % if v.isArray:
+        <%
+            (varType, isRef, itemsType) = base.attr.convertType(v)
+        %>\
+        @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
+                                                 setter:@selector(${setter}:)
+                                                 type:[${ varType.replace(' *','') } class]
+                                             itemType:[${ itemsType.replace(' *','') } class]],
+        % elif v.schema_type == "object":
+        <%
+            (varType, isRef, itemsType) = base.attr.convertType(v)
+        %>\
+        @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
+                                                 setter:@selector(${setter}:)
+                                                   type:[${ varType.replace(' *','') } class]],
+        % else:
+        @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
+                                                 setter:@selector(${setter}:)],
+        % endif
         % endfor
         }];
     % endif
@@ -67,7 +67,7 @@ ${ metaProps("booleans", [v for v in classDef.variable_defs if v.schema_type == 
 ## ${ metaProps("numbers", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }
 ${ metaProps("numbers", [v for v in classDef.variable_defs if v.schema_type == 'number']) }
 ## ${ metaProps("integers", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }
-${ metaProps("intergers", [v for v in classDef.variable_defs if v.schema_type == 'integer']) }
+${ metaProps("integers", [v for v in classDef.variable_defs if v.schema_type == 'integer']) }
     }
     return self;
 }
@@ -76,7 +76,9 @@ ${ metaProps("intergers", [v for v in classDef.variable_defs if v.schema_type ==
 static ${metaClassName} *${metaClassVar};
 
 @implementation ${classDef.name}{
+    % if include_additional_properties:
     NSMutableDictionary *_additionalProperties;
+    % endif
 }
 
 +(void)initialize {
@@ -93,10 +95,12 @@ static ${metaClassName} *${metaClassVar};
     self = [super init];
     if (self) {
     	// custom intialization code
+        % if include_additional_properties:
         _additionalProperties = [NSMutableDictionary new];
+        % endif
 
 % for v in classDef.variable_defs:
-${ base.initVarToDefault(v) }
+${ base.initVarToDefault(v) }\
 % endfor
     }
     return self;
@@ -127,9 +131,8 @@ ${ base.initVarToDefault(v) }
     }
     return self;
 }
-
 % for v in classDef.variable_defs:
-${ base.lazyPropGetter(v) }
+${ base.lazyPropGetter(v) }\
 % endfor
 
 - (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName {
@@ -166,16 +169,29 @@ ${ base.lazyPropGetter(v) }
 }
 
 -(NSMutableDictionary*)additionalProperties {
+% if include_additional_properties:
     return _additionalProperties;
+% else:
+    [NSException raise:@"Method not implemented" format:@"additionalProperties is not implemented. Additional property support was disabled when generating this class."];
+    return nil;
+% endif
 }
 
 -(void)setValue:(id)value forAdditionalProperty:(NSString*)propertyName {
+% if include_additional_properties:
     [_additionalProperties setObject:value forKey:propertyName];
+% else:
+    [NSException raise:@"Method not implemented" format:@"setValue:forAdditionalProperty: is not implemented". Additional property support was disabled when generating this class.];
+% endif
 }
 
 -(id)valueForAdditionalProperty:(NSString*)propertyName {
+% if include_additional_properties:
     return [_additionalProperties valueForKey:propertyName];
+% else:
+    [NSException raise:@"Method not implemented" format:@"valueForAdditionalProperty is not implemented". Additional property support was disabled when generating this class.];
+    return nil;
+% endif
 }
-
 @end
 </%block>

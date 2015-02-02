@@ -100,23 +100,24 @@ Convert a JSON type to an Objective C type.
 @property(${ref_attrib}nonatomic) ${varType} ${normalize_prop_name(variableDef.name)};\
 </%def>\
 <%def name='lazyPropGetter(variableDef, usePrimitives=False)'>\
-    <%
-    (varType, isRef, itemsType) = convertType(variableDef, usePrimitives)
-    %>\
-    % if varType == "NSDictionary *" or varType == "NSMutableArray *":
-        <%
-        prop_name = variableDef.name
-        ivar_name = '_' + prop_name
-        prop_classname = varType.replace(' *','')
-        %>\
-        -(${varType}) ${prop_name} {
+<%
+(varType, isRef, itemsType) = convertType(variableDef, usePrimitives)
+%>\
+% if varType == "NSDictionary *" or varType == "NSMutableArray *":
+<%
+prop_name = variableDef.name
+ivar_name = '_' + prop_name
+prop_classname = varType.replace(' *','')
+%>\
+-(${varType}) ${prop_name} {
 
-        if( ! ${ivar_name} ) {
-            ${ivar_name} = [${prop_classname} new];
-        }
+    if( ! ${ivar_name} ) {
+        ${ivar_name} = [${prop_classname} new];
+    }
 
-        return ${ivar_name};
-    % endif
+    return ${ivar_name};
+}
+% endif
 </%def>\
 <%def name='initVarToDefault(variableDef, usePrimitives=False)'>\
     <%

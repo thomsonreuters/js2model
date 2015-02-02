@@ -3,9 +3,9 @@
 <%block name="code">
 #import <Foundation/Foundation.h>
 #import "JSONModelSchema.h"
-% if importFiles:
-% for importFile in importFiles:
-#import <${importFile}>
+% if import_files:
+% for import_file in import_files:
+#import <${import_file}>
 % endfor
 % endif
 % if classDef.superTypes:

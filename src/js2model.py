@@ -15,14 +15,13 @@ def main():
     parser.add_argument('--rootname', default=None, help='Class name for root schema object (default: fileName)')
     parser.add_argument('-p', '--primitives', action='store_true', default=False,
                         help='Use primitive types in favor of object wrappers')
-    parser.add_argument('-x', '--noadditional', action='store_false', default=True,
-                        help='Do not include additionalProperties in models')
+    parser.add_argument('--additional', action='store_true', default=False, help='Include additionalProperties in models')
     parser.add_argument('--novalidate', action='store_true', default=False, help='Skip schema validation')
     parser.add_argument('-o', '--output', default='output', help='Target directory of output files')
     parser.add_argument('--implements', default=None,
                         help='Comma separated list of interface(s)|protocol(s) supported by the generated classes')
     parser.add_argument('--super', default=None, help='Comma separated list of super classes. Generated classes inherit these')
-    parser.add_argument('--import', dest='importFiles', default=None, help='Comma separated list of files to @import ')
+    parser.add_argument('--import', dest='import_files', default=None, help='Comma separated list of files to @import ')
 
     # LATER: I decided this might be too dangerously destructive if not done right. Needs more thought.
     #parser.add_argument('--purge', action='store_true', default=False, help='Delete existing files from output directory')
@@ -50,10 +49,10 @@ def main():
                                  lang=args.lang,
                                  prefix=args.prefix,
                                  root_name=args.rootname,
-                                 import_files=args.importFiles.split(',') if args.importFiles else [],
+                                 import_files=args.import_files.split(',') if args.import_files else [],
                                  super_classes=args.super.split(',') if args.super else [],
                                  interfaces=args.implements.split(',') if args.implements else [],
-                                 include_additional_properties=not args.noadditional,
+                                 include_additional_properties=args.additional,
                                  validate=args.novalidate
     )
 
