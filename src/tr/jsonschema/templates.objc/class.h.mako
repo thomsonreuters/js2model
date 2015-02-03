@@ -18,11 +18,13 @@
 @class ${dep}; \
 % endfor
 % endif
+% if not skip_deserialization:
 <%
     schemaSuperClass = "%sSchema" % (classDef.superClasses[0] if len(classDef.superClasses) else 'JSONModel')
 %>
 @interface ${classDef.name}Schema : ${schemaSuperClass}
 @end
+% endif
 <%
     superClass = classDef.superClasses[0] if len(classDef.superClasses) else 'NSObject'
     protocols =  '<JSONModelSerialize' + ( (',' + classDef.interfaces|join(', ')) if classDef.interfaces else '') + '>'

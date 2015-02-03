@@ -23,6 +23,8 @@ def main():
     parser.add_argument('--super', default=None, help='Comma separated list of super classes. Generated classes inherit these')
     parser.add_argument('--import', dest='import_files', default=None, help='Comma separated list of files to @import ')
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', default=False, help='Print actions to STDOUT.')
+    parser.add_argument('--no-deserialize', dest='no_deserialize', action='store_true', default=False, help='Do not generate deserialization code. Implies --no-dependencies.')
+    parser.add_argument('--no-dependencies', dest='no_dependencies', action='store_true', default=False, help='Do not include dependencies in output.')
 
     # LATER: I decided this might be too dangerously destructive if not done right. Needs more thought.
     #parser.add_argument('--purge', action='store_true', default=False, help='Delete existing files from output directory')
@@ -55,10 +57,12 @@ def main():
                                  interfaces=args.implements.split(',') if args.implements else [],
                                  include_additional_properties=args.additional,
                                  validate=args.novalidate,
-                                 verbose=args.verbose
+                                 verbose=args.verbose,
+                                 skip_deserialization=args.no_deserialize,
+                                 include_dependencies=not args.no_dependencies
     )
 
-    generator.generateModels(files, include_support_files=True)
+    generator.generateModels(files)
 
     return 0
 

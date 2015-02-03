@@ -11,7 +11,8 @@
 
 #define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
 
-<% 
+% if not skip_deserialization:
+<%
     metaClassName = classDef.name + "Schema"
     metaClassVar = classDef.name + "SchemaInstance" 
 %>\
@@ -74,6 +75,7 @@ ${ metaProps("integers", [v for v in classDef.variable_defs if v.schema_type == 
 @end
 
 static ${metaClassName} *${metaClassVar};
+% endif
 
 @implementation ${classDef.name}{
     % if include_additional_properties:
@@ -81,6 +83,7 @@ static ${metaClassName} *${metaClassVar};
     % endif
 }
 
+% if not skip_deserialization:
 +(void)initialize {
 
     if( self == [${classDef.name} class] )
@@ -88,6 +91,7 @@ static ${metaClassName} *${metaClassVar};
         ${metaClassVar} = [${metaClassName} new];
     }
 }
+% endif
 
 % if classDef.hasVarDefaults:
 - (instancetype)init
@@ -107,6 +111,7 @@ ${ base.initVarToDefault(v) }\
 }
 % endif
 
+% if not skip_deserialization:
 - (instancetype) initWithJSONData:(NSData *)data
                             error:(NSError* __autoreleasing *)error {
     self = [self init];
@@ -131,10 +136,11 @@ ${ base.initVarToDefault(v) }\
     }
     return self;
 }
+% endif
 % for v in classDef.variable_defs:
 ${ base.lazyPropGetter(v) }\
 % endfor
-
+% if not skip_deserialization:
 - (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName {
 
     return [${metaClassVar} objectForPropertyNamed:propertyName forInstance:self];
@@ -167,6 +173,7 @@ ${ base.lazyPropGetter(v) }\
 +(JSONModelSchema *)modelSchema {
     return ${metaClassVar} ;
 }
+% endif
 
 -(NSMutableDictionary*)additionalProperties {
 % if include_additional_properties:
@@ -181,7 +188,7 @@ ${ base.lazyPropGetter(v) }\
 % if include_additional_properties:
     [_additionalProperties setObject:value forKey:propertyName];
 % else:
-    [NSException raise:@"Method not implemented" format:@"setValue:forAdditionalProperty: is not implemented". Additional property support was disabled when generating this class.];
+    [NSException raise:@"Method not implemented" format:@"setValue:forAdditionalProperty: is not implemented. Additional property support was disabled when generating this class."];
 % endif
 }
 
@@ -189,7 +196,7 @@ ${ base.lazyPropGetter(v) }\
 % if include_additional_properties:
     return [_additionalProperties valueForKey:propertyName];
 % else:
-    [NSException raise:@"Method not implemented" format:@"valueForAdditionalProperty is not implemented". Additional property support was disabled when generating this class.];
+    [NSException raise:@"Method not implemented" format:@"valueForAdditionalProperty is not implemented. Additional property support was disabled when generating this class."];
     return nil;
 % endif
 }

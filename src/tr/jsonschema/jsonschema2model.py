@@ -151,7 +151,9 @@ class JsonSchema2Model(object):
 
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
                  include_additional_properties=True,
-                 lang='objc', prefix='TR', root_name=None, validate=True, verbose=False):
+                 lang='objc', prefix='TR', root_name=None, validate=True, verbose=False,
+                 skip_deserialization=False, include_dependencies=True
+    ):
 
         """
 
@@ -163,6 +165,9 @@ class JsonSchema2Model(object):
         :param lang:
         :param prefix:
         :param root_name:
+        :param validate:
+        :param verbose:
+        :param skip_deserialization:
         """
         self.validate = validate
         self.outdir = outdir
@@ -174,6 +179,8 @@ class JsonSchema2Model(object):
         self.prefix = prefix
         self.root_name = root_name
         self.verbose = verbose
+        self.skip_deserialization = skip_deserialization
+        self.include_dependencies = include_dependencies
 
         template_dir = pkg_resources.resource_filename(__name__,'templates.' + self.lang)
 
@@ -225,6 +232,7 @@ class JsonSchema2Model(object):
                 f.write(decl_template.render(classDef=class_def, import_files=self.import_files,
                         include_additional_properties=self.include_additional_properties,
                         timestamp=str(datetime.date.today()), file_name=src_file_name,
+                        skip_deserialization=self.skip_deserialization
                 ))
             except:
                 print(exceptions.text_error_template().render())
@@ -269,9 +277,13 @@ class JsonSchema2Model(object):
                 print(exceptions.text_error_template().render())
 
 
-    def includeSupportFiles(self):
+    def copyDependencies(self):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'dependencies')
-        self.copyFiles(support_path,  os.path.join(self.outdir, 'dependencies'))
+        self.copyFiles(support_path, os.path.join(self.outdir, 'dependencies'))
+
+    def copyStaticFiles(self):
+        support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'static')
+        self.copyFiles(support_path, self.outdir)
 
 
     @staticmethod
@@ -496,7 +508,7 @@ class JsonSchema2Model(object):
 
         return class_name
 
-    def generateModels(self, files, include_support_files=False):
+    def generateModels(self, files):
 
         loader = JmgLoader()
 
@@ -533,5 +545,7 @@ class JsonSchema2Model(object):
 
         self.renderModels()
 
-        if include_support_files:
-            self.includeSupportFiles()
+        self.copyStaticFiles()
+
+        if self.include_dependencies:
+            self.copyDependencies()
