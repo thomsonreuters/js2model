@@ -11,7 +11,7 @@ setup(
     version='0.1-dev',
     packages=['tr', 'tr.jsonschema'],
     package_data={'tr.jsonschema': [
-        'templates.objc/*.jinja',
+        'templates.objc/*.mako',
         'templates.objc/dependencies/*.h',
         'templates.objc/dependencies/*.c',
         'templates.objc/dependencies/*.m',
