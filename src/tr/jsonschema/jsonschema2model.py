@@ -151,7 +151,7 @@ class JsonSchema2Model(object):
 
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
                  include_additional_properties=True,
-                 lang='objc', prefix='TR', root_name=None, validate=True):
+                 lang='objc', prefix='TR', root_name=None, validate=True, verbose=False):
 
         """
 
@@ -173,6 +173,7 @@ class JsonSchema2Model(object):
         self.lang = lang
         self.prefix = prefix
         self.root_name = root_name
+        self.verbose = verbose
 
         template_dir = pkg_resources.resource_filename(__name__,'templates.' + self.lang)
 
@@ -187,6 +188,9 @@ class JsonSchema2Model(object):
             'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["global.h.mako"])
         }
 
+    def verboseOutput(self,message):
+        if self.verbose:
+            print(message)
 
     def renderModels(self):
 
@@ -217,6 +221,7 @@ class JsonSchema2Model(object):
         with open(outfile_name, 'w') as f:
 
             try:
+                self.verboseOutput("Writing %s" % outfile_name)
                 f.write(decl_template.render(classDef=class_def, import_files=self.import_files,
                         include_additional_properties=self.include_additional_properties,
                         timestamp=str(datetime.date.today()), file_name=src_file_name,
@@ -236,6 +241,7 @@ class JsonSchema2Model(object):
         with open(outfile_name, 'w') as f:
 
             try:
+                self.verboseOutput("Writing %s" % outfile_name)
                 f.write(decl_template.render(enumDef=enum_def, import_files=self.import_files,
                         timestamp=str(datetime.date.today()), file_name=src_file_name,
                         include_additional_properties=self.include_additional_properties
@@ -254,6 +260,7 @@ class JsonSchema2Model(object):
 
         with open(outfile_name, 'w') as f:
             try:
+                self.verboseOutput("Writing %s" % outfile_name)
                 f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()),
                         include_additional_properties=self.include_additional_properties,
                         file_name=src_file_name
