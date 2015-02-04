@@ -77,10 +77,14 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 @property (nonatomic) NSString *lastMapKey;
 @property (copy, nonatomic) TRJsonCompletedBlock onCompletionBlock;
 @property (strong, nonatomic) id object;
+@property (strong, nonatomic) NSMutableArray *objects;
+@property (nonatomic) BOOL isArray;
 
 -(id)initWithObject:(id)object;
 
 -(BOOL)loadData:(NSData*)jsonData error:(NSError * __autoreleasing *)error;
+
+-(NSArray*)loadArrayFromData:(NSData*)jsonData error:(NSError * __autoreleasing *)error;
 
 -(void)loadURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
     onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock;
@@ -96,25 +100,34 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 
 @implementation TRJSONModelLoader
 
-- (id) initWithObject:(id)object {
+- (id) initWithObject:(id)instance {
 	if(self = [super init])
     {
-        _jsonPrivLoader = [[TRJsonLoaderPrivate alloc] initWithObject:object];
+        _jsonPrivLoader = [[TRJsonLoaderPrivate alloc] initWithObject:instance];
     }
     
 	return self;
 }
 
-+ (id) load:(id)object withJSONData:(NSData*)data
++ (id) load:(id)instance withJSONData:(NSData*)data
                      error:(NSError* __autoreleasing *)error {
     
-    TRJSONModelLoader *jil = [[TRJSONModelLoader alloc] initWithObject:object];
+    TRJSONModelLoader *jil = [[TRJSONModelLoader alloc] initWithObject:instance];
     [jil.jsonPrivLoader loadData:data error:error];
     
     return jil.jsonPrivLoader.object;
 }
 
-+ (id) load:(id)object
++(NSArray*) loadArrayOf:(id)instance
+           withJSONData:(NSData *)data
+                  error:(NSError* __autoreleasing *)error {
+    
+    TRJSONModelLoader *jil = [[TRJSONModelLoader alloc] initWithObject:instance];
+    return [jil.jsonPrivLoader loadArrayFromData:data error:error];
+}
+
+
++ (id) load:(id)instance
      withJSONFromFileNamed:(NSString*)filename
                      error:(NSError* __autoreleasing *)error {
     
@@ -128,8 +141,26 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
     
     NSData *jsonData = [NSData dataWithContentsOfFile:filePath];
     
-    return [self load:object withJSONData:jsonData error:error];
+    return [self load:instance withJSONData:jsonData error:error];
 }
+
++(NSArray*) loadArrayOf:(id)instance withJSONFromFileNamed:(NSString *)filename
+            error:(NSError* __autoreleasing *)error {
+    
+    NSString * filePath = [[NSBundle bundleForClass:[self class] ] pathForResource:filename ofType:nil];
+    
+    if( filePath == nil && error != NULL )
+    {
+        *error = [NSError errorWithDomain:kJSONLoadedErrorDomain code:0 userInfo:nil];
+        return nil;
+    }
+    
+    NSData *jsonData = [NSData dataWithContentsOfFile:filePath];
+    
+    return [self loadArrayOf:instance withJSONData:jsonData error:error];
+}
+
+
 
 + (void) load:(id)object withUrl:(NSURL*)url
                      cachePolicy:(NSURLRequestCachePolicy)cachePolicy
@@ -287,6 +318,7 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
 
 -(BOOL)loadData:(NSData*)jsonData error:(NSError * __autoreleasing *)error {
     
+    self.isArray = NO;
     BOOL success = YES;
     yajl_status stat = yajl_parse(_parser_handle,(const unsigned char *) [jsonData bytes], (size_t) [jsonData length]);
     if (stat != yajl_status_ok && error != NULL){
@@ -296,9 +328,20 @@ NSString * const kJSONLoadedErrorDomain = @"JSONLoadedError";
     return success;
 }
 
+-(NSArray*)loadArrayFromData:(NSData *)jsonData error:(NSError *__autoreleasing *)error {
+
+    self.isArray = YES;
+    yajl_status stat = yajl_parse(_parser_handle,(const unsigned char *) [jsonData bytes], (size_t) [jsonData length]);
+    if (stat != yajl_status_ok && error != NULL){
+        *error = [TRJsonLoaderPrivate createNSErrorForYAJLParser:_parser_handle usingJSON:jsonData andStatus:stat];
+    }
+    return self.objects;
+}
+
 -(void)loadURL:(NSURL*)url cachePolicy:(NSURLRequestCachePolicy)cachePolicy
 onCompletionBlock:(TRJsonCompletedBlock)onCompletionBlock{
     
+    self.isArray = NO;
     self.onCompletionBlock = onCompletionBlock;
     
     NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:cachePolicy timeoutInterval:60];
@@ -397,7 +440,7 @@ static int _start_map(void * ctx) {
         
         if ( top.propertyMeta && top.propertyMeta.isArray) {
             
-            JSONInstanceMeta *instanceMeta = [JSONInstanceMeta initWithInstance:[top.propertyMeta newItemObject] propertyMeta:[JSONPropertyMeta initWithGetter:NULL setter:NULL type:top.propertyMeta.itemType]];
+            JSONInstanceMeta *instanceMeta = [JSONInstanceMeta initWithInstance:[top.propertyMeta newItemObject] propertyMeta:[JSONPropertyMeta propertyMetaWithGetter:NULL setter:NULL type:top.propertyMeta.itemType]];
             [(NSMutableArray*)top.instance addObject:instanceMeta.instance];
             [loader pushContext:instanceMeta];
         }
@@ -441,24 +484,32 @@ static int _end_map(void * ctx){
 static int _start_array(void * ctx){
     TRJsonLoaderPrivate *loader = (__bridge TRJsonLoaderPrivate*)ctx;
     
-    __unsafe_unretained JSONInstanceMeta *top = [loader.context count] == 0 ? nil : [loader.context peek];
-    
-    NSCAssert(top != nil, @"Not expecting empty context stack");
-    NSCAssert(loader.lastMapKey, @"Expecting a key map");
+    if (loader.isArray && [loader.context count] == 0) {
 
-    if (top.propertyMeta && top.propertyMeta.isArray) {
-        [loader pushContext: [JSONInstanceMeta initWithInstance:[top.propertyMeta newItemObject] propertyMeta:[JSONPropertyMeta initWithGetter:NULL setter:NULL type:top.propertyMeta.itemType]]];
+        loader.objects = [NSMutableArray new];
+
+        [loader pushContext: [JSONInstanceMeta initWithInstance:loader.objects propertyMeta:[JSONPropertyMeta propertyMetaAsArrayWithItemType:[loader.object class]]]];
     }
     else {
-        JSONInstanceMeta *array = [top.instance arrayForPropertyNamed:[loader lastMapKey]];
-        if( array ) {
-            [loader pushContext:array];
+        __unsafe_unretained JSONInstanceMeta *top = [loader.context count] == 0 ? nil : [loader.context peek];
+        
+        NSCAssert(top != nil, @"Not expecting empty context stack");
+        NSCAssert(loader.lastMapKey, @"Expecting a key map");
+
+        if (top.propertyMeta && top.propertyMeta.isArray) {
+            [loader pushContext: [JSONInstanceMeta initWithInstance:[top.propertyMeta newItemObject] propertyMeta:[JSONPropertyMeta propertyMetaWithGetter:NULL setter:NULL type:top.propertyMeta.itemType]]];
         }
         else {
-            NSCAssert(NO, @"Expected an Array type");
+            JSONInstanceMeta *array = [top.instance arrayForPropertyNamed:[loader lastMapKey]];
+            if( array ) {
+                [loader pushContext:array];
+            }
+            else {
+                NSCAssert(NO, @"Expected an Array type");
+            }
         }
     }
-
+    
     return 1;
 }
 

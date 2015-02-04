@@ -27,23 +27,45 @@ typedef void(^TRJsonCompletedBlock)(NSError *error);
 
 /** Parses JSON data and creates an Objective-C instance.
  
- @param cls Class type of top-most instance.
+ @param instance instance of top-most type.
  @param data JSON data to be parsed.
  @param error Non-nil if any parsings errors occured.
  */
-+(id) load:(id)object
++(id) load:(id)instance
               withJSONData:(NSData *)data
                      error:(NSError* __autoreleasing *)error;
 
+
+/** Parses JSON data and creates an array of Objective-C instances.
+
+ The top level JSON structure should be an array, with items of the type described by the object parameter.
+ 
+ @param instance instance of top-most type.
+ @param data JSON data to be parsed.
+ @param error Non-nil if any parsings errors occured.
+ */
++(NSArray*) loadArrayOf:(id)object withJSONData:(NSData *)data
+                  error:(NSError* __autoreleasing *)error;
+
 /** Parses JSON data and creates an Objective-C instance.
  
- @param cls Class type of top-most instance.
+ @param instance instance of top-most type.
  @param filename Name of file with JSON data to be parsed.
  @param error Non-nil if any parsings errors occured.
  */
-+(id) load:(id)object
-     withJSONFromFileNamed:(NSString *)filename
-                     error:(NSError* __autoreleasing *)error;
++(id) load:(id)object withJSONFromFileNamed:(NSString *)filename
+     error:(NSError* __autoreleasing *)error;
+
+/** Parses JSON data and creates an Objective-C instance.
+
+ The top level JSON structure should be an array, with items of the type described by the object parameter.
+
+ @param instance instance of top-most type.
+ @param filename Name of file with JSON data to be parsed.
+ @param error Non-nil if any parsings errors occured.
+ */
++(NSArray*) loadArrayOf:(id)instance withJSONFromFileNamed:(NSString *)filename
+        error:(NSError* __autoreleasing *)error;
 
 /**---------------------------------------------------------------------------
  * @name Creating a single instance from a URL request
@@ -52,7 +74,7 @@ typedef void(^TRJsonCompletedBlock)(NSError *error);
 
 /** Requests JSON data from a URL, parses, and creates an Objective-C instance.
  
- @param cls Class type of top-most instance.
+ @param object Meta class type of top-most instance.
  @param url URL to be used to request the JSON data to be parsed.
  @param cachePolicy Cache policy to be applied to NSURLRequest ued to make request.
  @param onCompletionBlock Block to be called when parsing operation completes.

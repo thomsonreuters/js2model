@@ -2,7 +2,8 @@
 Utility functions
 </%doc>\
 <%!
-##    firstlower = lambda value:  value[0].lower() + value[1:]
+def firstlower(value):
+  return value[0].lower() + value[1:]
 ##
 ##    equalto = lambda value, other: value == other
 

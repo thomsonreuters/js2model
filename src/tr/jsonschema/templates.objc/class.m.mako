@@ -38,7 +38,7 @@
         <%
             (varType, isRef, itemsType) = base.attr.convertType(v)
         %>\
-        @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
+        @"${v.json_name}": [JSONPropertyMeta propertyMetaWithGetter:@selector(${getter})
                                                  setter:@selector(${setter}:)
                                                  type:[${ varType.replace(' *','') } class]
                                              itemType:[${ itemsType.replace(' *','') } class]],
@@ -46,11 +46,11 @@
         <%
             (varType, isRef, itemsType) = base.attr.convertType(v)
         %>\
-        @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
+        @"${v.json_name}": [JSONPropertyMeta propertyMetaWithGetter:@selector(${getter})
                                                  setter:@selector(${setter}:)
                                                    type:[${ varType.replace(' *','') } class]],
         % else:
-        @"${v.name}": [JSONPropertyMeta initWithGetter:@selector(${getter})
+        @"${v.json_name}": [JSONPropertyMeta propertyMetaWithGetter:@selector(${getter})
                                                  setter:@selector(${setter}:)],
         % endif
         % endfor
@@ -60,7 +60,7 @@
 ## {%- set objectVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|rejectattr("isArray")|list -%}
 ${ metaProps("objects", [v for v in classDef.variable_defs if v.schema_type == 'object' and not v.isArray]) }
 ## {%- set arrayVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|selectattr("isArray")|list -%}
-${ metaProps("arrays", [v for v in classDef.variable_defs if  v.schema_type == 'object' and v.isArray]) }
+${ metaProps("arrays", [v for v in classDef.variable_defs if v.isArray]) }
 ## ${ metaProps("strings", classDef.variable_defs|selectattr("schema_type", "equalto", "string")|list) }
 ${ metaProps("strings", [v for v in classDef.variable_defs if v.schema_type == 'string']) }
 ## ${ metaProps("booleans", classDef.variable_defs|selectattr("schema_type", "equalto", "boolean")|list) }
@@ -135,6 +135,32 @@ ${ base.initVarToDefault(v) }\
         [TRJSONModelLoader load:self withJSONFromFileNamed:filename error:error];
     }
     return self;
+}
+<%
+staticInitName = classDef.name_sans_prefix
+%>\
++ (instancetype) ${staticInitName}WithJSONData:(NSData *)data
+                                error:(NSError* __autoreleasing *)error {
+
+    return [[self alloc] initWithJSONData:data error:error];
+}
+
++ (instancetype) ${staticInitName}WithJSONFromFileNamed:(NSString *)filename
+                                         error:(NSError* __autoreleasing *)error {
+
+    return [[self alloc] initWithJSONFromFileNamed:filename error:error];
+}
+
++(NSArray*) ${staticInitName}ArrayWithJSONData:(NSData *)data
+                                error:(NSError* __autoreleasing *)error {
+
+    return [TRJSONModelLoader loadArrayOf:[${classDef.name} new] withJSONData:data error:error];
+}
+
++(NSArray*) ${staticInitName}ArrayWithJSONFromFileNamed:(NSString *)filename
+                                         error:(NSError* __autoreleasing *)error {
+
+    return [TRJSONModelLoader loadArrayOf:[${classDef.name} new] withJSONFromFileNamed:filename error:error];
 }
 % endif
 % for v in classDef.variable_defs:

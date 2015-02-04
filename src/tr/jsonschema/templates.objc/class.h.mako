@@ -34,6 +34,27 @@
 % for v in classDef.variable_defs:
 ${base.propertyDecl(v)}
 % endfor
+% if not skip_deserialization:
+<%
+staticInitName = classDef.name_sans_prefix
+%>\
+-(instancetype) initWithJSONData:(NSData *)data
+                            error:(NSError* __autoreleasing *)error;
 
+-(instancetype) initWithJSONFromFileNamed:(NSString *)filename
+                                     error:(NSError* __autoreleasing *)error;
+
++(instancetype) ${staticInitName}WithJSONData:(NSData *)data
+                                error:(NSError* __autoreleasing *)error;
+
++(instancetype) ${staticInitName}WithJSONFromFileNamed:(NSString *)filename
+                                         error:(NSError* __autoreleasing *)error;
+
++(NSArray*) ${staticInitName}ArrayWithJSONData:(NSData *)data
+                                error:(NSError* __autoreleasing *)error;
+
++(NSArray*) ${staticInitName}ArrayWithJSONFromFileNamed:(NSString *)filename
+                                         error:(NSError* __autoreleasing *)error;
+% endif
 @end
 </%block>

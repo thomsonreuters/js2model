@@ -30,6 +30,16 @@
     return [self initWithGetter:getter setter:setter type:nil];
 }
 
+-(instancetype)initAsArrayWithItemType:(Class) itemType {
+    self = [self initWithGetter:nil setter:nil type:[NSMutableArray class] itemType:itemType];
+    
+    if(self) {
+        _isArray = YES;
+    }
+    return self;
+}
+
+
 -(id)newObject {
     return [[self.type alloc] init];
 }
@@ -38,16 +48,20 @@
     return self.itemType ? [[self.itemType alloc] init] : nil;
 }
 
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType {
++(instancetype)propertyMetaWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType {
     return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter type:type itemType:itemType];
 }
 
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) initBlock {
++(instancetype)propertyMetaWithGetter:(SEL)getter setter:(SEL)setter type:(Class) initBlock {
     return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter type:initBlock];
 }
 
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter {
++(instancetype)propertyMetaWithGetter:(SEL)getter setter:(SEL)setter {
     return [[JSONPropertyMeta alloc] initWithGetter:getter setter:setter];
+}
+
++(instancetype)propertyMetaAsArrayWithItemType:(Class)itemType {
+    return [[self alloc] initAsArrayWithItemType:itemType];
 }
 
 @end

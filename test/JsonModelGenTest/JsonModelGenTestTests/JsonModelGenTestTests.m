@@ -40,7 +40,7 @@
     [self measureBlock:^{
         
         for (NSString *jsonPath in jsonPaths) {
-            
+    
             NSString *jsonFilename = [jsonPath lastPathComponent];
             
             NSString *baseName = [jsonFilename stringByDeletingPathExtension];
@@ -58,7 +58,7 @@
                 NSError *error;
                 id<JSONModelSerialize> object = [ ((id<JSONModelSerialize>)[cls alloc]) initWithJSONData:jsonData error:&error];
                 
-                //[TRJsonLoader load:object withJSONFromFileNamed:jsonFilename error:&error];
+                [TRJSONModelLoader load:object withJSONFromFileNamed:jsonFilename error:&error];
 
                 XCTAssertNil(error, @"Error while loading %@",jsonFilename);
 
@@ -102,6 +102,34 @@
             }
         }
     }];
+}
+
+-(void)testLoadJsonArray {
+    
+    NSString *jsonPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"js2model-test-data" ofType:@"json"];
+    
+    NSString *jsonFilename = [jsonPath lastPathComponent];
+    
+    NSData *jsonData = [NSData dataWithContentsOfFile:jsonPath];
+    
+    NSError *error;
+    NSArray* instances = [TRTestData testDataArrayWithJSONData:jsonData error:&error];
+    
+    XCTAssertNotNil(instances, @"Error while loading %@",jsonFilename);
+    XCTAssertNil(error, @"Error while loading %@",jsonFilename);
+
+    if (!error) {
+        XCTAssertEqualObjects(((TRTestData*)instances[0]).favoriteFruit, @"banana");
+        XCTAssertEqualObjects(((TRTestData*)instances[1]).favoriteFruit, @"strawberry");
+        XCTAssertEqualObjects(((TRTestData*)instances[2]).favoriteFruit, @"apple");
+        
+        TRTestData *testData0 = (TRTestData*)instances[0];
+        
+        XCTAssertEqualObjects([testData0.friends[0] name], @"Townsend Montoya");
+        XCTAssertEqual([testData0.range count], 10);
+        XCTAssertEqual([testData0.tags count], 7);
+        XCTAssertFalse([testData0.isActive boolValue]);
+    }
 }
 
 

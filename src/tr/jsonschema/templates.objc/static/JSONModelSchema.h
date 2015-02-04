@@ -19,13 +19,15 @@ typedef id (^initBlockType)(void);
 -(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType;
 -(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type;
 -(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter;
+-(instancetype)initAsArrayWithItemType:(Class) itemType;
 
 -(id)newObject;
 -(id)newItemObject;
 
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType;
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type;
-+(instancetype)initWithGetter:(SEL)getter setter:(SEL)setter;
++(instancetype)propertyMetaWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type itemType:(Class) itemType;
++(instancetype)propertyMetaWithGetter:(SEL)getter setter:(SEL)setter type:(Class) type;
++(instancetype)propertyMetaWithGetter:(SEL)getter setter:(SEL)setter;
++(instancetype)propertyMetaAsArrayWithItemType:(Class)itemType;
 
 @end
 

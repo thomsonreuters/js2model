@@ -49,7 +49,8 @@
 		0A5CD0F61A8191A400E6E3BB /* TRName.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5CD0D61A8191A400E6E3BB /* TRName.m */; };
 		0A5CD0F71A8191A400E6E3BB /* TRTestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5CD0D81A8191A400E6E3BB /* TRTestData.m */; };
 		0A5CD0F81A8191A400E6E3BB /* TRTestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5CD0D81A8191A400E6E3BB /* TRTestData.m */; };
-		0AF028721A043F9700AAE135 /* licenseResultWrapper.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AF028711A043F9700AAE135 /* licenseResultWrapper.json */; };
+		0A5CD0FA1A819EB100E6E3BB /* js2model-test-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A5CD0F91A819EB100E6E3BB /* js2model-test-data.json */; };
+		0A5CD0FB1A819EB100E6E3BB /* js2model-test-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A5CD0F91A819EB100E6E3BB /* js2model-test-data.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,7 +118,7 @@
 		0A5CD0D61A8191A400E6E3BB /* TRName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRName.m; sourceTree = "<group>"; };
 		0A5CD0D71A8191A400E6E3BB /* TRTestData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTestData.h; sourceTree = "<group>"; };
 		0A5CD0D81A8191A400E6E3BB /* TRTestData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTestData.m; sourceTree = "<group>"; };
-		0AF028711A043F9700AAE135 /* licenseResultWrapper.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = licenseResultWrapper.json; sourceTree = "<group>"; };
+		0A5CD0F91A819EB100E6E3BB /* js2model-test-data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "js2model-test-data.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,7 +190,6 @@
 		0A345B0D19D5DA9E00E3C01F /* JsonModelGenTestTests */ = {
 			isa = PBXGroup;
 			children = (
-				0AF028701A043F7600AAE135 /* Json Test Files */,
 				0A345B1019D5DA9E00E3C01F /* JsonModelGenTestTests.m */,
 				0A345B0E19D5DA9E00E3C01F /* Supporting Files */,
 			);
@@ -199,6 +199,7 @@
 		0A345B0E19D5DA9E00E3C01F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0A5CD0F91A819EB100E6E3BB /* js2model-test-data.json */,
 				0A345B0F19D5DA9E00E3C01F /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -277,14 +278,6 @@
 				0A5CD0B91A8191A400E6E3BB /* yajl_version.h */,
 			);
 			path = api;
-			sourceTree = "<group>";
-		};
-		0AF028701A043F7600AAE135 /* Json Test Files */ = {
-			isa = PBXGroup;
-			children = (
-				0AF028711A043F9700AAE135 /* licenseResultWrapper.json */,
-			);
-			name = "Json Test Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -370,6 +363,7 @@
 				0A345B0019D5DA9E00E3C01F /* Main.storyboard in Resources */,
 				0A345B0519D5DA9E00E3C01F /* LaunchScreen.xib in Resources */,
 				0A345B0219D5DA9E00E3C01F /* Images.xcassets in Resources */,
+				0A5CD0FA1A819EB100E6E3BB /* js2model-test-data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,7 +371,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AF028721A043F9700AAE135 /* licenseResultWrapper.json in Resources */,
+				0A5CD0FB1A819EB100E6E3BB /* js2model-test-data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

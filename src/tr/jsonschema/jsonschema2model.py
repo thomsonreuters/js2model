@@ -51,6 +51,7 @@ class JsonSchemaTypes(object):
 class ClassDef(object):
     def __init__(self):
         self.name = None
+        self.name_sans_prefix = None
         self.variable_defs = []
         self.superClasses = []
         self.interfaces = []
@@ -110,10 +111,11 @@ class VariableDef(object):
     STORAGE_STATIC = "static"
     STORAGE_IVAR = "ivar"
 
-    def __init__(self, name):
+    def __init__(self, name, json_name):
         self.schema_type = JsonSchemaTypes.INTEGER
         self.type = JsonSchemaTypes.INTEGER
         self.name = name
+        self.json_name = json_name if json_name else name
         self.visibility = VariableDef.ACCESS_PROTECTED
         self.storage = VariableDef.STORAGE_IVAR
         self.default = None
@@ -205,6 +207,8 @@ class JsonSchema2Model(object):
             os.makedirs(self.outdir)
 
         for classDef in self.models.values():
+
+            #print([v for v in classDef.variable_defs if v.schema_type == 'object' and v.isArray])
 
             for class_template in self.lang_templates[self.lang].class_templates:
                 self.renderModelToFile(classDef, class_template)
@@ -351,6 +355,7 @@ class JsonSchema2Model(object):
                 class_name = scope[-1]
 
             class_def.name = self.makClassName(class_name)
+            class_def.name_sans_prefix = self.makVarName(class_name)
 
             # set super class, in increasing precendence
             extended = False
@@ -415,8 +420,9 @@ class JsonSchema2Model(object):
 
         assert isinstance(schema_object, dict)
 
-        name = self.makVarName(scope[-1])
-        var_def = VariableDef(name)
+        json_name = scope[-1]
+        name = self.makVarName(json_name)
+        var_def = VariableDef(name, json_name)
 
         if 'title' in schema_object:
             var_def.title = schema_object['title']
