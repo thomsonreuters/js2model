@@ -2,6 +2,13 @@
  Quick Start
 +++++++++++++++++++++++++++++++
 
+.. toctree::
+   :hidden:
+
+   TRModels_h
+   TRQuickstart_h
+   TRQuickstart_m
+
 Four simple steps to native model goodness:
 
 1. Get (or create) `JSON Schema <http://json-schema.org>`_ file(s) for you JSON data.
@@ -91,183 +98,17 @@ Add all of these files to your project.
 
 Most of these source files are static dependencies. For this simple example, one model was generated, resulting in three files - *TRQuickstart.h*, *TRQuickstart.m*, and *TRModels.h*.
 
-*TRModels.h* is a convenience header that contains #includes for all of the generated model header files.
+`TRModels.h <TRModels_h.html>`_ is a convenience header that contains #includes for all of the generated model header files.
 
-.. highlight:: objective-c
+`TRQuickstart.h <TRQuickstart_h.html>`_ is the header file containing the interface declaration for the TRQuickstart model.
 
-::
+`TRQuickstart.m <TRQuickstart_m.html>`_ is the implementation file for the TRQuickstart model.
 
-   //
-   //  TRModels.h
-   //
-   //  Created by js2Model on {{ timestamp }}.
-   //  Copyright (c) 2014 Thomson Reuters. All rights reserved.
-   //
-   
-      #import "TRQuickstart.h"
+        **Notes**
 
+        * Models are prefixed with "TR" by default. You can change the prefix string with the *--prefix* command line option.
 
-
-*TRQuickstart.h* is the header file containing the interface declaration for the TRQuickstart model.
-
-.. highlight:: objective-c
-
-::
-
-   //
-   //  TRQuickstart.h
-   //
-   //  Created by js2Model on 2015-02-04.
-   //  Copyright (c) 2014 Thomson Reuters. All rights reserved.
-   //
-   
-   #import <Foundation/Foundation.h>
-   #import "JSONModelSchema.h"
-   
-   @interface TRQuickstartSchema : JSONModelSchema
-   @end
-   
-   @interface TRQuickstart : NSObject <JSONModelSerialize>
-   
-   @property(strong, nonatomic) NSNumber * county;
-   @property(strong, nonatomic) NSNumber * city;
-   @property(strong, nonatomic) NSNumber * state;
-   @property(strong, nonatomic) NSNumber * street;
-   @property(strong, nonatomic) NSNumber * zip;
-   
-   @end
-
-
-*TRQuickstart.m* is the implementation file for the TRQuickstart model.
-
-::
-
-   //
-   //  TRQuickstart.m
-   //
-   //  Created by js2Model on 2015-02-04.
-   //  Copyright (c) 2014 Thomson Reuters. All rights reserved.
-   //
-   
-   #import "TRQuickstart.h"
-   #import "TRJSONModelLoader.h"
-   
-   #define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
-   
-   @implementation TRQuickstartSchema
-   
-   - (instancetype)init
-   {
-       self = [super init];
-       if (self) {
-   
-   
-           [self.strings addEntriesFromDictionary: @{
-                   @"county": [JSONPropertyMeta initWithGetter:@selector(county)
-                                                    setter:@selector(setCounty:)],
-                   @"city": [JSONPropertyMeta initWithGetter:@selector(city)
-                                                    setter:@selector(setCity:)],
-                   @"state": [JSONPropertyMeta initWithGetter:@selector(state)
-                                                    setter:@selector(setState:)],
-                   @"street": [JSONPropertyMeta initWithGetter:@selector(street)
-                                                    setter:@selector(setStreet:)],
-                   @"zip": [JSONPropertyMeta initWithGetter:@selector(zip)
-                                                    setter:@selector(setZip:)],
-           }];
-   
-   
-   
-   
-       }
-       return self;
-   }
-   @end
-   
-   static TRQuickstartSchema *TRQuickstartSchemaInstance;
-   
-   @implementation TRQuickstart{
-   }
-   
-   +(void)initialize {
-   
-       if( self == [TRQuickstart class] )
-       {
-           TRQuickstartSchemaInstance = [TRQuickstartSchema new];
-       }
-   }
-   
-   
-   - (instancetype) initWithJSONData:(NSData *)data
-                               error:(NSError* __autoreleasing *)error {
-       self = [self init];
-       if (self) {
-           [TRJSONModelLoader load:self withJSONData:data error:error];
-       }
-       return self;
-   }
-   
-   /** Parses JSON data and creates an Objective-C instance.
-   
-   @param cls Class type of top-most instance.
-   @param filename Name of file with JSON data to be parsed.
-   @param error Non-nil if any parsings errors occured.
-   */
-   - (instancetype) initWithJSONFromFileNamed:(NSString *)filename
-                                        error:(NSError* __autoreleasing *)error {
-   
-       self = [self init];
-       if (self) {
-           [TRJSONModelLoader load:self withJSONFromFileNamed:filename error:error];
-       }
-       return self;
-   }
-   - (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName {
-   
-       return [TRQuickstartSchemaInstance objectForPropertyNamed:propertyName forInstance:self];
-   }
-   
-   - (JSONInstanceMeta *)arrayForPropertyNamed:(NSString *)propertyName {
-       return [TRQuickstartSchemaInstance arrayForPropertyNamed:propertyName forInstance:self];
-   }
-   
-   - (void)setString:(NSString *)val forProperty:(NSString *)propertyName {
-       [TRQuickstartSchemaInstance setString:val forProperty:propertyName forInstance:self];
-   }
-   
-   - (void)setNumber:(NSNumber *)val forProperty:(NSString *)propertyName {
-       [TRQuickstartSchemaInstance setNumber:val forProperty:propertyName forInstance:self];
-   }
-   
-   - (void)setInteger:(NSNumber *)val forProperty:(NSString *)propertyName {
-       [TRQuickstartSchemaInstance setInteger:val forProperty:propertyName forInstance:self];
-   }
-   
-   - (void)setBoolean:(NSNumber *)val forProperty:(NSString *)propertyName {
-       [TRQuickstartSchemaInstance setBoolean:val forProperty:propertyName forInstance:self];
-   }
-   
-   - (void)setNullForProperty:(NSString *)propertyName {
-       [TRQuickstartSchemaInstance setNullForProperty:propertyName forInstance:self];
-   }
-   
-   +(JSONModelSchema *)modelSchema {
-       return TRQuickstartSchemaInstance ;
-   }
-   
-   -(NSMutableDictionary*)additionalProperties {
-       [NSException raise:@"Method not implemented" format:@"additionalProperties is not implemented. Additional property support was disabled when generating this class."];
-       return nil;
-   }
-   
-   -(void)setValue:(id)value forAdditionalProperty:(NSString*)propertyName {
-       [NSException raise:@"Method not implemented" format:@"setValue:forAdditionalProperty: is not implemented". Additional property support was disabled when generating this class.];
-   }
-   
-   -(id)valueForAdditionalProperty:(NSString*)propertyName {
-       [NSException raise:@"Method not implemented" format:@"valueForAdditionalProperty is not implemented". Additional property support was disabled when generating this class.];
-       return nil;
-   }
-   @end
+        * js2model uses `YAJL <https://lloyd.github.io/yajl/>`_ to parse JSON for C family languages. It is bundled with the generated source as a convenience. You can exclude the YAJL files with the *--no_dependencies* command line option.
 
 
 Use the models
