@@ -59,11 +59,11 @@ class ClassDef(object):
         self.custom = {}
 
     @property
-    def implName(self):
+    def impl_name(self):
         return '%s.m' % self.name
 
     @property
-    def declName(self):
+    def decl_name(self):
         return '%s.h' % self.name
 
     @property
@@ -80,7 +80,7 @@ class ClassDef(object):
         return dependencies if len(dependencies) else None
 
     @property
-    def superTypes(self):
+    def super_types(self):
         supertypes = set()
 
         for superClass in self.superClasses:
@@ -92,8 +92,8 @@ class ClassDef(object):
         return supertypes
 
     @property
-    def hasVarDefaults(self):
-        return True if len([d for d in self.variable_defs if not d.default is not None]) else False
+    def has_var_defaults(self):
+        return True if len([d for d in self.variable_defs if d.default is not None]) else False
 
 
 class EnumDef(object):
@@ -111,7 +111,7 @@ class VariableDef(object):
     STORAGE_STATIC = "static"
     STORAGE_IVAR = "ivar"
 
-    def __init__(self, name, json_name):
+    def __init__(self, name, json_name=None):
         self.schema_type = JsonSchemaTypes.INTEGER
         self.type = JsonSchemaTypes.INTEGER
         self.name = name
@@ -134,7 +134,7 @@ class VariableDef(object):
         self.format = None
 
 
-def whiteSpaceToCamelCase(matched):
+def whitespace_to_camel_case(matched):
     if matched.lastindex == 1:
         return matched.group(1).upper()
     else:
@@ -154,8 +154,7 @@ class JsonSchema2Model(object):
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
                  include_additional_properties=True,
                  lang='objc', prefix='TR', root_name=None, validate=True, verbose=False,
-                 skip_deserialization=False, include_dependencies=True
-    ):
+                 skip_deserialization=False, include_dependencies=True):
 
         """
 
@@ -184,7 +183,7 @@ class JsonSchema2Model(object):
         self.skip_deserialization = skip_deserialization
         self.include_dependencies = include_dependencies
 
-        template_dir = pkg_resources.resource_filename(__name__,'templates.' + self.lang)
+        template_dir = pkg_resources.resource_filename(__name__, 'templates.' + self.lang)
 
         self.makolookup = TemplateLookup(directories=[template_dir])
 
@@ -197,34 +196,33 @@ class JsonSchema2Model(object):
             'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["global.h.mako"])
         }
 
-    def verboseOutput(self,message):
+    def verbose_output(self, message):
         if self.verbose:
             print(message)
 
-    def renderModels(self):
+    def render_models(self):
 
         if not os.path.exists(self.outdir):
             os.makedirs(self.outdir)
 
         for classDef in self.models.values():
 
-            #print([v for v in classDef.variable_defs if v.schema_type == 'object' and v.isArray])
+            # print([v for v in classDef.variable_defs if v.schema_type == 'object' and v.isArray])
 
             for class_template in self.lang_templates[self.lang].class_templates:
-                self.renderModelToFile(classDef, class_template)
+                self.render_model_to_file(classDef, class_template)
 
         if self.lang_templates[self.lang].enum_template:
             for enumDef in self.enums.values():
-                self.renderEnumToFile(enumDef, self.lang_templates[self.lang].enum_template)
+                self.render_enum_to_file(enumDef, self.lang_templates[self.lang].enum_template)
 
         for global_template in self.lang_templates[self.lang].global_templates:
-            self.renderGlobalHeader(self.models.values(), global_template)
+            self.render_global_header(self.models.values(), global_template)
 
-
-    def renderModelToFile(self, class_def, templ_name):
+    def render_model_to_file(self, class_def, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        src_file_name =  class_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
+        src_file_name = class_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
         decl_template = self.makolookup.get_template(templ_name)
@@ -232,17 +230,15 @@ class JsonSchema2Model(object):
         with open(outfile_name, 'w') as f:
 
             try:
-                self.verboseOutput("Writing %s" % outfile_name)
+                self.verbose_output("Writing %s" % outfile_name)
                 f.write(decl_template.render(classDef=class_def, import_files=self.import_files,
                         include_additional_properties=self.include_additional_properties,
                         timestamp=str(datetime.date.today()), file_name=src_file_name,
-                        skip_deserialization=self.skip_deserialization
-                ))
+                        skip_deserialization=self.skip_deserialization))
             except:
                 print(exceptions.text_error_template().render())
 
-
-    def renderEnumToFile(self, enum_def, templ_name):
+    def render_enum_to_file(self, enum_def, templ_name):
 
         # remove '.jinja', then use extension from the template name
         src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
@@ -253,16 +249,14 @@ class JsonSchema2Model(object):
         with open(outfile_name, 'w') as f:
 
             try:
-                self.verboseOutput("Writing %s" % outfile_name)
+                self.verbose_output("Writing %s" % outfile_name)
                 f.write(decl_template.render(enumDef=enum_def, import_files=self.import_files,
                         timestamp=str(datetime.date.today()), file_name=src_file_name,
-                        include_additional_properties=self.include_additional_properties
-                ))
+                        include_additional_properties=self.include_additional_properties))
             except:
                 print(exceptions.text_error_template().render())
 
-
-    def renderGlobalHeader(self, models, templ_name):
+    def render_global_header(self, models, templ_name):
 
         # remove '.jinja', then use extension from the template name
         src_file_name = self.prefix + "Models" + os.path.splitext(templ_name.replace('.mako', ''))[1]
@@ -272,26 +266,23 @@ class JsonSchema2Model(object):
 
         with open(outfile_name, 'w') as f:
             try:
-                self.verboseOutput("Writing %s" % outfile_name)
+                self.verbose_output("Writing %s" % outfile_name)
                 f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()),
                         include_additional_properties=self.include_additional_properties,
-                        file_name=src_file_name
-                ))
+                        file_name=src_file_name))
             except:
                 print(exceptions.text_error_template().render())
 
-
-    def copyDependencies(self):
+    def copy_dependencies(self):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'dependencies')
-        self.copyFiles(support_path, os.path.join(self.outdir, 'dependencies'))
+        self.copy_files(support_path, os.path.join(self.outdir, 'dependencies'))
 
-    def copyStaticFiles(self):
+    def copy_static_files(self):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'static')
-        self.copyFiles(support_path, self.outdir)
-
+        self.copy_files(support_path, self.outdir)
 
     @staticmethod
-    def copyFiles(src, dest):
+    def copy_files(src, dest):
         """
 
 
@@ -311,7 +302,6 @@ class JsonSchema2Model(object):
 
                 copytree(full_file_name, full_dest_path)
 
-
     def get_schema_id(self, schema_object, scope):
 
         if 'id' in schema_object:
@@ -322,8 +312,7 @@ class JsonSchema2Model(object):
             return schema_object['typeName']
         else:
             assert len(scope)
-            return self.makClassName(scope[-1])
-
+            return self.mk_class_name(scope[-1])
 
     def create_class_def(self, schema_object, scope):
 
@@ -354,13 +343,13 @@ class JsonSchema2Model(object):
             else:
                 class_name = scope[-1]
 
-            class_def.name = self.makClassName(class_name)
-            class_def.name_sans_prefix = self.makVarName(class_name)
+            class_def.name = self.mk_class_name(class_name)
+            class_def.name_sans_prefix = self.mk_var_name(class_name)
 
             # set super class, in increasing precendence
             extended = False
             if 'extends' in schema_object:
-                prop_var_def = self.createModel(schema_object['extends'], scope)
+                prop_var_def = self.create_model(schema_object['extends'], scope)
                 class_def.superClasses = [prop_var_def.type]
                 extended = True
 
@@ -382,7 +371,7 @@ class JsonSchema2Model(object):
                 for prop in properties.keys():
                     scope.append(prop)
 
-                    prop_var_def = self.createModel(properties[prop], scope)
+                    prop_var_def = self.create_model(properties[prop], scope)
                     class_def.variable_defs.append(prop_var_def)
 
                     scope.pop()
@@ -411,7 +400,7 @@ class JsonSchema2Model(object):
 
             return class_def
 
-    def createModel(self, schema_object, scope):
+    def create_model(self, schema_object, scope):
         """
 
         :rtype : VariableDef
@@ -421,7 +410,7 @@ class JsonSchema2Model(object):
         assert isinstance(schema_object, dict)
 
         json_name = scope[-1]
-        name = self.makVarName(json_name)
+        name = self.mk_var_name(json_name)
         var_def = VariableDef(name, json_name)
 
         if 'title' in schema_object:
@@ -477,13 +466,13 @@ class JsonSchema2Model(object):
 
                 items = schema_object['items']
 
-                var_def = self.createModel(items, scope)
+                var_def = self.create_model(items, scope)
                 var_def.isArray = True
 
         elif 'enum' in schema_object:
 
             enum_def = EnumDef()
-            enum_def.name = self.makClassName(schema_object['typeName'] if 'typeName' in schema_object else scope[-1])
+            enum_def.name = self.mk_class_name(schema_object['typeName'] if 'typeName' in schema_object else scope[-1])
 
             # TODO: should I check to see if the enum is already in the models dict?
 
@@ -499,59 +488,59 @@ class JsonSchema2Model(object):
 
         return var_def
 
-    def makVarName(self, name):
-        var_name = re.sub('[ _-]+([a-z])?', whiteSpaceToCamelCase, name)
+    @staticmethod
+    def mk_var_name(name):
+        var_name = re.sub('[ _-]+([a-z])?', whitespace_to_camel_case, name)
         var_name = re.sub('[^\w]', '', var_name)
         return var_name
 
-
-    def makClassName(self, name):
-        class_name = self.makVarName(name)
+    def mk_class_name(self, name):
+        class_name = self.mk_var_name(name)
         class_name = class_name[:1].upper() + class_name[1:]
 
         if self.prefix is not None:
-            class_name = self.prefix + class_name
+            class_name = "%s%s" % (self.prefix, class_name)
 
         return class_name
 
-    def generateModels(self, files):
+    def generate_models(self, files):
 
         loader = JmgLoader()
 
-        for f in [file for fileGlob in files for file in glob.glob(fileGlob)]:
+        for fname in (f for fileGlob in files for f in glob.glob(fileGlob)):
 
             if self.root_name:
                 scope = [self.root_name]
             else:
-                base_name = os.path.basename(f)
+                base_name = os.path.basename(fname)
                 base_uri = os.path.splitext(base_name)[0]
                 base_uri = base_uri.replace('.schema', '')
                 scope = [base_uri]
 
-            with open(f) as jsonFile:
+            with open(fname) as jsonFile:
 
                 # root_schema = json.load(jsonFile)
                 # base_uri = 'file://' + os.path.split(os.path.realpath(f))[0]
-                base_uri = 'file://' + os.path.realpath(f)
+                base_uri = 'file://' + os.path.realpath(fname)
                 root_schema = jsonref.load(jsonFile, base_uri=base_uri, jsonschema=True, loader=loader)
 
                 if self.validate:
-                    #TODO: Add exception handling
+                    # TODO: Add exception handling
                     try:
                         Draft4Validator.check_schema(root_schema)
                     except SchemaError as e:
-                        print( e )
+                        print(e)
 
                 assert isinstance(root_schema, dict)
 
-                if not JsonSchema2Model.SCHEMA_URI in root_schema:
-                    root_schema[JsonSchema2Model.SCHEMA_URI] = f
+                if JsonSchema2Model.SCHEMA_URI not in root_schema:
+                    root_schema[JsonSchema2Model.SCHEMA_URI] = fname
 
-                self.createModel(root_schema, scope)
+                self.create_model(root_schema, scope)
 
-        self.renderModels()
+        self.render_models()
 
-        self.copyStaticFiles()
+        self.copy_static_files()
 
         if self.include_dependencies:
-            self.copyDependencies()
+            self.copy_dependencies()

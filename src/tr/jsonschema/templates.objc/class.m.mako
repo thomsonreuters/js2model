@@ -1,7 +1,7 @@
 <%inherit file="base.mako" />
 <%namespace name="base" file="base.mako" />
 <%block name="code">
-#import "${classDef.declName}"
+#import "${classDef.decl_name}"
 % if classDef.dependencies:
 % for dep in classDef.dependencies:
 #import "${dep}.h"
@@ -93,7 +93,7 @@ static ${metaClassName} *${metaClassVar};
 }
 % endif
 
-% if classDef.hasVarDefaults:
+% if classDef.has_var_defaults:
 - (instancetype)init
 {
     self = [super init];

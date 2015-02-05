@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+import js2model
+
+from js2model import main
+
+if __name__ == "__main__":
+    exit(main())

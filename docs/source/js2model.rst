@@ -9,31 +9,38 @@ Running it
 ~~~~~~~~~~
 ::
 
-  js2model.py [-h] [-l LANG] [--prefix PREFIX] [--rootname ROOTNAME] [-p]
-                     [-x] [-o OUTPUT] [--implements IMPLEMENTS] [--super SUPER]
-                     [--import IMPORTFILES]
-                     FILES [FILES ...]
-  
-  Generate native data models from JSON.
-  
-  positional arguments:
-    FILES                 JSON files input for model generation
-  
-  optional arguments:
-    -h, --help            show this help message and exit
-    -l LANG, --lang LANG  language (default: objc)
-    --prefix PREFIX       prefix for class names (default: TR)
-    --rootname ROOTNAME   Class name for root schema object (default: fileName)
-    -p, --primitives      Use primitive types in favor of object wrappers
-    -x, --additional    Do not include additionalProperties in models
-    -o OUTPUT, --output OUTPUT
-                          Target directory of output files
-    --implements IMPLEMENTS
-                          Comma separated list of interface(s)|protocol(s)
-                          supported by the generated classes
-    --super SUPER         Comma separated list of super classes. Generated
- 
-    --import IMPORTFILES  Comma separated list of files to @import
+  usage: js2model.py [-h] [-l LANG] [--prefix PREFIX] [--rootname ROOTNAME] [-p]
+                   [--additional] [--novalidate] [-o OUTPUT]
+                   [--implements IMPLEMENTS] [--super SUPER]
+                   [--import IMPORT_FILES] [-v] [--no-deserialize]
+                   [--no-dependencies]
+                   FILES [FILES ...]
+
+        Generate native data models from JSON Schema definitions.
+
+        positional arguments:
+          FILES                 JSON Schema files for model generation
+
+        optional arguments:
+          -h, --help            show this help message and exit
+          -l LANG, --lang LANG  language (default: objc)
+          --prefix PREFIX       prefix for class names (default: TR)
+          --rootname ROOTNAME   Class name for root schema object (default: fileName)
+          -p, --primitives      Use primitive types in favor of object wrappers
+          --additional          Include additionalProperties in models
+          --novalidate          Skip schema validation
+          -o OUTPUT, --output OUTPUT
+                                Target directory of output files
+          --implements IMPLEMENTS
+                                Comma separated list of interface(s)|protocol(s)
+                                supported by the generated classes
+          --super SUPER         Comma separated list of super classes. Generated
+                                classes inherit these
+          --import IMPORT_FILES
+                                Comma separated list of files to @import
+          -v, --verbose         Print actions to STDOUT.
+          --no-deserialize      Do not generate deserialization code. Implies --no-dependencies.
+          --no-dependencies     Do not include dependencies in output.
 
 A simple sample
 ---------------

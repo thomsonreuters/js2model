@@ -6,5 +6,5 @@
 //
 
 % for classDef in models:
-#import "${classDef.declName}"
+#import "${classDef.decl_name}"
 % endfor

@@ -8,8 +8,8 @@
 #import <${import_file}>
 % endfor
 % endif
-% if classDef.superTypes:
-% for dep in classDef.superTypes:
+% if classDef.super_types:
+% for dep in classDef.super_types:
 #import "${dep}.h"
 % endfor
 % endif

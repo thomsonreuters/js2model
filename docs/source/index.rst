@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   quickstart
    js2model
    jsonschema2model
 

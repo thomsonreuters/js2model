@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+        "city": {
+            "type": "string"
+        },
+        "county": {
+            "type": "string"
+        },
+        "state": {
+            "type": "string"
+        },
+        "street": {
+            "type": "string"
+        },
+        "zip": {
+            "type": "string"
+        }
+    },
+    "title": "address",
+    "type": "object"
+}
