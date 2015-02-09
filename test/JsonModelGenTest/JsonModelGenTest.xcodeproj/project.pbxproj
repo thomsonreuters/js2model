@@ -49,8 +49,8 @@
 		0A5CD0F61A8191A400E6E3BB /* TRName.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5CD0D61A8191A400E6E3BB /* TRName.m */; };
 		0A5CD0F71A8191A400E6E3BB /* TRTestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5CD0D81A8191A400E6E3BB /* TRTestData.m */; };
 		0A5CD0F81A8191A400E6E3BB /* TRTestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5CD0D81A8191A400E6E3BB /* TRTestData.m */; };
-		0A5CD0FA1A819EB100E6E3BB /* js2model-test-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A5CD0F91A819EB100E6E3BB /* js2model-test-data.json */; };
 		0A5CD0FB1A819EB100E6E3BB /* js2model-test-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A5CD0F91A819EB100E6E3BB /* js2model-test-data.json */; };
+		0ABA05141A8955FE004A8A4C /* js2model-test-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 0ABA05131A8955FE004A8A4C /* js2model-test-data.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,8 +80,8 @@
 		0A345B0A19D5DA9E00E3C01F /* JsonModelGenTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonModelGenTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A345B0F19D5DA9E00E3C01F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A345B1019D5DA9E00E3C01F /* JsonModelGenTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JsonModelGenTestTests.m; sourceTree = "<group>"; };
-		0A345BB419D6135B00E3C01F /* TRJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRJsonBase.h; sourceTree = "<group>"; };
-		0A345BB519D6135B00E3C01F /* TRJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRJsonBase.m; sourceTree = "<group>"; };
+		0A345BB419D6135B00E3C01F /* TRJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRJsonBase.h; path = ../TRJsonBase.h; sourceTree = "<group>"; };
+		0A345BB519D6135B00E3C01F /* TRJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRJsonBase.m; path = ../TRJsonBase.m; sourceTree = "<group>"; };
 		0A5CD0B51A8191A400E6E3BB /* yajl_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_common.h; sourceTree = "<group>"; };
 		0A5CD0B61A8191A400E6E3BB /* yajl_gen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_gen.h; sourceTree = "<group>"; };
 		0A5CD0B71A8191A400E6E3BB /* yajl_parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yajl_parse.h; sourceTree = "<group>"; };
@@ -119,6 +119,7 @@
 		0A5CD0D71A8191A400E6E3BB /* TRTestData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTestData.h; sourceTree = "<group>"; };
 		0A5CD0D81A8191A400E6E3BB /* TRTestData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRTestData.m; sourceTree = "<group>"; };
 		0A5CD0F91A819EB100E6E3BB /* js2model-test-data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "js2model-test-data.json"; sourceTree = "<group>"; };
+		0ABA05131A8955FE004A8A4C /* js2model-test-data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "js2model-test-data.json"; path = "../../jsonData/js2model-test-data.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,8 +173,6 @@
 				0A345B0319D5DA9E00E3C01F /* LaunchScreen.xib */,
 				0A345AF519D5DA9E00E3C01F /* JsonModelGenTest.xcdatamodeld */,
 				0A345AEE19D5DA9E00E3C01F /* Supporting Files */,
-				0A345BB419D6135B00E3C01F /* TRJsonBase.h */,
-				0A345BB519D6135B00E3C01F /* TRJsonBase.m */,
 			);
 			path = JsonModelGenTest;
 			sourceTree = "<group>";
@@ -181,6 +180,7 @@
 		0A345AEE19D5DA9E00E3C01F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0ABA05131A8955FE004A8A4C /* js2model-test-data.json */,
 				0A345AEF19D5DA9E00E3C01F /* Info.plist */,
 				0A345AF019D5DA9E00E3C01F /* main.m */,
 			);
@@ -209,6 +209,8 @@
 			isa = PBXGroup;
 			children = (
 				0A5CD0B11A8191A400E6E3BB /* dependencies */,
+				0A345BB419D6135B00E3C01F /* TRJsonBase.h */,
+				0A345BB519D6135B00E3C01F /* TRJsonBase.m */,
 				0A5CD0C91A8191A400E6E3BB /* ISO8601DateFormatter.h */,
 				0A5CD0CA1A8191A400E6E3BB /* ISO8601DateFormatter.m */,
 				0A5CD0CB1A8191A400E6E3BB /* JSONModelSchema.h */,
@@ -363,7 +365,7 @@
 				0A345B0019D5DA9E00E3C01F /* Main.storyboard in Resources */,
 				0A345B0519D5DA9E00E3C01F /* LaunchScreen.xib in Resources */,
 				0A345B0219D5DA9E00E3C01F /* Images.xcassets in Resources */,
-				0A5CD0FA1A819EB100E6E3BB /* js2model-test-data.json in Resources */,
+				0ABA05141A8955FE004A8A4C /* js2model-test-data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
