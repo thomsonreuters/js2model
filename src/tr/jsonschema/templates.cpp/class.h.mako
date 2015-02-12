@@ -1,8 +1,9 @@
 <%inherit file="base.mako" />
 <%namespace name="base" file="base.mako" />
 <%block name="code">
-#import <Foundation/Foundation.h>
-#import "JSONModelSchema.h"
+#include <string>
+#include <unordered_map>
+#include "jsonModelSchema.h"
 % if import_files:
 % for import_file in import_files:
 #import <${import_file}>
@@ -18,43 +19,42 @@
 @class ${dep}; \
 % endfor
 % endif
+
+namespace ${namespace} {
+namespace models {
 % if not skip_deserialization:
 <%
     schemaSuperClass = "%sSchema" % (classDef.superClasses[0] if len(classDef.superClasses) else 'JSONModel')
 %>
-@interface ${classDef.name}Schema : ${schemaSuperClass}
-@end
+class ${classDef.name}Schema : protected ${schemaSuperClass} {
+}
 % endif
 <%
     superClass = classDef.superClasses[0] if len(classDef.superClasses) else 'NSObject'
     protocols =  '<JSONModelSerialize' + ( (',' + classDef.interfaces|join(', ')) if classDef.interfaces else '') + '>'
 %>
-@interface ${classDef.name} : ${superClass} ${protocols}
+class ${classDef.name} : protected ${superClass} {
 
+public:
 % for v in classDef.variable_defs:
 ${base.propertyDecl(v)}
 % endfor
+% if include_additional_properties:
+    std::unordered_map<std::string, std::string> additionalProperties;
+% endif
+
 % if not skip_deserialization:
 <%
 staticInitName = classDef.name_sans_prefix
 %>\
--(instancetype) initWithJSONData:(NSData *)data
-                            error:(NSError* __autoreleasing *)error;
 
--(instancetype) initWithJSONFromFileNamed:(NSString *)filename
-                                     error:(NSError* __autoreleasing *)error;
-
-+(instancetype) ${staticInitName}WithJSONData:(NSData *)data
-                                error:(NSError* __autoreleasing *)error;
-
-+(instancetype) ${staticInitName}WithJSONFromFileNamed:(NSString *)filename
-                                         error:(NSError* __autoreleasing *)error;
-
-+(NSArray*) ${staticInitName}ArrayWithJSONData:(NSData *)data
-                                error:(NSError* __autoreleasing *)error;
-
-+(NSArray*) ${staticInitName}ArrayWithJSONFromFileNamed:(NSString *)filename
-                                         error:(NSError* __autoreleasing *)error;
+public:
+    static artwork * ${staticInitName}FromData(const unsigned char * jsonData);
+    static artwork * ${staticInitName}FromFile(std::string filename);
 % endif
-@end
+
+}; // class ${classDef.name}
+
+} // namespace models
+} // namespace ${namespace}
 </%block>

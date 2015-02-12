@@ -1,13 +1,18 @@
 <%inherit file="base.mako" />
 <%namespace name="base" file="base.mako" />
 <%block name="code">
-#import "${classDef.decl_name}"
+#include "${classDef.decl_name}"
 % if classDef.dependencies:
 % for dep in classDef.dependencies:
-#import "${dep}.h"
+#include "${dep}.h"
 % endfor
 % endif
-#import "TRJSONModelLoader.h"
+#include "TRJSONModelLoader.h"
+
+using namespace std;
+
+namespace ${namespace} {
+namespace models {
 
 #define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
 
@@ -42,7 +47,7 @@
                                                  setter:@selector(${setter}:)
                                                  type:[${ varType.replace(' *','') } class]
                                              itemType:[${ itemsType.replace(' *','') } class]],
-        % elif v.schema_type == "object":
+        % elif v.effective_schema_type() == "object":
         <%
             (varType, isRef, itemsType) = base.attr.convertType(v)
         %>\
@@ -57,40 +62,18 @@
         }];
     % endif
 </%def>\
-## {%- set objectVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|rejectattr("isArray")|list -%}
-${ metaProps("objects", [v for v in classDef.variable_defs if v.schema_type == 'object' and not v.isArray]) }
-## {%- set arrayVars = classDef.variable_defs|selectattr("schema_type", "equalto", "object")|selectattr("isArray")|list -%}
+${ metaProps("objects", [v for v in classDef.variable_defs if (v.effective_schema_type() == 'object' and not v.isArray) or v.effective_schema_type() == 'null']) }
 ${ metaProps("arrays", [v for v in classDef.variable_defs if v.isArray]) }
-## ${ metaProps("strings", classDef.variable_defs|selectattr("schema_type", "equalto", "string")|list) }
-${ metaProps("strings", [v for v in classDef.variable_defs if v.schema_type == 'string']) }
-## ${ metaProps("booleans", classDef.variable_defs|selectattr("schema_type", "equalto", "boolean")|list) }
-${ metaProps("booleans", [v for v in classDef.variable_defs if v.schema_type == 'boolean']) }
-## ${ metaProps("numbers", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }
-${ metaProps("numbers", [v for v in classDef.variable_defs if v.schema_type == 'number']) }
-## ${ metaProps("integers", classDef.variable_defs|selectattr("schema_type", "equalto", "number")|list) }
-${ metaProps("integers", [v for v in classDef.variable_defs if v.schema_type == 'integer']) }
+${ metaProps("strings", [v for v in classDef.variable_defs if v.effective_schema_type() == 'string']) }
+${ metaProps("booleans", [v for v in classDef.variable_defs if v.effective_schema_type() == 'boolean']) }
+${ metaProps("numbers", [v for v in classDef.variable_defs if v.effective_schema_type() == 'number']) }
+${ metaProps("integers", [v for v in classDef.variable_defs if v.effective_schema_type() == 'integer']) }
     }
     return self;
 }
 @end
 
-static ${metaClassName} *${metaClassVar};
-% endif
-
-@implementation ${classDef.name}{
-    % if include_additional_properties:
-    NSMutableDictionary *_additionalProperties;
-    % endif
-}
-
-% if not skip_deserialization:
-+(void)initialize {
-
-    if( self == [${classDef.name} class] )
-    {
-        ${metaClassVar} = [${metaClassName} new];
-    }
-}
+static ${metaClassName} *${metaClassVar} = new ${metaClassName}();
 % endif
 
 % if classDef.has_var_defaults:
@@ -112,56 +95,19 @@ ${ base.initVarToDefault(v) }\
 % endif
 
 % if not skip_deserialization:
-- (instancetype) initWithJSONData:(NSData *)data
-                            error:(NSError* __autoreleasing *)error {
-    self = [self init];
-    if (self) {
-        [TRJSONModelLoader load:self withJSONData:data error:error];
-    }
-    return self;
-}
-
-/** Parses JSON data and creates an Objective-C instance.
-
-@param cls Class type of top-most instance.
-@param filename Name of file with JSON data to be parsed.
-@param error Non-nil if any parsings errors occured.
-*/
-- (instancetype) initWithJSONFromFileNamed:(NSString *)filename
-                                     error:(NSError* __autoreleasing *)error {
-
-    self = [self init];
-    if (self) {
-        [TRJSONModelLoader load:self withJSONFromFileNamed:filename error:error];
-    }
-    return self;
-}
 <%
 staticInitName = classDef.name_sans_prefix
 %>\
-+ (instancetype) ${staticInitName}WithJSONData:(NSData *)data
-                                error:(NSError* __autoreleasing *)error {
+${classDef.name} *${classDef.name}::${staticInitName}FromData(const unsigned char *data) {
 
-    return [[self alloc] initWithJSONData:data error:error];
+    //return [[self alloc] initWithJSONData:data error:error];
 }
 
-+ (instancetype) ${staticInitName}WithJSONFromFileNamed:(NSString *)filename
-                                         error:(NSError* __autoreleasing *)error {
+${classDef.name} *${classDef.name}::${staticInitName}FromFile(string filename) {
 
-    return [[self alloc] initWithJSONFromFileNamed:filename error:error];
+    //return [[self alloc] initWithJSONFromFileNamed:filename error:error];
 }
 
-+(NSArray*) ${staticInitName}ArrayWithJSONData:(NSData *)data
-                                error:(NSError* __autoreleasing *)error {
-
-    return [TRJSONModelLoader loadArrayOf:[${classDef.name} new] withJSONData:data error:error];
-}
-
-+(NSArray*) ${staticInitName}ArrayWithJSONFromFileNamed:(NSString *)filename
-                                         error:(NSError* __autoreleasing *)error {
-
-    return [TRJSONModelLoader loadArrayOf:[${classDef.name} new] withJSONFromFileNamed:filename error:error];
-}
 % endif
 % for v in classDef.variable_defs:
 ${ base.lazyPropGetter(v) }\
@@ -227,4 +173,8 @@ ${ base.lazyPropGetter(v) }\
 % endif
 }
 @end
+
+} // namespace models
+} // namespace ${namespace}
+
 </%block>

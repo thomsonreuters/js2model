@@ -40,8 +40,8 @@ Maps for mapping JSON types to Obj C types.
         'integer': False,
         'number':  False,
         'boolean': False,
-        'null':	   True,
-        'any':	   True
+        'null':	   False,
+        'any':	   False
     }
 %>\
 <%doc>

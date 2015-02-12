@@ -14,6 +14,7 @@ def main():
 
     parser.add_argument('-l', '--lang', default='objc', help='language (default: objc)')
     parser.add_argument('--prefix', default='TR', help='prefix for class names (default: TR)')
+    parser.add_argument('--namespace', default='tr', help='parent namespace for generated code (default: tr)')
     parser.add_argument('--rootname', default=None,
                         help='Class name for root schema object (default: base name of file)')
     # parser.add_argument('-p', '--primitives', action='store_true', default=False,
@@ -60,6 +61,7 @@ def main():
     generator = JsonSchema2Model(outdir=os.path.realpath(args.output),
                                  lang=args.lang,
                                  prefix=args.prefix,
+                                 namespace=args.namespace,
                                  root_name=args.rootname,
                                  import_files=args.import_files.split(',') if args.import_files else [],
                                  super_classes=args.super.split(',') if args.super else [],
