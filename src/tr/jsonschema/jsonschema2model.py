@@ -333,11 +333,13 @@ class JsonSchema2Model(object):
 
     def copy_dependencies(self):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'dependencies')
-        self.copy_files(support_path, os.path.join(self.outdir, 'dependencies'))
+        if os.path.exists(support_path):
+            self.copy_files(support_path, os.path.join(self.outdir, 'dependencies'))
 
     def copy_static_files(self):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'static')
-        self.copy_files(support_path, self.outdir)
+        if os.path.exists(support_path):
+            self.copy_files(support_path, self.outdir)
 
     @staticmethod
     def copy_files(src, dest):
