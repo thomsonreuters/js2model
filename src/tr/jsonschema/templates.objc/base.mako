@@ -20,8 +20,8 @@ Maps for mapping JSON types to Obj C types.
         'integer': 'NSNumber *',
         'number':  'NSNumber *',
         'boolean': 'NSNumber *',
-        'null':	   'Object *',
-        'any':	   'Object *'
+        'null':	   'id',
+        'any':	   'id'
     }
 
     primitivesTypeMap = {
@@ -30,8 +30,8 @@ Maps for mapping JSON types to Obj C types.
         'integer': 'NSInteger',
         'number':  'NSFloat',
         'boolean': 'BOOL',
-        'null':	   'Object *',
-        'any':	   'Object *'
+        'null':	   'id',
+        'any':	   'id'
     }
 
     primitivesTypeIsRef = {

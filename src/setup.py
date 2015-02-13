@@ -15,8 +15,7 @@ setup(
         'templates.objc/dependencies/*.h',
         'templates.objc/dependencies/*.c',
         'templates.objc/dependencies/*.m',
-        'templates.objc/dependencies/yajl/*.*',
-        'templates.objc/dependencies/yajl/api/*.*',
+
         'templates.objc/static/*.*',
     ]},
     include_package_data=True,

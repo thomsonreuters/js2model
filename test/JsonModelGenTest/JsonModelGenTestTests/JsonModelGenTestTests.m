@@ -33,7 +33,7 @@
     XCTAssert(YES, @"Pass");
 }
 
--(void)testLoadJson {
+-(void)_testLoadJson {
     
     NSArray *jsonPaths = [[NSBundle bundleForClass:[self class] ] pathsForResourcesOfType:@"json" inDirectory:nil];
 
@@ -112,7 +112,7 @@
     
     NSData *jsonData = [NSData dataWithContentsOfFile:jsonPath];
     
-    NSError *error;
+    NSError *error = nil;
     NSArray* instances = [TRTestData testDataArrayWithJSONData:jsonData error:&error];
     
     XCTAssertNotNil(instances, @"Error while loading %@",jsonFilename);

@@ -2,7 +2,6 @@
 <%namespace name="base" file="base.mako" />
 <%block name="code">
 #import <Foundation/Foundation.h>
-#import "JSONModelSchema.h"
 % if import_files:
 % for import_file in import_files:
 #import <${import_file}>
@@ -18,16 +17,12 @@
 @class ${dep}; \
 % endfor
 % endif
-% if not skip_deserialization:
-<%
-    schemaSuperClass = "%sSchema" % (classDef.superClasses[0] if len(classDef.superClasses) else 'JSONModel')
-%>
-@interface ${classDef.name}Schema : ${schemaSuperClass}
-@end
-% endif
 <%
     superClass = classDef.superClasses[0] if len(classDef.superClasses) else 'NSObject'
-    protocols =  '<JSONModelSerialize' + ( (',' + classDef.interfaces|join(', ')) if classDef.interfaces else '') + '>'
+    if len(classDef.interfaces):
+        protocols =  '<' + ( (classDef.interfaces|join(', ')) if classDef.interfaces else '') + '>'
+    else:
+        protocols = ''
 %>
 @interface ${classDef.name} : ${superClass} ${protocols}
 
@@ -38,11 +33,16 @@ ${base.propertyDecl(v)}
 <%
 staticInitName = classDef.name_sans_prefix
 %>\
+
+-(instancetype) initWithDict:(NSDictionary *)dict;
+
 -(instancetype) initWithJSONData:(NSData *)data
                             error:(NSError* __autoreleasing *)error;
 
 -(instancetype) initWithJSONFromFileNamed:(NSString *)filename
                                      error:(NSError* __autoreleasing *)error;
+
++(instancetype) ${staticInitName}WithDict:(NSDictionary *)dict;
 
 +(instancetype) ${staticInitName}WithJSONData:(NSData *)data
                                 error:(NSError* __autoreleasing *)error;
@@ -55,6 +55,7 @@ staticInitName = classDef.name_sans_prefix
 
 +(NSArray*) ${staticInitName}ArrayWithJSONFromFileNamed:(NSString *)filename
                                          error:(NSError* __autoreleasing *)error;
+
 % endif
 @end
 </%block>

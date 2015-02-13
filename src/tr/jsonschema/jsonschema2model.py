@@ -8,6 +8,7 @@ import os
 import datetime
 import re
 import jsonref
+import logging
 import pkg_resources
 from mako.lookup import TemplateLookup
 from mako import exceptions
@@ -18,6 +19,21 @@ from shutil import copytree, copy2, rmtree
 from collections import namedtuple
 
 __author__ = 'kevin zimmerman'
+
+# create logger with 'spam_application'
+logger = logging.getLogger('tr.jsonschema.JsonSchema2Model')
+logger.setLevel(logging.DEBUG)
+
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.WARNING)
+
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+
+# add the handlers to the logger
+logger.addHandler(ch)
 
 
 #
@@ -112,7 +128,7 @@ class VariableDef(object):
     STORAGE_IVAR = "ivar"
 
     def __init__(self, name, json_name=None):
-        self.schema_type = JsonSchemaTypes.INTEGER
+        self.schema_type = JsonSchemaTypes.STRING
         self.type = JsonSchemaTypes.INTEGER
         self.name = name
         self.json_name = json_name if json_name else name
@@ -133,6 +149,15 @@ class VariableDef(object):
         self.description = None
         self.format = None
 
+    def effective_schema_type(self):
+        if isinstance(self.schema_type, list) and \
+                        len(self.schema_type) == 2 and \
+                        JsonSchemaTypes.NULL in self.schema_type:
+
+            return [t for t in self.schema_type if t != JsonSchemaTypes.NULL][0]
+        else:
+            return self.schema_type
+
 
 def whitespace_to_camel_case(matched):
     if matched.lastindex == 1:
@@ -142,19 +167,54 @@ def whitespace_to_camel_case(matched):
 
 
 # def firstUpperFilter(var):
-#     return var[0].upper() + var[1:]
+# return var[0].upper() + var[1:]
 
 LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
+LangConventions = namedtuple('LangConventions', ['cap_class_name'])
 
+class TemplateManager(object):
+    def __init__(self):
+        self.lang_templates = {
+            'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["global.h.mako"]),
+            'cpp': LangTemplates(["class.h.mako", "class.cpp.mako"], 'enum.h.mako', ["global.h.mako"]),
+        }
+
+        self.lang_conventions = {
+            'objc': LangConventions(cap_class_name=True),
+            'cpp': LangConventions(cap_class_name=False),
+        }
+
+    def get_template_lookup(self, language):
+        template_dir = pkg_resources.resource_filename(__name__, 'templates.' + language)
+        return TemplateLookup(directories=[template_dir])
+
+    def get_template_files(self, lang):
+
+        templs = self.lang_templates[lang]
+
+        if not templs:
+            logger.warning('No templates found for %s', lang)
+            return None
+        else:
+            return templs
+
+    def get_conventions(self, lang):
+
+        conventions = self.lang_conventions[lang]
+
+        if not conventions:
+            logger.warning('No conventions found for %s', lang)
+            return None
+        else:
+            return conventions
 
 class JsonSchema2Model(object):
-
     SCHEMA_URI = '__uri__'
 
     def __init__(self, outdir, import_files=None, super_classes=None, interfaces=None,
                  include_additional_properties=True,
-                 lang='objc', prefix='TR', root_name=None, validate=True, verbose=False,
-                 skip_deserialization=False, include_dependencies=True):
+                 lang='objc', prefix='TR', namespace='tr', root_name=None, validate=True, verbose=False,
+                 skip_deserialization=False, include_dependencies=True, template_manager=TemplateManager()):
 
         """
 
@@ -178,23 +238,18 @@ class JsonSchema2Model(object):
         self.include_additional_properties = include_additional_properties
         self.lang = lang
         self.prefix = prefix
+        self.namespace = namespace
         self.root_name = root_name
         self.verbose = verbose
         self.skip_deserialization = skip_deserialization
         self.include_dependencies = include_dependencies
 
-        template_dir = pkg_resources.resource_filename(__name__, 'templates.' + self.lang)
-
-        self.makolookup = TemplateLookup(directories=[template_dir])
-
         self.models = {}
         self.enums = {}
         self.class_defs = {}
+        self.template_manager = template_manager
 
-        self.lang_templates = {
-
-            'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["global.h.mako"])
-        }
+        self.makolookup = template_manager.get_template_lookup(lang)
 
     def verbose_output(self, message):
         if self.verbose:
@@ -205,18 +260,18 @@ class JsonSchema2Model(object):
         if not os.path.exists(self.outdir):
             os.makedirs(self.outdir)
 
+        template_files = self.template_manager.get_template_files(self.lang)
+
         for classDef in self.models.values():
 
-            # print([v for v in classDef.variable_defs if v.schema_type == 'object' and v.isArray])
-
-            for class_template in self.lang_templates[self.lang].class_templates:
+            for class_template in template_files.class_templates:
                 self.render_model_to_file(classDef, class_template)
 
-        if self.lang_templates[self.lang].enum_template:
+        if template_files.enum_template:
             for enumDef in self.enums.values():
-                self.render_enum_to_file(enumDef, self.lang_templates[self.lang].enum_template)
+                self.render_enum_to_file(enumDef, template_files.enum_template)
 
-        for global_template in self.lang_templates[self.lang].global_templates:
+        for global_template in template_files.global_templates:
             self.render_global_header(self.models.values(), global_template)
 
     def render_model_to_file(self, class_def, templ_name):
@@ -232,9 +287,10 @@ class JsonSchema2Model(object):
             try:
                 self.verbose_output("Writing %s" % outfile_name)
                 f.write(decl_template.render(classDef=class_def, import_files=self.import_files,
-                        include_additional_properties=self.include_additional_properties,
-                        timestamp=str(datetime.date.today()), file_name=src_file_name,
-                        skip_deserialization=self.skip_deserialization))
+                                             namespace=self.namespace,
+                                             include_additional_properties=self.include_additional_properties,
+                                             timestamp=str(datetime.date.today()), file_name=src_file_name,
+                                             skip_deserialization=self.skip_deserialization))
             except:
                 print(exceptions.text_error_template().render())
 
@@ -251,8 +307,9 @@ class JsonSchema2Model(object):
             try:
                 self.verbose_output("Writing %s" % outfile_name)
                 f.write(decl_template.render(enumDef=enum_def, import_files=self.import_files,
-                        timestamp=str(datetime.date.today()), file_name=src_file_name,
-                        include_additional_properties=self.include_additional_properties))
+                                             namespace=self.namespace,
+                                             timestamp=str(datetime.date.today()), file_name=src_file_name,
+                                             include_additional_properties=self.include_additional_properties))
             except:
                 print(exceptions.text_error_template().render())
 
@@ -268,8 +325,9 @@ class JsonSchema2Model(object):
             try:
                 self.verbose_output("Writing %s" % outfile_name)
                 f.write(decl_template.render(models=models, timestamp=str(datetime.date.today()),
-                        include_additional_properties=self.include_additional_properties,
-                        file_name=src_file_name))
+                                             namespace=self.namespace,
+                                             include_additional_properties=self.include_additional_properties,
+                                             file_name=src_file_name))
             except:
                 print(exceptions.text_error_template().render())
 
@@ -466,8 +524,32 @@ class JsonSchema2Model(object):
 
                 items = schema_object['items']
 
-                var_def = self.create_model(items, scope)
+                #
+                # If *items* is a dict, then there is only a single item schema
+                # for the array.
+                #
+                if isinstance(items, dict):
+                    items_schema = items
+                elif isinstance(items, list) and len(items):
+                    items_schema = items[0]
+                else:
+                    # TODO: handle this case
+                    logger.warning("Unexpected schema structure for 'items': %s", items)
+
+                var_def = self.create_model(items_schema, scope)
                 var_def.isArray = True
+
+            elif isinstance(schema_type, basestring):
+                var_def.type = schema_type
+
+            elif isinstance(schema_type, list) and len(schema_type) == 2 and JsonSchemaTypes.NULL in schema_type:
+                var_def.type = [t for t in schema_type if t != JsonSchemaTypes.NULL][0]
+                logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
+                               var_def.effective_schema_type(), schema_type, name)
+
+            else:
+                # TODO: handle this case
+                logger.warning("Union types not currently supported")
 
         elif 'enum' in schema_object:
 
@@ -484,7 +566,7 @@ class JsonSchema2Model(object):
             var_def.type = enum_def.name
             var_def.isEnum = True
         else:
-            assert False, "Unknown schema type"
+            logger.warning("Unknown schema type in %s", schema_object)
 
         return var_def
 
@@ -495,8 +577,14 @@ class JsonSchema2Model(object):
         return var_name
 
     def mk_class_name(self, name):
+
+        lang_conventions = self.template_manager.get_conventions(self.lang)
         class_name = self.mk_var_name(name)
-        class_name = class_name[:1].upper() + class_name[1:]
+
+        if lang_conventions.cap_class_name:
+            class_name = class_name[:1].upper() + class_name[1:]
+        else:
+            class_name = class_name[:1].lower() + class_name[1:]
 
         if self.prefix is not None:
             class_name = "%s%s" % (self.prefix, class_name)
