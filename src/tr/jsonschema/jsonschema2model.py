@@ -63,6 +63,37 @@ class JsonSchemaTypes(object):
     NULL = 'null'
     ANY = 'any'
 
+    def __setattr__(self, *_):
+        raise ValueError("Trying to change a constant value", self)
+
+
+class JsonSchemaKeywords(object):
+    ITEMS = 'items'
+    TITLE = 'title'
+    DESCRIPTION = 'description'
+    REQUIRED = 'required'
+    UNIQUEITEMS = 'uniqueItems'
+    MAXITEMS = 'maxItems'
+    MINITEMS = 'minItems'
+    MAXIMUM = 'maximum'
+    MINIMUM = 'minimum'
+    MAXLENGTH = 'maxLength'
+    MINLENGTH = 'minLength'
+    DEFAULT = 'default'
+    FORMAT = 'format'
+    TYPE = 'type'
+    ENUM = 'enum'
+    TYPENAME = 'typeName'
+    ID = 'id'
+    PROPERTIES = 'properties'
+    SUPERCLASS = '#superclass'
+    EXTENDS = 'extends'
+    ADDITIONAL_PROPERTIES = 'additionalProperties'
+
+    def __setattr__(self, *_):
+        raise ValueError("Trying to change a constant value", self)
+
+
 
 class ClassDef(object):
     def __init__(self):
@@ -172,6 +203,7 @@ def whitespace_to_camel_case(matched):
 LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
 LangConventions = namedtuple('LangConventions', ['cap_class_name'])
 
+
 class TemplateManager(object):
     def __init__(self):
         self.lang_templates = {
@@ -207,6 +239,7 @@ class TemplateManager(object):
             return None
         else:
             return conventions
+
 
 class JsonSchema2Model(object):
     SCHEMA_URI = '__uri__'
@@ -364,19 +397,19 @@ class JsonSchema2Model(object):
 
     def get_schema_id(self, schema_object, scope):
 
-        if 'id' in schema_object:
-            return schema_object['id']
+        if JsonSchemaKeywords.ID in schema_object:
+            return schema_object[JsonSchemaKeywords.ID]
         elif JsonSchema2Model.SCHEMA_URI in schema_object:
             return schema_object[JsonSchema2Model.SCHEMA_URI]
-        elif 'typeName' in schema_object:
-            return schema_object['typeName']
+        elif JsonSchemaKeywords.TYPENAME in schema_object:
+            return schema_object[JsonSchemaKeywords.TYPENAME]
         else:
             assert len(scope)
             return self.mk_class_name(scope[-1])
 
     def create_class_def(self, schema_object, scope):
 
-        assert 'type' in schema_object and schema_object['type'] == JsonSchemaTypes.OBJECT
+        assert JsonSchemaKeywords.TYPE in schema_object and schema_object[JsonSchemaKeywords.TYPE] == JsonSchemaTypes.OBJECT
 
         class_id = self.get_schema_id(schema_object, scope)
 
@@ -394,8 +427,8 @@ class JsonSchema2Model(object):
             # print("schema object:", schema_object)
 
             # set class name to typeName value it it exists, else use the current scope
-            if 'typeName' in schema_object:
-                class_name = schema_object['typeName']
+            if JsonSchemaKeywords.TYPENAME in schema_object:
+                class_name = schema_object[JsonSchemaKeywords.TYPENAME]
             elif JsonSchema2Model.SCHEMA_URI in schema_object:
                 base_name = os.path.basename(schema_object[JsonSchema2Model.SCHEMA_URI])
                 class_name = os.path.splitext(base_name)[0]
@@ -408,13 +441,13 @@ class JsonSchema2Model(object):
 
             # set super class, in increasing precendence
             extended = False
-            if 'extends' in schema_object:
-                prop_var_def = self.create_model(schema_object['extends'], scope)
+            if JsonSchemaKeywords.EXTENDS in schema_object:
+                prop_var_def = self.create_model(schema_object[JsonSchemaKeywords.EXTENDS], scope)
                 class_def.superClasses = [prop_var_def.type]
                 extended = True
 
-            elif '#superclass' in schema_object:
-                class_def.superClasses = schema_object['#superclass'].split(',')
+            elif JsonSchemaKeywords.SUPERCLASS in schema_object:
+                class_def.superClasses = schema_object[JsonSchemaKeywords.SUPERCLASS].split(',')
 
             elif len(self.super_classes):
                 class_def.superClasses = self.super_classes
@@ -424,9 +457,9 @@ class JsonSchema2Model(object):
 
             self.models[class_def.name] = class_def
 
-            if 'properties' in schema_object:
+            if JsonSchemaKeywords.PROPERTIES in schema_object:
 
-                properties = schema_object['properties']
+                properties = schema_object[JsonSchemaKeywords.PROPERTIES]
 
                 for prop in properties.keys():
                     scope.append(prop)
@@ -441,9 +474,9 @@ class JsonSchema2Model(object):
             #
             include_additional_properties = self.include_additional_properties if not extended else False
 
-            if 'additionalProperties' in schema_object:
+            if JsonSchemaKeywords.ADDITIONAL_PROPERTIES in schema_object:
 
-                additional_properties = schema_object['additionalProperties']
+                additional_properties = schema_object[JsonSchemaKeywords.ADDITIONAL_PROPERTIES]
 
                 if type(additional_properties) is int and not additional_properties:
                     include_additional_properties = False
@@ -451,7 +484,7 @@ class JsonSchema2Model(object):
                     include_additional_properties = True
 
             if include_additional_properties:
-                add_prop_var_def = VariableDef('additionalProperties')
+                add_prop_var_def = VariableDef(JsonSchemaKeywords.ADDITIONAL_PROPERTIES)
                 add_prop_var_def.type = JsonSchemaTypes.DICT
                 class_def.variable_defs.append(add_prop_var_def)
 
@@ -473,45 +506,45 @@ class JsonSchema2Model(object):
         name = self.mk_var_name(json_name)
         var_def = VariableDef(name, json_name)
 
-        if 'title' in schema_object:
-            var_def.title = schema_object['title']
+        if JsonSchemaKeywords.TITLE in schema_object:
+            var_def.title = schema_object[JsonSchemaKeywords.TITLE]
 
-        if 'description' in schema_object:
-            var_def.description = schema_object['description']
+        if JsonSchemaKeywords.DESCRIPTION in schema_object:
+            var_def.description = schema_object[JsonSchemaKeywords.DESCRIPTION]
 
-        if 'required' in schema_object:
-            var_def.isRequired = schema_object['required']
+        if JsonSchemaKeywords.REQUIRED in schema_object:
+            var_def.isRequired = schema_object[JsonSchemaKeywords.REQUIRED]
 
-        if 'uniqueItems' in schema_object:
-            var_def.uniqueItems = schema_object['uniqueItems']
+        if JsonSchemaKeywords.UNIQUEITEMS in schema_object:
+            var_def.uniqueItems = schema_object[JsonSchemaKeywords.UNIQUEITEMS]
 
-        if 'maxItems' in schema_object:
-            var_def.maxItems = schema_object['maxItems']
+        if JsonSchemaKeywords.MAXITEMS in schema_object:
+            var_def.maxItems = schema_object[JsonSchemaKeywords.MAXITEMS]
 
-        if 'minItems' in schema_object:
-            var_def.minItems = schema_object['minItems']
+        if JsonSchemaKeywords.MINITEMS in schema_object:
+            var_def.minItems = schema_object[JsonSchemaKeywords.MINITEMS]
 
-        if 'maximum' in schema_object:
-            var_def.maximum = schema_object['maximum']
+        if JsonSchemaKeywords.MAXIMUM in schema_object:
+            var_def.maximum = schema_object[JsonSchemaKeywords.MAXIMUM]
 
-        if 'minimum' in schema_object:
-            var_def.minimum = schema_object['minimum']
+        if JsonSchemaKeywords.MINIMUM in schema_object:
+            var_def.minimum = schema_object[JsonSchemaKeywords.MINIMUM]
 
-        if 'maxLength' in schema_object:
-            var_def.maxLength = schema_object['maxLength']
+        if JsonSchemaKeywords.MAXLENGTH in schema_object:
+            var_def.maxLength = schema_object[JsonSchemaKeywords.MAXLENGTH]
 
-        if 'minLength' in schema_object:
-            var_def.minLength = schema_object['minLength']
+        if JsonSchemaKeywords.MINLENGTH in schema_object:
+            var_def.minLength = schema_object[JsonSchemaKeywords.MINLENGTH]
 
-        if 'default' in schema_object:
-            var_def.default = schema_object['default']
+        if JsonSchemaKeywords.DEFAULT in schema_object:
+            var_def.default = schema_object[JsonSchemaKeywords.DEFAULT]
 
-        if 'format' in schema_object:
-            var_def.format = schema_object['format']
+        if JsonSchemaKeywords.FORMAT in schema_object:
+            var_def.format = schema_object[JsonSchemaKeywords.FORMAT]
 
-        if 'type' in schema_object:
+        if JsonSchemaKeywords.TYPE in schema_object:
 
-            schema_type = schema_object['type']
+            schema_type = schema_object[JsonSchemaKeywords.TYPE]
 
             var_def.schema_type = schema_type
 
@@ -522,9 +555,9 @@ class JsonSchema2Model(object):
 
             elif schema_type == JsonSchemaTypes.ARRAY:
 
-                assert 'items' in schema_object
+                assert JsonSchemaKeywords.ITEMS in schema_object
 
-                items = schema_object['items']
+                items = schema_object[JsonSchemaKeywords.ITEMS]
 
                 #
                 # If *items* is a dict, then there is only a single item schema
@@ -553,15 +586,15 @@ class JsonSchema2Model(object):
                 # TODO: handle this case
                 logger.warning("Union types not currently supported")
 
-        elif 'enum' in schema_object:
+        elif JsonSchemaKeywords.ENUM in schema_object:
 
             enum_def = EnumDef()
-            enum_def.name = self.mk_class_name(schema_object['typeName'] if 'typeName' in schema_object else scope[-1])
+            enum_def.name = self.mk_class_name(schema_object[JsonSchemaKeywords.TYPENAME] if JsonSchemaKeywords.TYPENAME in schema_object else scope[-1])
 
             # TODO: should I check to see if the enum is already in the models dict?
 
             enum_def.type = 'int'
-            enum_def.values = schema_object['enum']
+            enum_def.values = schema_object[JsonSchemaKeywords.ENUM]
 
             self.enums[enum_def.name] = enum_def
 
