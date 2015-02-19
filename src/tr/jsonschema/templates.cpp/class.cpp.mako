@@ -31,6 +31,9 @@ ${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
             %elif v.schema_type == 'integer':
             assert(array_item->IsInt());
             ${inst_name}.push_back(array_item->GetInt());
+            %elif v.schema_type == 'boolean':
+            assert(array_item->IsBool());
+            ${inst_name}.push_back(array_item->GetBool());
             %elif v.schema_type == 'object':
             assert(array_item->IsObject());
             ${inst_name}.push_back(${v.type}(*array_item));
@@ -48,6 +51,9 @@ ${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
         %elif v.schema_type == 'integer':
         assert(${var_iter}->value.IsInt());
         ${inst_name} = ${var_iter}->value.GetInt();
+        %elif v.schema_type == 'boolean':
+        assert(${var_iter}->value.IsBool());
+        ${inst_name} = ${var_iter}->value.GetBool();
         %elif v.schema_type == 'object':
         assert(${var_iter}->value.IsObject());
         ${inst_name} = ${v.type}(${var_iter}->value);
@@ -58,25 +64,27 @@ ${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
     % endfor
 }
 
-string to_string(const ${classDef.name} &val, std::string indent/* = "" */) {
+string to_string(const ${classDef.name} &val, std::string indent/* = "" */, std::string pretty_print/* = "" */) {
 
     ostringstream os;
 
-    os << indent << "{" << ios::end;
+    os << indent << "{" << endl;
     % for v in classDef.variable_defs:
 <%
     inst_name = base.attr.inst_name(v.name)
 %>\
     %if v.isArray:
-    os << indent << indent << "\"${v.name}\": [";
+    os << indent << pretty_print << "\"${v.name}\": [";
     for( auto &array_item : val.${inst_name} ) {
 
         % if v.schema_type == 'string':
         os << "\"" << array_item << "\",";
         %elif v.schema_type == 'integer':
         os << array_item << ",";
+        %elif v.schema_type == 'boolean':
+        os << (array_item ? "true" : "false") << ",";
         %elif v.schema_type == 'object':
-        os << to_string(array_item, indent + indent);
+        os << endl << to_string(array_item, indent + pretty_print + pretty_print, pretty_print) << "," << endl;
 ##        %elif v.schema_type == 'array':
 ##        ## TODO: probably need to recursively handle arrays of arrays
 ##        assert(array_item->IsArray());
@@ -84,18 +92,20 @@ string to_string(const ${classDef.name} &val, std::string indent/* = "" */) {
 ##        ${inst_name}.push_back(${v.type}(item_array));
         %endif
     }
-    os << indent << indent << "]," << ios::end;
+    os << indent << pretty_print << "]," << endl;
     %else:
     % if v.schema_type == 'string':
-    os << indent << indent << "\"${v.name}\": \"" << val.${inst_name} << "\","<< ios::end;
+    os << indent << pretty_print << "\"${v.name}\": \"" << val.${inst_name} << "\"," << endl;
     %elif v.schema_type == 'integer':
-    os << indent << indent << "\"${v.name}\": " << val.${inst_name} << "," << ios::end;
+    os << indent << pretty_print << "\"${v.name}\": " << val.${inst_name} << "," << endl;
+    %elif v.schema_type == 'boolean':
+    os << indent << pretty_print << "\"${v.name}\": " << (val.${inst_name} ? "true" : "false") << "," << endl;
     %elif v.schema_type == 'object':
-    os << indent << indent << "\"${v.name}\": " << to_string(val.${inst_name}, indent + indent) << "," << ios::end;
+    os << indent << pretty_print << "\"${v.name}\": " << to_string(val.${inst_name}, indent + pretty_print, pretty_print) << "," << endl;
     %endif
     %endif
     % endfor
-    os << indent << "}" << ios::end;
+    os << indent << "}";
 
     return os.str();
 }

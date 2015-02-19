@@ -53,7 +53,7 @@ public:
 
 }; // class ${classDef.name}
 
-std::string to_string(const ${classDef.name} &val, std::string indent = "");
+std::string to_string(const ${classDef.name} &val, std::string indent = "", std::string pretty_print = "");
 
 <%
 staticInitName = classDef.name_sans_prefix
