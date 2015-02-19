@@ -2,177 +2,134 @@
 <%namespace name="base" file="base.mako" />
 <%block name="code">
 #include "${classDef.decl_name}"
-% if classDef.dependencies:
-% for dep in classDef.dependencies:
-#include "${dep}.h"
-% endfor
-% endif
-#include "TRJSONModelLoader.h"
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
+using namespace rapidjson;
 
 namespace ${namespace} {
 namespace models {
 
-#define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]
+${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
 
-% if not skip_deserialization:
+    % for v in classDef.variable_defs:
 <%
-    metaClassName = classDef.name + "Schema"
-    metaClassVar = classDef.name + "SchemaInstance" 
+    var_iter = v.name + '_iter'
+    inst_name = base.attr.inst_name(v.name)
 %>\
-@implementation ${metaClassName}
+    auto ${var_iter} = json_value.FindMember("${v.json_name}");
+    if ( ${var_iter} != json_value.MemberEnd() ) {
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-<%doc>\
-    Macro that renders code to add properties to the appropriate dictionary
-</%doc>\
-<%def name="metaProps(dictName, props)">\
-    % if len(props):
-        [self.${dictName} addEntriesFromDictionary: @{
-        % for v in props:
-        <%
-        propName = base.attr.normalize_prop_name(v.name)
-        setter = 'set' + base.attr.firstupper(propName)
-        getter = propName
-        %>\
-        % if v.isArray:
-        <%
-            (varType, isRef, itemsType) = base.attr.convertType(v)
-        %>\
-        @"${v.json_name}": [JSONPropertyMeta propertyMetaWithGetter:@selector(${getter})
-                                                 setter:@selector(${setter}:)
-                                                 type:[${ varType.replace(' *','') } class]
-                                             itemType:[${ itemsType.replace(' *','') } class]],
-        % elif v.effective_schema_type() == "object":
-        <%
-            (varType, isRef, itemsType) = base.attr.convertType(v)
-        %>\
-        @"${v.json_name}": [JSONPropertyMeta propertyMetaWithGetter:@selector(${getter})
-                                                 setter:@selector(${setter}:)
-                                                   type:[${ varType.replace(' *','') } class]],
-        % else:
-        @"${v.json_name}": [JSONPropertyMeta propertyMetaWithGetter:@selector(${getter})
-                                                 setter:@selector(${setter}:)],
-        % endif
-        % endfor
-        }];
-    % endif
-</%def>\
-${ metaProps("objects", [v for v in classDef.variable_defs if (v.effective_schema_type() == 'object' and not v.isArray) or v.effective_schema_type() == 'null']) }
-${ metaProps("arrays", [v for v in classDef.variable_defs if v.isArray]) }
-${ metaProps("strings", [v for v in classDef.variable_defs if v.effective_schema_type() == 'string']) }
-${ metaProps("booleans", [v for v in classDef.variable_defs if v.effective_schema_type() == 'boolean']) }
-${ metaProps("numbers", [v for v in classDef.variable_defs if v.effective_schema_type() == 'number']) }
-${ metaProps("integers", [v for v in classDef.variable_defs if v.effective_schema_type() == 'integer']) }
+        %if v.isArray:
+        for( auto array_item = ${var_iter}->value.Begin(); array_item != ${var_iter}->value.End(); array_item++  ) {
+
+            % if v.schema_type == 'string':
+            assert(array_item->IsString());
+            ${inst_name}.push_back(array_item->GetString());
+            %elif v.schema_type == 'integer':
+            assert(array_item->IsInt());
+            ${inst_name}.push_back(array_item->GetInt());
+            %elif v.schema_type == 'object':
+            assert(array_item->IsObject());
+            ${inst_name}.push_back(${v.type}(*array_item));
+            %elif v.schema_type == 'array':
+            ## TODO: probably need to recursively handle arrays of arrays
+            assert(array_item->IsArray());
+            vector<${v.type}> item_array;
+            ${inst_name}.push_back(${v.type}(item_array));
+            %endif
+        }
+        %else:
+        % if v.schema_type == 'string':
+        assert(${var_iter}->value.IsString());
+        ${inst_name} = ${var_iter}->value.GetString();
+        %elif v.schema_type == 'integer':
+        assert(${var_iter}->value.IsInt());
+        ${inst_name} = ${var_iter}->value.GetInt();
+        %elif v.schema_type == 'object':
+        assert(${var_iter}->value.IsObject());
+        ${inst_name} = ${v.type}(${var_iter}->value);
+        %endif
+        %endif
     }
-    return self;
+
+    % endfor
 }
-@end
 
-static ${metaClassName} *${metaClassVar} = new ${metaClassName}();
-% endif
+string to_string(const ${classDef.name} &val, std::string indent/* = "" */) {
 
-% if classDef.has_var_defaults:
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-    	// custom intialization code
-        % if include_additional_properties:
-        _additionalProperties = [NSMutableDictionary new];
-        % endif
+    ostringstream os;
 
-% for v in classDef.variable_defs:
-${ base.initVarToDefault(v) }\
-% endfor
+    os << indent << "{" << ios::end;
+    % for v in classDef.variable_defs:
+<%
+    inst_name = base.attr.inst_name(v.name)
+%>\
+    %if v.isArray:
+    os << indent << indent << "\"${v.name}\": [";
+    for( auto &array_item : val.${inst_name} ) {
+
+        % if v.schema_type == 'string':
+        os << "\"" << array_item << "\",";
+        %elif v.schema_type == 'integer':
+        os << array_item << ",";
+        %elif v.schema_type == 'object':
+        os << to_string(array_item, indent + indent);
+##        %elif v.schema_type == 'array':
+##        ## TODO: probably need to recursively handle arrays of arrays
+##        assert(array_item->IsArray());
+##        vector<${v.type}> item_array;
+##        ${inst_name}.push_back(${v.type}(item_array));
+        %endif
     }
-    return self;
-}
-% endif
+    os << indent << indent << "]," << ios::end;
+    %else:
+    % if v.schema_type == 'string':
+    os << indent << indent << "\"${v.name}\": \"" << val.${inst_name} << "\","<< ios::end;
+    %elif v.schema_type == 'integer':
+    os << indent << indent << "\"${v.name}\": " << val.${inst_name} << "," << ios::end;
+    %elif v.schema_type == 'object':
+    os << indent << indent << "\"${v.name}\": " << to_string(val.${inst_name}, indent + indent) << "," << ios::end;
+    %endif
+    %endif
+    % endfor
+    os << indent << "}" << ios::end;
 
-% if not skip_deserialization:
+    return os.str();
+}
+
+
 <%
 staticInitName = classDef.name_sans_prefix
 %>\
-${classDef.name} *${classDef.name}::${staticInitName}FromData(const unsigned char *data) {
+${classDef.name} *${staticInitName}FromJsonData(const char *data, size_t len) {
 
-    //return [[self alloc] initWithJSONData:data error:error];
+    std::vector<char> buffer(len + 1);
+
+    std::memcpy(&buffer[0], data, len);
+
+    Document doc;
+
+    doc.ParseInsitu(&buffer[0]);
+
+    return new ${classDef.name}(doc);
 }
 
-${classDef.name} *${classDef.name}::${staticInitName}FromFile(string filename) {
+${classDef.name} *${staticInitName}FromFile(string filename) {
 
-    //return [[self alloc] initWithJSONFromFileNamed:filename error:error];
+    ifstream is;
+
+    stringstream buffer;
+
+    is.open(filename);
+    buffer << is.rdbuf();
+
+    ${classDef.name} *instance = ${staticInitName}FromJsonData(buffer.str().c_str(), buffer.str().length());
+
+    return instance;
 }
-
-% endif
-% for v in classDef.variable_defs:
-${ base.lazyPropGetter(v) }\
-% endfor
-% if not skip_deserialization:
-- (JSONInstanceMeta *)objectForPropertyNamed:(NSString *)propertyName {
-
-    return [${metaClassVar} objectForPropertyNamed:propertyName forInstance:self];
-}
-
-- (JSONInstanceMeta *)arrayForPropertyNamed:(NSString *)propertyName {
-    return [${metaClassVar} arrayForPropertyNamed:propertyName forInstance:self];
-}
-
-- (void)setString:(NSString *)val forProperty:(NSString *)propertyName {
-    [${metaClassVar} setString:val forProperty:propertyName forInstance:self];
-}
-
-- (void)setNumber:(NSNumber *)val forProperty:(NSString *)propertyName {
-    [${metaClassVar} setNumber:val forProperty:propertyName forInstance:self];
-}
-
-- (void)setInteger:(NSNumber *)val forProperty:(NSString *)propertyName {
-    [${metaClassVar} setInteger:val forProperty:propertyName forInstance:self];
-}
-
-- (void)setBoolean:(NSNumber *)val forProperty:(NSString *)propertyName {
-    [${metaClassVar} setBoolean:val forProperty:propertyName forInstance:self];
-}
-
-- (void)setNullForProperty:(NSString *)propertyName {
-    [${metaClassVar} setNullForProperty:propertyName forInstance:self];
-}
-
-+(JSONModelSchema *)modelSchema {
-    return ${metaClassVar} ;
-}
-% endif
-
--(NSMutableDictionary*)additionalProperties {
-% if include_additional_properties:
-    return _additionalProperties;
-% else:
-    [NSException raise:@"Method not implemented" format:@"additionalProperties is not implemented. Additional property support was disabled when generating this class."];
-    return nil;
-% endif
-}
-
--(void)setValue:(id)value forAdditionalProperty:(NSString*)propertyName {
-% if include_additional_properties:
-    [_additionalProperties setObject:value forKey:propertyName];
-% else:
-    [NSException raise:@"Method not implemented" format:@"setValue:forAdditionalProperty: is not implemented. Additional property support was disabled when generating this class."];
-% endif
-}
-
--(id)valueForAdditionalProperty:(NSString*)propertyName {
-% if include_additional_properties:
-    return [_additionalProperties valueForKey:propertyName];
-% else:
-    [NSException raise:@"Method not implemented" format:@"valueForAdditionalProperty is not implemented. Additional property support was disabled when generating this class."];
-    return nil;
-% endif
-}
-@end
 
 } // namespace models
 } // namespace ${namespace}

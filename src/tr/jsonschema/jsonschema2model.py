@@ -208,7 +208,7 @@ class TemplateManager(object):
     def __init__(self):
         self.lang_templates = {
             'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["global.h.mako"]),
-            'cpp': LangTemplates(["class.h.mako", "class.cpp.mako"], 'enum.h.mako', ["global.h.mako"]),
+            'cpp': LangTemplates(["class.h.mako", "class.cpp.mako"], 'enum.h.mako', ["models.h.mako"]),
         }
 
         self.lang_conventions = {
@@ -349,7 +349,7 @@ class JsonSchema2Model(object):
     def render_global_header(self, models, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        src_file_name = self.prefix + "Models" + os.path.splitext(templ_name.replace('.mako', ''))[1]
+        src_file_name = self.prefix + templ_name.replace('.mako', '')
         outfile_name = os.path.join(self.outdir, src_file_name)
 
         decl_template = self.makolookup.get_template(templ_name)

@@ -9,13 +9,16 @@ def firstlower(value):
 
 def firstupper(value):
     return value[0].upper() + value[1:]
+
+def inst_name(value):
+    return 'm' + value[0].upper() + value[1:]
 %>\
 <%doc>
 Maps for mapping JSON types to Obj C types.
 </%doc>\
 <%!
     typeMap = {
-        'string':  'string',
+        'string':  'std::string',
         'dict':    'std::unordered_map',
         'integer': 'int',
         'number':  'float',
@@ -25,7 +28,7 @@ Maps for mapping JSON types to Obj C types.
     }
 
     primitivesTypeMap = {
-        'string':  'string',
+        'string':  'std::string',
         'dict':    'std::unordered_map',
         'integer': 'int',
         'number':  'float',
@@ -51,6 +54,10 @@ Make sure property names are valid per C++ rules.
     def normalize_prop_name(propName):
         #return "id_" if propName == "id" else  propName
         return propName
+%>\
+<%
+def inst_name(value):
+    return 'm' + normalize_prop_name(value[0].upper() + value[1:])
 %>\
 ##<%!
 ##    def convertJsTypeToObjc(jsType, usePrimitives=False):
@@ -94,32 +101,6 @@ Convert a JSON type to an Objective C type.
 
         return (varType, isRef, itemType)
 %>\
-<%def name='propertyDecl(variableDef, usePrimitives=False)'>\
-<%
-    (varType, isRef, itemsType) = convertType(variableDef, usePrimitives)
-%>\
-    ${varType} ${normalize_prop_name(variableDef.name)};\
-</%def>\
-<%def name='lazyPropGetter(variableDef, usePrimitives=False)'>\
-<%
-(varType, isRef, itemsType) = convertType(variableDef, usePrimitives)
-%>\
-% if varType == "NSDictionary *" or varType == "NSMutableArray *":
-<%
-prop_name = variableDef.name
-ivar_name = '_' + prop_name
-prop_classname = varType.replace(' *','')
-%>\
--(${varType}) ${prop_name} {
-
-    if( ! ${ivar_name} ) {
-        ${ivar_name} = [${prop_classname} new];
-    }
-
-    return ${ivar_name};
-}
-% endif
-</%def>\
 <%def name='initVarToDefault(variableDef, usePrimitives=False)'>\
     <%
     (varType, isRef, itemsType) = convertType(variableDef, usePrimitives)
