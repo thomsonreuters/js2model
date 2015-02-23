@@ -201,19 +201,19 @@ def whitespace_to_camel_case(matched):
 # return var[0].upper() + var[1:]
 
 LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
-LangConventions = namedtuple('LangConventions', ['cap_class_name'])
+LangConventions = namedtuple('LangConventions', ['cap_class_name', 'use_prefix'])
 
 
 class TemplateManager(object):
     def __init__(self):
         self.lang_templates = {
-            'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["global.h.mako"]),
+            'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["models.h.mako"]),
             'cpp': LangTemplates(["class.h.mako", "class.cpp.mako"], 'enum.h.mako', ["models.h.mako"]),
         }
 
         self.lang_conventions = {
-            'objc': LangConventions(cap_class_name=True),
-            'cpp': LangConventions(cap_class_name=False),
+            'objc': LangConventions(cap_class_name=True, use_prefix=True),
+            'cpp': LangConventions(cap_class_name=False, use_prefix=False),
         }
 
     def get_template_lookup(self, language):
@@ -305,7 +305,7 @@ class JsonSchema2Model(object):
                 self.render_enum_to_file(enumDef, template_files.enum_template)
 
         for global_template in template_files.global_templates:
-            self.render_global_header(self.models.values(), global_template)
+            self.render_global_template(self.models.values(), global_template)
 
     def render_model_to_file(self, class_def, templ_name):
 
@@ -346,10 +346,16 @@ class JsonSchema2Model(object):
             except:
                 print(exceptions.text_error_template().render())
 
-    def render_global_header(self, models, templ_name):
+    def render_global_template(self, models, templ_name):
 
-        # remove '.jinja', then use extension from the template name
-        src_file_name = self.prefix + templ_name.replace('.mako', '')
+        # remove '.mako', then use extension from the template name
+        src_file_name = templ_name.replace('.mako', '')
+
+        lang_conventions = self.template_manager.get_conventions(self.lang)
+
+        if lang_conventions.use_prefix:
+            src_file_name = self.prefix + src_file_name[0].upper() + src_file_name[1:]
+
         outfile_name = os.path.join(self.outdir, src_file_name)
 
         decl_template = self.makolookup.get_template(templ_name)
@@ -621,7 +627,7 @@ class JsonSchema2Model(object):
         else:
             class_name = class_name[:1].lower() + class_name[1:]
 
-        if self.prefix is not None:
+        if self.prefix is not None and lang_conventions.use_prefix:
             class_name = "%s%s" % (self.prefix, class_name)
 
         return class_name

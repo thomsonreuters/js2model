@@ -1,0 +1,43 @@
+
+
+//
+//  name.h
+//
+//  Created by js2Model on 2015-02-23.
+//  Copyright (c) 2014 Thomson Reuters. All rights reserved.
+//
+
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include "document.h"
+
+
+#pragma once
+
+namespace tr {
+namespace models {
+
+class name  {
+
+public:
+    std::string mLast;
+    std::string mFirst;
+
+public:
+
+    name() = default;
+    name(const name &other) = default;
+    name(const rapidjson::Value &value);
+
+}; // class name
+
+std::string to_string(const name &val, std::string indent = "", std::string pretty_print = "");
+
+name nameFromData(const char * jsonData);
+name nameFromFile(std::string filename);
+std::vector<name> nameArrayFromData(const char *jsonData, size_t len);
+
+
+} // namespace models
+} // namespace tr

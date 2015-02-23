@@ -58,8 +58,9 @@ std::string to_string(const ${classDef.name} &val, std::string indent = "", std:
 <%
 staticInitName = classDef.name_sans_prefix
 %>\
-${classDef.name} *${staticInitName}FromData(const char * jsonData);
-${classDef.name} *${staticInitName}FromFile(std::string filename);
+${classDef.name} ${staticInitName}FromData(const char * jsonData);
+${classDef.name} ${staticInitName}FromFile(std::string filename);
+std::vector<${classDef.name}> ${staticInitName}ArrayFromData(const char *jsonData, size_t len);
 
 
 } // namespace models

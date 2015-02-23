@@ -23,8 +23,8 @@ Maps for mapping JSON types to Obj C types.
         'integer': 'int',
         'number':  'float',
         'boolean': 'bool',
-        'null':	   'void *',
-        'any':	   'void *'
+        'null':	   'void',
+        'any':	   'void'
     }
 
     primitivesTypeMap = {
@@ -33,8 +33,8 @@ Maps for mapping JSON types to Obj C types.
         'integer': 'int',
         'number':  'float',
         'boolean': 'bool',
-        'null':	   'void *',
-        'any':	   'void *'
+        'null':	   'void',
+        'any':	   'void'
     }
 
     primitivesTypeIsRef = {

@@ -114,7 +114,7 @@ string to_string(const ${classDef.name} &val, std::string indent/* = "" */, std:
 <%
 staticInitName = classDef.name_sans_prefix
 %>\
-${classDef.name} *${staticInitName}FromJsonData(const char *data, size_t len) {
+${classDef.name} ${staticInitName}FromJsonData(const char *data, size_t len) {
 
     std::vector<char> buffer(len + 1);
 
@@ -124,10 +124,10 @@ ${classDef.name} *${staticInitName}FromJsonData(const char *data, size_t len) {
 
     doc.ParseInsitu(&buffer[0]);
 
-    return new ${classDef.name}(doc);
+    return ${classDef.name}(doc);
 }
 
-${classDef.name} *${staticInitName}FromFile(string filename) {
+${classDef.name} ${staticInitName}FromFile(string filename) {
 
     ifstream is;
 
@@ -136,9 +136,32 @@ ${classDef.name} *${staticInitName}FromFile(string filename) {
     is.open(filename);
     buffer << is.rdbuf();
 
-    ${classDef.name} *instance = ${staticInitName}FromJsonData(buffer.str().c_str(), buffer.str().length());
+    ${classDef.name} instance = ${staticInitName}FromJsonData(buffer.str().c_str(), buffer.str().length());
 
     return instance;
+}
+
+std::vector<${classDef.name}> ${staticInitName}ArrayFromData(const char *jsonData, size_t len) {
+
+    std::vector<char> buffer(len + 1);
+
+    std::memcpy(&buffer[0], jsonData, len);
+
+    Document doc;
+
+    doc.ParseInsitu(&buffer[0]);
+
+    assert(doc.IsArray());
+
+    std::vector<${classDef.name}> ${staticInitName}Array(doc.MemberCount());
+
+    for( auto array_item = doc.Begin(); array_item != doc.End(); array_item++  ) {
+
+        ${classDef.name} instance = ${classDef.name}(*array_item);
+        ${staticInitName}Array.push_back(instance);
+    }
+
+    return ${staticInitName}Array;
 }
 
 } // namespace models
