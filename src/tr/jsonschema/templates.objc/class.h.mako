@@ -14,7 +14,7 @@
 % endif
 % if classDef.dependencies:
 % for dep in classDef.dependencies:
-@class ${dep}; \
+#import "${dep}"
 % endfor
 % endif
 <%
@@ -31,7 +31,7 @@ ${base.propertyDecl(v)}
 % endfor
 % if not skip_deserialization:
 <%
-staticInitName = classDef.name_sans_prefix
+staticInitName = classDef.plain_name
 %>\
 
 -(instancetype) initWithDict:(NSDictionary *)dict;

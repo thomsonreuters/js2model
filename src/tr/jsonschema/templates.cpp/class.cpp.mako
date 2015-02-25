@@ -1,7 +1,7 @@
 <%inherit file="base.mako" />
 <%namespace name="base" file="base.mako" />
 <%block name="code">
-#include "${classDef.decl_name}"
+#include "${classDef.header_file}"
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -9,10 +9,15 @@
 using namespace std;
 using namespace rapidjson;
 
+<%
+class_name = classDef.name
+%>\
 namespace ${namespace} {
 namespace models {
 
-${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
+${class_name}::${class_name}(const rapidjson::Value &json_value) {
+
+    assert(json_value.IsObject());
 
     % for v in classDef.variable_defs:
 <%
@@ -26,8 +31,10 @@ ${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
         for( auto array_item = ${var_iter}->value.Begin(); array_item != ${var_iter}->value.End(); array_item++  ) {
 
             % if v.schema_type == 'string':
-            assert(array_item->IsString());
-            ${inst_name}.push_back(array_item->GetString());
+            if (!array_item->IsNull()) {
+                assert(array_item->IsString());
+                ${inst_name}.push_back(array_item->GetString());
+            }
             %elif v.schema_type == 'integer':
             assert(array_item->IsInt());
             ${inst_name}.push_back(array_item->GetInt());
@@ -46,17 +53,28 @@ ${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
         }
         %else:
         % if v.schema_type == 'string':
-        assert(${var_iter}->value.IsString());
-        ${inst_name} = ${var_iter}->value.GetString();
+        if (${var_iter}->value.IsNull()) {
+            ${inst_name}.clear();
+        }
+        else {
+            assert(${var_iter}->value.IsString());
+            ${inst_name} = ${var_iter}->value.GetString();
+        }
         %elif v.schema_type == 'integer':
-        assert(${var_iter}->value.IsInt());
-        ${inst_name} = ${var_iter}->value.GetInt();
+        if (!${var_iter}->value.IsNull()) {
+            assert(${var_iter}->value.IsInt());
+            ${inst_name} = ${var_iter}->value.GetInt();
+        }
         %elif v.schema_type == 'boolean':
-        assert(${var_iter}->value.IsBool());
-        ${inst_name} = ${var_iter}->value.GetBool();
+        if (!${var_iter}->value.IsNull()) {
+            assert(${var_iter}->value.IsBool());
+            ${inst_name} = ${var_iter}->value.GetBool();
+        }
         %elif v.schema_type == 'object':
-        assert(${var_iter}->value.IsObject());
-        ${inst_name} = ${v.type}(${var_iter}->value);
+        if (!${var_iter}->value.IsNull()) {
+            assert(${var_iter}->value.IsObject());
+            ${inst_name} = ${v.type}(${var_iter}->value);
+        }
         %endif
         %endif
     }
@@ -64,7 +82,7 @@ ${classDef.name}::${classDef.name}(const rapidjson::Value &json_value) {
     % endfor
 }
 
-string to_string(const ${classDef.name} &val, std::string indent/* = "" */, std::string pretty_print/* = "" */) {
+string to_string(const ${class_name} &val, std::string indent/* = "" */, std::string pretty_print/* = "" */) {
 
     ostringstream os;
 
@@ -112,9 +130,9 @@ string to_string(const ${classDef.name} &val, std::string indent/* = "" */, std:
 
 
 <%
-staticInitName = classDef.name_sans_prefix
+staticInitName = classDef.plain_name
 %>\
-${classDef.name} ${staticInitName}FromJsonData(const char *data, size_t len) {
+${class_name} ${staticInitName}FromJsonData(const char *data, size_t len) {
 
     std::vector<char> buffer(len + 1);
 
@@ -124,10 +142,10 @@ ${classDef.name} ${staticInitName}FromJsonData(const char *data, size_t len) {
 
     doc.ParseInsitu(&buffer[0]);
 
-    return ${classDef.name}(doc);
+    return ${class_name}(doc);
 }
 
-${classDef.name} ${staticInitName}FromFile(string filename) {
+${class_name} ${staticInitName}FromFile(string filename) {
 
     ifstream is;
 
@@ -136,12 +154,15 @@ ${classDef.name} ${staticInitName}FromFile(string filename) {
     is.open(filename);
     buffer << is.rdbuf();
 
-    ${classDef.name} instance = ${staticInitName}FromJsonData(buffer.str().c_str(), buffer.str().length());
+    ${class_name} instance = ${staticInitName}FromJsonData(buffer.str().c_str(), buffer.str().length());
 
     return instance;
 }
 
-std::vector<${classDef.name}> ${staticInitName}ArrayFromData(const char *jsonData, size_t len) {
+<%
+array_var_name = staticInitName + 'Array'
+%>\
+std::vector<${class_name}> ${staticInitName}ArrayFromData(const char *jsonData, size_t len) {
 
     std::vector<char> buffer(len + 1);
 
@@ -153,15 +174,16 @@ std::vector<${classDef.name}> ${staticInitName}ArrayFromData(const char *jsonDat
 
     assert(doc.IsArray());
 
-    std::vector<${classDef.name}> ${staticInitName}Array(doc.MemberCount());
+    std::vector<${class_name}> ${array_var_name};
+    ${array_var_name}.reserve(doc.Size());
 
     for( auto array_item = doc.Begin(); array_item != doc.End(); array_item++  ) {
 
-        ${classDef.name} instance = ${classDef.name}(*array_item);
-        ${staticInitName}Array.push_back(instance);
+        ${class_name} instance = ${class_name}(*array_item);
+        ${array_var_name}.push_back(instance);
     }
 
-    return ${staticInitName}Array;
+    return ${array_var_name};
 }
 
 } // namespace models

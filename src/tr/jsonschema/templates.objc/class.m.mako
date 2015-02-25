@@ -1,10 +1,10 @@
 <%inherit file="base.mako" />
 <%namespace name="base" file="base.mako" />
 <%block name="code">
-#import "${classDef.decl_name}"
+#import "${classDef.header_file}"
 % if classDef.dependencies:
 % for dep in classDef.dependencies:
-#import "${dep}.h"
+#import "${dep}"
 % endfor
 % endif
 
@@ -99,7 +99,7 @@ propName = base.attr.normalize_prop_name(v.name)
     return self;
 }
 <%
-staticInitName = classDef.name_sans_prefix
+staticInitName = classDef.plain_name
 %>\
 +(instancetype) ${staticInitName}WithDict:(NSDictionary *)dict {
     return [[self alloc] initWithDict:dict];

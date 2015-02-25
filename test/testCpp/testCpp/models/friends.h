@@ -1,9 +1,10 @@
 
 
+
 //
 //  friends.h
 //
-//  Created by js2Model on 2015-02-23.
+//  Created by js2Model on 2015-02-24.
 //  Copyright (c) 2014 Thomson Reuters. All rights reserved.
 //
 
@@ -18,25 +19,25 @@
 namespace tr {
 namespace models {
 
-class friends  {
+class friends_t  {
 
 public:
-    std::string mName;
-    int mId;
+    std::string name;
+    int id;
 
 public:
 
-    friends() = default;
-    friends(const friends &other) = default;
-    friends(const rapidjson::Value &value);
+    friends_t() = default;
+    friends_t(const friends_t &other) = default;
+    friends_t(const rapidjson::Value &value);
 
-}; // class friends
+}; // class friends_t
 
-std::string to_string(const friends &val, std::string indent = "", std::string pretty_print = "");
+std::string to_string(const friends_t &val, std::string indent = "", std::string pretty_print = "");
 
-friends friendsFromData(const char * jsonData);
-friends friendsFromFile(std::string filename);
-std::vector<friends> friendsArrayFromData(const char *jsonData, size_t len);
+friends_t friendsFromData(const char * jsonData);
+friends_t friendsFromFile(std::string filename);
+std::vector<friends_t> friendsArrayFromData(const char *jsonData, size_t len);
 
 
 } // namespace models

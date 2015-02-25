@@ -6,7 +6,7 @@
 #include <vector>
 % if classDef.dependencies:
 % for dep in classDef.dependencies:
-#include "${dep}.h"
+#include "${dep}"
 % endfor
 % endif
 #include "document.h"
@@ -33,9 +33,10 @@
 namespace ${namespace} {
 namespace models {
 <%
-    superClass = classDef.superClasses[0] if len(classDef.superClasses) else None
+class_name = classDef.name
+superClass = classDef.superClasses[0] if len(classDef.superClasses) else None
 %>
-class ${classDef.name} ${(': protected ' + superClass) if superClass else ''} {
+class ${class_name} ${(': protected ' + superClass) if superClass else ''} {
 
 public:
 % for v in classDef.variable_defs:
@@ -47,20 +48,20 @@ ${propertyDecl(v)}
 
 public:
 
-    ${classDef.name}() = default;
-    ${classDef.name}(const ${classDef.name} &other) = default;
-    ${classDef.name}(const rapidjson::Value &value);
+    ${class_name}() = default;
+    ${class_name}(const ${class_name} &other) = default;
+    ${class_name}(const rapidjson::Value &value);
 
-}; // class ${classDef.name}
+}; // class ${class_name}
 
-std::string to_string(const ${classDef.name} &val, std::string indent = "", std::string pretty_print = "");
+std::string to_string(const ${class_name} &val, std::string indent = "", std::string pretty_print = "");
 
 <%
-staticInitName = classDef.name_sans_prefix
+staticInitName = classDef.plain_name
 %>\
-${classDef.name} ${staticInitName}FromData(const char * jsonData);
-${classDef.name} ${staticInitName}FromFile(std::string filename);
-std::vector<${classDef.name}> ${staticInitName}ArrayFromData(const char *jsonData, size_t len);
+${class_name} ${staticInitName}FromJsonData(const char * jsonData, size_t len);
+${class_name} ${staticInitName}FromFile(std::string filename);
+std::vector<${class_name}> ${staticInitName}ArrayFromData(const char *jsonData, size_t len);
 
 
 } // namespace models

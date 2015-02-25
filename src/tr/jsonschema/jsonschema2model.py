@@ -94,24 +94,21 @@ class JsonSchemaKeywords(object):
         raise ValueError("Trying to change a constant value", self)
 
 
-
 class ClassDef(object):
     def __init__(self):
+
+        # Class name sans prefix/suffix
+        self.plain_name = None
+
+        # Class name
         self.name = None
-        self.name_sans_prefix = None
         self.variable_defs = []
         self.superClasses = []
         self.interfaces = []
         self.package = None
         self.custom = {}
-
-    @property
-    def impl_name(self):
-        return '%s.m' % self.name
-
-    @property
-    def decl_name(self):
-        return '%s.h' % self.name
+        self.header_file = None
+        self.impl_file = None
 
     @property
     def dependencies(self):
@@ -120,9 +117,9 @@ class ClassDef(object):
         # for dep in [ivar.type for ivar in self.variable_defs if ivar.schemaType == JsonSchemaTypes.OBJECT]:
         # dependencies.add(dep)
 
-        for varDef in self.variable_defs:
-            if varDef.schema_type == JsonSchemaTypes.OBJECT or varDef.isEnum:
-                dependencies.add(varDef.type)
+        for var_def in self.variable_defs:
+            if var_def.header_file:
+                dependencies.add(var_def.header_file)
 
         return dependencies if len(dependencies) else None
 
@@ -163,6 +160,7 @@ class VariableDef(object):
         self.type = JsonSchemaTypes.INTEGER
         self.name = name
         self.json_name = json_name if json_name else name
+        self.header_file = None
         self.visibility = VariableDef.ACCESS_PROTECTED
         self.storage = VariableDef.STORAGE_IVAR
         self.default = None
@@ -201,19 +199,33 @@ def whitespace_to_camel_case(matched):
 # return var[0].upper() + var[1:]
 
 LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
-LangConventions = namedtuple('LangConventions', ['cap_class_name', 'use_prefix'])
+
+class LanguageTemplates(object):
+
+    def __init__(self, header_template=None, impl_template=None, enum_template=None, global_templates=[]):
+        self.header_template = header_template
+        self.impl_template = impl_template
+        self.enum_template=enum_template
+        self.global_templates=global_templates
+
+class LanguageConventions(object):
+
+    def __init__(self,cap_class_name=True, use_prefix=True, type_suffix=None):
+        self.cap_class_name=cap_class_name
+        self.use_prefix = use_prefix
+        self.type_suffix=type_suffix
 
 
 class TemplateManager(object):
     def __init__(self):
         self.lang_templates = {
-            'objc': LangTemplates(["class.h.mako", "class.m.mako"], 'enum.h.mako', ["models.h.mako"]),
-            'cpp': LangTemplates(["class.h.mako", "class.cpp.mako"], 'enum.h.mako', ["models.h.mako"]),
+            'objc': LanguageTemplates(header_template="class.h.mako", impl_template="class.m.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
+            'cpp': LanguageTemplates(header_template="class.h.mako", impl_template="class.cpp.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
         }
 
         self.lang_conventions = {
-            'objc': LangConventions(cap_class_name=True, use_prefix=True),
-            'cpp': LangConventions(cap_class_name=False, use_prefix=False),
+            'objc': LanguageConventions(cap_class_name=True, use_prefix=True, type_suffix=None),
+            'cpp': LanguageConventions(cap_class_name=False, use_prefix=False, type_suffix='_t'),
         }
 
     def get_template_lookup(self, language):
@@ -297,8 +309,11 @@ class JsonSchema2Model(object):
 
         for classDef in self.models.values():
 
-            for class_template in template_files.class_templates:
-                self.render_model_to_file(classDef, class_template)
+            if template_files.header_template:
+                self.render_model_to_file(classDef, classDef.header_file, template_files.header_template)
+
+            if template_files.impl_template:
+                self.render_model_to_file(classDef, classDef.impl_file, template_files.impl_template)
 
         if template_files.enum_template:
             for enumDef in self.enums.values():
@@ -307,19 +322,17 @@ class JsonSchema2Model(object):
         for global_template in template_files.global_templates:
             self.render_global_template(self.models.values(), global_template)
 
-    def render_model_to_file(self, class_def, templ_name):
+    def render_model_to_file(self, class_def, src_file_name, templ_name):
 
-        # remove '.jinja', then use extension from the template name
-        src_file_name = class_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
-        decl_template = self.makolookup.get_template(templ_name)
+        template = self.makolookup.get_template(templ_name)
 
         with open(outfile_name, 'w') as f:
 
             try:
                 self.verbose_output("Writing %s" % outfile_name)
-                f.write(decl_template.render(classDef=class_def, import_files=self.import_files,
+                f.write(template.render(classDef=class_def, import_files=self.import_files,
                                              namespace=self.namespace,
                                              include_additional_properties=self.include_additional_properties,
                                              timestamp=str(datetime.date.today()), file_name=src_file_name,
@@ -330,7 +343,8 @@ class JsonSchema2Model(object):
     def render_enum_to_file(self, enum_def, templ_name):
 
         # remove '.jinja', then use extension from the template name
-        src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
+        src_file_name = self.mk_source_file_name(enum_def, templ_name)
+        #src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
         decl_template = self.makolookup.get_template(templ_name)
@@ -443,7 +457,7 @@ class JsonSchema2Model(object):
                 class_name = scope[-1]
 
             class_def.name = self.mk_class_name(class_name)
-            class_def.name_sans_prefix = self.mk_var_name(class_name)
+            class_def.plain_name = self.mk_var_name(class_name)
 
             # set super class, in increasing precendence
             extended = False
@@ -496,6 +510,11 @@ class JsonSchema2Model(object):
 
             # add custom keywords
             class_def.custom = {k: v for k, v in schema_object.items() if k.startswith('#')}
+
+            # Derive the source file names from the corresponding template names
+            template_files = self.template_manager.get_template_files(self.lang)
+            class_def.header_file = self.mk_source_file_name(class_def, template_files.header_template)
+            class_def.impl_file = self.mk_source_file_name(class_def, template_files.impl_template)
 
             return class_def
 
@@ -558,6 +577,7 @@ class JsonSchema2Model(object):
 
                 class_def = self.create_class_def(schema_object, scope)
                 var_def.type = class_def.name
+                var_def.header_file = class_def.header_file
 
             elif schema_type == JsonSchemaTypes.ARRAY:
 
@@ -630,7 +650,23 @@ class JsonSchema2Model(object):
         if self.prefix is not None and lang_conventions.use_prefix:
             class_name = "%s%s" % (self.prefix, class_name)
 
+        if lang_conventions.type_suffix:
+            class_name += lang_conventions.type_suffix
+
         return class_name
+
+    def mk_source_file_name(self, class_def, templ_name):
+
+        lang_conventions = self.template_manager.get_conventions(self.lang)
+
+        # remove '.jinja', then use extension from the template name
+        src_file_name = class_def.plain_name + os.path.splitext(templ_name.replace('.mako', ''))[1]
+
+        if self.prefix is not None and lang_conventions and lang_conventions.use_prefix:
+            src_file_name = self.prefix + src_file_name[0].upper() + src_file_name[1:]
+
+        return  src_file_name
+
 
     def generate_models(self, files):
 

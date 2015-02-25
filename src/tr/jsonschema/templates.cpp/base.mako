@@ -11,7 +11,13 @@ def firstupper(value):
     return value[0].upper() + value[1:]
 
 def inst_name(value):
-    return 'm' + value[0].upper() + value[1:]
+##    return 'm' + value[0].upper() + value[1:]
+    return normalize_prop_name(value)
+%>
+<%
+def normalize_class_name(value):
+##    return 'm' + value[0].upper() + value[1:]
+    return value
 %>\
 <%doc>
 Maps for mapping JSON types to Obj C types.
@@ -57,7 +63,8 @@ Make sure property names are valid per C++ rules.
 %>\
 <%
 def inst_name(value):
-    return 'm' + normalize_prop_name(value[0].upper() + value[1:])
+    #return 'm' + normalize_prop_name(value[0].upper() + value[1:])
+    return normalize_prop_name(value)
 %>\
 ##<%!
 ##    def convertJsTypeToObjc(jsType, usePrimitives=False):
