@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>js2Model.py Reference &mdash; js2model 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="js2model 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="jsonschema2model" href="jsonschema2model.html" />
+    <link rel="prev" title="TRQuickstart.m" href="TRQuickstart_m.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="jsonschema2model.html" title="jsonschema2model"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="TRQuickstart_m.html" title="TRQuickstart.m"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">js2model 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="js2model-py-reference">
+<h1>js2Model.py Reference<a class="headerlink" href="#js2model-py-reference" title="Permalink to this headline">¶</a></h1>
+<p><strong>Version 0.1 Beta DRAFT</strong></p>
+<div class="section" id="running-it">
+<h2>Running it<a class="headerlink" href="#running-it" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>usage: js2model.py [-h] [-l LANG] [--prefix PREFIX] [--rootname ROOTNAME] [-p]
+                 [--additional] [--novalidate] [-o OUTPUT]
+                 [--implements IMPLEMENTS] [--super SUPER]
+                 [--import IMPORT_FILES] [-v] [--no-deserialize]
+                 [--no-dependencies]
+                 FILES [FILES ...]
+
+      Generate native data models from JSON Schema definitions.
+
+      positional arguments:
+        FILES                 JSON Schema files for model generation
+
+      optional arguments:
+        -h, --help            show this help message and exit
+        -l LANG, --lang LANG  language (default: objc)
+        --prefix PREFIX       prefix for class names (default: TR)
+        --rootname ROOTNAME   Class name for root schema object (default: fileName)
+        -p, --primitives      Use primitive types in favor of object wrappers
+        --additional          Include additionalProperties in models
+        --novalidate          Skip schema validation
+        -o OUTPUT, --output OUTPUT
+                              Target directory of output files
+        --implements IMPLEMENTS
+                              Comma separated list of interface(s)|protocol(s)
+                              supported by the generated classes
+        --super SUPER         Comma separated list of super classes. Generated
+                              classes inherit these
+        --import IMPORT_FILES
+                              Comma separated list of files to @import
+        -v, --verbose         Print actions to STDOUT.
+        --no-deserialize      Do not generate deserialization code. Implies --no-dependencies.
+        --no-dependencies     Do not include dependencies in output.
+</pre></div>
+</div>
+<div class="section" id="a-simple-sample">
+<h3>A simple sample<a class="headerlink" href="#a-simple-sample" title="Permalink to this headline">¶</a></h3>
+<p>Given the JSON schema definition:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+   <span class="s2">&quot;$schema&quot;</span><span class="o">:</span> <span class="s2">&quot;http://json-schema.org/draft-04/schema#&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;address&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;street&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">},</span>
+      <span class="s2">&quot;city&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">},</span>
+      <span class="s2">&quot;county&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">},</span>
+      <span class="s2">&quot;state&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">},</span>
+      <span class="s2">&quot;zip&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>js2Model will generate the class source files:</p>
+<p><strong>address.h</strong></p>
+<div class="highlight-objective-c"><div class="highlight"><pre><span class="k">@interface</span> <span class="nc">Address</span> : <span class="bp">NSObject</span> <span class="o">&lt;</span><span class="n">JSONModelSerialize</span><span class="o">&gt;</span>
+
+<span class="k">@property</span><span class="p">(</span><span class="k">strong</span><span class="p">,</span> <span class="k">nonatomic</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span> <span class="n">county</span><span class="p">;</span>
+<span class="k">@property</span><span class="p">(</span><span class="k">strong</span><span class="p">,</span> <span class="k">nonatomic</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span> <span class="n">city</span><span class="p">;</span>
+<span class="k">@property</span><span class="p">(</span><span class="k">strong</span><span class="p">,</span> <span class="k">nonatomic</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span> <span class="n">state</span><span class="p">;</span>
+<span class="k">@property</span><span class="p">(</span><span class="k">strong</span><span class="p">,</span> <span class="k">nonatomic</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span> <span class="n">street</span><span class="p">;</span>
+<span class="k">@property</span><span class="p">(</span><span class="k">strong</span><span class="p">,</span> <span class="k">nonatomic</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span> <span class="n">zip</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+<p><strong>address.m</strong></p>
+<div class="highlight-objective-c"><div class="highlight"><pre><span class="k">@implementation</span> <span class="nc">Address</span><span class="p">{</span>
+    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">_additionalProperties</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">init</span>
+<span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+     <span class="c1">// custom intialization code</span>
+         <span class="n">_additionalProperties</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">new</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span> <span class="nf">initWithJSONData:</span><span class="p">(</span><span class="bp">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">data</span>
+                         <span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="o">*</span> <span class="k">__autoreleasing</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span> <span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+         <span class="p">[</span><span class="n">TRJSONModelLoader</span> <span class="nl">load</span><span class="p">:</span><span class="nb">self</span> <span class="nl">withJSONData</span><span class="p">:</span><span class="n">data</span> <span class="nl">error</span><span class="p">:</span><span class="n">error</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//</span>
+<span class="c1">// Code removed for clarity</span>
+<span class="c1">//</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+<p>To deserialize JSON data into an instance of Address:</p>
+<div class="highlight-objective-c"><div class="highlight"><pre><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
+
+<span class="bp">NSData</span> <span class="o">*</span><span class="n">jsonData</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="n">getSomeJSONFromSomewhere</span><span class="p">];</span>
+
+<span class="n">Address</span> <span class="o">*</span><span class="n">address</span> <span class="o">=</span> <span class="p">[</span><span class="n">Address</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithJSONData</span><span class="p">:</span><span class="n">data</span> <span class="nl">error</span><span class="p">:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">];</span>
+
+<span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="n">error</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Street = %@&quot;</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">street</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<span class="target" id="module-js2model"></span></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">js2Model.py Reference</a><ul>
+<li><a class="reference internal" href="#running-it">Running it</a><ul>
+<li><a class="reference internal" href="#a-simple-sample">A simple sample</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="TRQuickstart_m.html"
+                        title="previous chapter">TRQuickstart.m</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="jsonschema2model.html"
+                        title="next chapter">jsonschema2model</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/js2model.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="jsonschema2model.html" title="jsonschema2model"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="TRQuickstart_m.html" title="TRQuickstart.m"
+             >previous</a> |</li>
+        <li><a href="index.html">js2model 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Kevin Zimmerman.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

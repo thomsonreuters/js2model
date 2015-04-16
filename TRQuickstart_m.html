@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TRQuickstart.m &mdash; js2model 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="js2model 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Quick Start" href="quickstart.html" />
+    <link rel="next" title="js2Model.py Reference" href="js2model.html" />
+    <link rel="prev" title="TRQuickstart.h" href="TRQuickstart_h.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="js2model.html" title="js2Model.py Reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="TRQuickstart_h.html" title="TRQuickstart.h"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">js2model 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="quickstart.html" accesskey="U">Quick Start</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="trquickstart-m">
+<h1>TRQuickstart.m<a class="headerlink" href="#trquickstart-m" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-objective-c"><div class="highlight"><pre><span class="c1">//</span>
+<span class="c1">//  TRQuickstart.m</span>
+<span class="c1">//</span>
+<span class="c1">//  Created by js2Model on 2015-02-04.</span>
+<span class="c1">//  Copyright (c) 2014 Thomson Reuters. All rights reserved.</span>
+<span class="c1">//</span>
+
+<span class="cp">#import &quot;TRQuickstart.h&quot;</span>
+<span class="cp">#import &quot;TRJSONModelLoader.h&quot;</span>
+
+<span class="cp">#define valueWithSel(sel) [NSValue valueWithPointer: @selector(sel)]</span>
+
+<span class="k">@implementation</span> <span class="nc">TRQuickstartSchema</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">init</span>
+<span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+
+
+        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">strings</span> <span class="nl">addEntriesFromDictionary</span><span class="p">:</span> <span class="l">@{</span>
+                <span class="s">@&quot;county&quot;</span><span class="o">:</span> <span class="p">[</span><span class="n">JSONPropertyMeta</span> <span class="nl">initWithGetter</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">county</span><span class="p">)</span>
+                                                 <span class="k">setter</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setCounty</span><span class="p">:)],</span>
+                <span class="s">@&quot;city&quot;</span><span class="o">:</span> <span class="p">[</span><span class="n">JSONPropertyMeta</span> <span class="nl">initWithGetter</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+                                                 <span class="k">setter</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setCity</span><span class="p">:)],</span>
+                <span class="s">@&quot;state&quot;</span><span class="o">:</span> <span class="p">[</span><span class="n">JSONPropertyMeta</span> <span class="nl">initWithGetter</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                                                 <span class="k">setter</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setState</span><span class="p">:)],</span>
+                <span class="s">@&quot;street&quot;</span><span class="o">:</span> <span class="p">[</span><span class="n">JSONPropertyMeta</span> <span class="nl">initWithGetter</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">street</span><span class="p">)</span>
+                                                 <span class="k">setter</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setStreet</span><span class="p">:)],</span>
+                <span class="s">@&quot;zip&quot;</span><span class="o">:</span> <span class="p">[</span><span class="n">JSONPropertyMeta</span> <span class="nl">initWithGetter</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">zip</span><span class="p">)</span>
+                                                 <span class="k">setter</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setZip</span><span class="p">:)],</span>
+        <span class="l">}</span><span class="p">];</span>
+
+
+
+
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+
+<span class="k">static</span> <span class="n">TRQuickstartSchema</span> <span class="o">*</span><span class="n">TRQuickstartSchemaInstance</span><span class="p">;</span>
+
+<span class="k">@implementation</span> <span class="nc">TRQuickstart</span><span class="p">{</span>
+<span class="p">}</span>
+
+<span class="p">+(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initialize</span> <span class="p">{</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="nb">self</span> <span class="o">==</span> <span class="p">[</span><span class="n">TRQuickstart</span> <span class="k">class</span><span class="p">]</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">TRQuickstartSchemaInstance</span> <span class="o">=</span> <span class="p">[</span><span class="n">TRQuickstartSchema</span> <span class="n">new</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span> <span class="nf">initWithJSONData:</span><span class="p">(</span><span class="bp">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">data</span>
+                            <span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="o">*</span> <span class="k">__autoreleasing</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span> <span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">TRJSONModelLoader</span> <span class="nl">load</span><span class="p">:</span><span class="nb">self</span> <span class="nl">withJSONData</span><span class="p">:</span><span class="n">data</span> <span class="nl">error</span><span class="p">:</span><span class="n">error</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/** Parses JSON data and creates an Objective-C instance.</span>
+
+<span class="cm">@param cls Class type of top-most instance.</span>
+<span class="cm">@param filename Name of file with JSON data to be parsed.</span>
+<span class="cm">@param error Non-nil if any parsings errors occured.</span>
+<span class="cm">*/</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span> <span class="nf">initWithJSONFromFileNamed:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">filename</span>
+                                     <span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="o">*</span> <span class="k">__autoreleasing</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span> <span class="p">{</span>
+
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">TRJSONModelLoader</span> <span class="nl">load</span><span class="p">:</span><span class="nb">self</span> <span class="nl">withJSONFromFileNamed</span><span class="p">:</span><span class="n">filename</span> <span class="nl">error</span><span class="p">:</span><span class="n">error</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">-</span> <span class="p">(</span><span class="n">JSONInstanceMeta</span> <span class="o">*</span><span class="p">)</span><span class="nf">objectForPropertyNamed:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">TRQuickstartSchemaInstance</span> <span class="nl">objectForPropertyNamed</span><span class="p">:</span><span class="n">propertyName</span> <span class="nl">forInstance</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="n">JSONInstanceMeta</span> <span class="o">*</span><span class="p">)</span><span class="nf">arrayForPropertyNamed:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">TRQuickstartSchemaInstance</span> <span class="nl">arrayForPropertyNamed</span><span class="p">:</span><span class="n">propertyName</span> <span class="nl">forInstance</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">val</span> <span class="nf">forProperty:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">TRQuickstartSchemaInstance</span> <span class="nl">setString</span><span class="p">:</span><span class="n">val</span> <span class="nl">forProperty</span><span class="p">:</span><span class="n">propertyName</span> <span class="nl">forInstance</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setNumber:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">val</span> <span class="nf">forProperty:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">TRQuickstartSchemaInstance</span> <span class="nl">setNumber</span><span class="p">:</span><span class="n">val</span> <span class="nl">forProperty</span><span class="p">:</span><span class="n">propertyName</span> <span class="nl">forInstance</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setInteger:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">val</span> <span class="nf">forProperty:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">TRQuickstartSchemaInstance</span> <span class="nl">setInteger</span><span class="p">:</span><span class="n">val</span> <span class="nl">forProperty</span><span class="p">:</span><span class="n">propertyName</span> <span class="nl">forInstance</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBoolean:</span><span class="p">(</span><span class="bp">NSNumber</span> <span class="o">*</span><span class="p">)</span><span class="nv">val</span> <span class="nf">forProperty:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">TRQuickstartSchemaInstance</span> <span class="nl">setBoolean</span><span class="p">:</span><span class="n">val</span> <span class="nl">forProperty</span><span class="p">:</span><span class="n">propertyName</span> <span class="nl">forInstance</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setNullForProperty:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">TRQuickstartSchemaInstance</span> <span class="nl">setNullForProperty</span><span class="p">:</span><span class="n">propertyName</span> <span class="nl">forInstance</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">+(</span><span class="n">JSONModelSchema</span> <span class="o">*</span><span class="p">)</span><span class="nf">modelSchema</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">TRQuickstartSchemaInstance</span> <span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">-(</span><span class="bp">NSMutableDictionary</span><span class="o">*</span><span class="p">)</span><span class="nf">additionalProperties</span> <span class="p">{</span>
+    <span class="p">[</span><span class="bp">NSException</span> <span class="nl">raise</span><span class="p">:</span><span class="s">@&quot;Method not implemented&quot;</span> <span class="nl">format</span><span class="p">:</span><span class="s">@&quot;additionalProperties is not implemented. Additional property support was disabled when generating this class.&quot;</span><span class="p">];</span>
+    <span class="k">return</span> <span class="nb">nil</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">forAdditionalProperty:</span><span class="p">(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="p">[</span><span class="bp">NSException</span> <span class="nl">raise</span><span class="p">:</span><span class="s">@&quot;Method not implemented&quot;</span> <span class="nl">format</span><span class="p">:</span><span class="s">@&quot;setValue:forAdditionalProperty: is not implemented&quot;</span><span class="p">.</span> <span class="n">Additional</span> <span class="n">property</span> <span class="n">support</span> <span class="n">was</span> <span class="n">disabled</span> <span class="n">when</span> <span class="n">generating</span> <span class="n">this</span> <span class="k">class</span><span class="p">.];</span>
+<span class="p">}</span>
+
+<span class="p">-(</span><span class="kt">id</span><span class="p">)</span><span class="nf">valueForAdditionalProperty:</span><span class="p">(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nv">propertyName</span> <span class="p">{</span>
+    <span class="p">[</span><span class="bp">NSException</span> <span class="nl">raise</span><span class="p">:</span><span class="s">@&quot;Method not implemented&quot;</span> <span class="nl">format</span><span class="p">:</span><span class="s">@&quot;valueForAdditionalProperty is not implemented&quot;</span><span class="p">.</span> <span class="n">Additional</span> <span class="n">property</span> <span class="n">support</span> <span class="n">was</span> <span class="n">disabled</span> <span class="n">when</span> <span class="n">generating</span> <span class="n">this</span> <span class="k">class</span><span class="p">.];</span>
+    <span class="k">return</span> <span class="nb">nil</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="TRQuickstart_h.html"
+                        title="previous chapter">TRQuickstart.h</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="js2model.html"
+                        title="next chapter">js2Model.py Reference</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/TRQuickstart_m.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="js2model.html" title="js2Model.py Reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="TRQuickstart_h.html" title="TRQuickstart.h"
+             >previous</a> |</li>
+        <li><a href="index.html">js2model 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="quickstart.html" >Quick Start</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Kevin Zimmerman.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
