@@ -36,6 +36,9 @@ jmgtester/
 __pycache__/
 *.py[cod]
 
+# Python PI credentials file
+.pypirc
+
 # C extensions
 *.so
 
