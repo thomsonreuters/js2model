@@ -58,11 +58,35 @@
 </div>
 <p>Four simple steps to native model goodness:</p>
 <ol class="arabic simple">
+<li>Installation</li>
 <li>Get (or create) <a class="reference external" href="http://json-schema.org">JSON Schema</a> file(s) for you JSON data.</li>
 <li>Run js2model to generate your models&#8217; source code.</li>
 <li>Add the generated source files to your project.</li>
 <li>Use the models.</li>
 </ol>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="install-from-pip">
+<h3>Install from pip<a class="headerlink" href="#install-from-pip" title="Permalink to this headline">¶</a></h3>
+<p>Run the pip install command:</p>
+<div class="highlight-shell"><div class="highlight"><pre>pip install js2model
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-from-source">
+<h3>Install from source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h3>
+<p>Clone the repository from github, install the dependencies, then run the setup.py script:</p>
+<div class="highlight-shell"><div class="highlight"><pre>git clone git@github.com:thomsonreuters/js2model.git
+
+<span class="nb">cd </span>js2model
+
+pip install -r requirements.txt
+
+python setup.py install
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="get-json-schema-describing-your-json">
 <h2>Get JSON Schema describing your JSON<a class="headerlink" href="#get-json-schema-describing-your-json" title="Permalink to this headline">¶</a></h2>
 <p>For purpose of this example, we&#8217;ll use the following JSON Schema. Let&#8217;s assume a file name of <em>quickstart.schema.json</em>.</p>
@@ -150,6 +174,11 @@ TRQuickstart *model <span class="o">=</span> <span class="o">[</span>TRQuickstar
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Quick Start</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#install-from-pip">Install from pip</a></li>
+<li><a class="reference internal" href="#install-from-source">Install from source</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#get-json-schema-describing-your-json">Get JSON Schema describing your JSON</a><ul>
 <li><a class="reference internal" href="#creating-json-schema-from-scratch">Creating JSON Schema from scratch</a></li>
 </ul>
