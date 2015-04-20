@@ -20,8 +20,8 @@ Four simple steps to native model goodness:
 Installation
 ============
 
-Install from pip
-----------------
+Install from PyPI
+-----------------
 
 Run the pip install command:
 
