@@ -1,6 +1,6 @@
-Jinja2==2.7.3
-MarkupSafe==0.23
+--index-url https://pypi.python.org/simple/
+
+Mako==1.0.1
 jsonpointer==1.4
 jsonref==0.1
 jsonschema==2.4.0
-wsgiref==0.1.2

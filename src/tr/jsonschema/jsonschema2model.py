@@ -603,14 +603,26 @@ class JsonSchema2Model(object):
             elif isinstance(schema_type, basestring):
                 var_def.type = schema_type
 
-            elif isinstance(schema_type, list) and len(schema_type) == 2 and JsonSchemaTypes.NULL in schema_type:
-                var_def.type = [t for t in schema_type if t != JsonSchemaTypes.NULL][0]
-                logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
-                               var_def.effective_schema_type(), schema_type, name)
+            #
+            # Enum types
+            #
+            elif isinstance(schema_type, list):
+
+                #
+                # Special case: If enum definition has only two items and one is NULL,
+                # then use the non-NULL type as the vartype.
+                #
+                if len(schema_type) == 2 and JsonSchemaTypes.NULL in schema_type:
+                    var_def.type = [t for t in schema_type if t != JsonSchemaTypes.NULL][0]
+                    logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
+                                   var_def.effective_schema_type(), schema_type, name)
+                else:
+                    # TODO: handle this case
+                    logger.warning("Complex union types not currently supported")
 
             else:
                 # TODO: handle this case
-                logger.warning("Union types not currently supported")
+                logger.warning("Unknown type definition")
 
         elif JsonSchemaKeywords.ENUM in schema_object:
 
