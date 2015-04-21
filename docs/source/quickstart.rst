@@ -9,13 +9,13 @@
    TRQuickstart_h
    TRQuickstart_m
 
-Four simple steps to native model goodness:
+Five simple steps to native model goodness:
 
-1. Installation
-2. Get (or create) `JSON Schema <http://json-schema.org>`_ file(s) for you JSON data.
+1. Install js2Model.
+2. Get (or create) `JSON Schema <http://json-schema.org>`_ file(s) for your JSON data.
 3. Run js2model to generate your models' source code.
 4. Add the generated source files to your project.
-5. Use the models.
+5. Use the models in your code.
 
 Installation
 ============
