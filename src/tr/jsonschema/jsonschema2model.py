@@ -20,6 +20,14 @@ from collections import namedtuple
 
 __author__ = 'kevin zimmerman'
 
+#
+# For  python 2/3 compatibility
+#
+try:
+  basestring
+except NameError:
+  basestring = str
+
 # create logger with 'spam_application'
 logger = logging.getLogger('tr.jsonschema.JsonSchema2Model')
 logger.setLevel(logging.DEBUG)
