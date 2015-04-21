@@ -11,7 +11,7 @@
 
 Five simple steps to native model goodness:
 
-1. Install js2Model.
+1. Install js2model.
 2. Get (or create) `JSON Schema <http://json-schema.org>`_ file(s) for your JSON data.
 3. Run js2model to generate your models' source code.
 4. Add the generated source files to your project.
@@ -19,6 +19,8 @@ Five simple steps to native model goodness:
 
 Installation
 ============
+
+You can install js2model from PyPI using pip, or clone the git repository from GitHub and run the setup.py script.
 
 Install from PyPI
 -----------------
@@ -41,11 +43,8 @@ Clone the repository from github, install the dependencies, then run the setup.p
 ::
 
         git clone git@github.com:thomsonreuters/js2model.git
-
         cd js2model
-
         pip install -r requirements.txt
-
         python setup.py install
 
 
@@ -79,7 +78,7 @@ If you do not already have a JSON Schema definition for your JSON, it can be ted
 Run js2model
 ============
 
-Run js2Model to generate the model source files:
+Run js2model to generate the model source files:
 
 .. highlight:: shell
 

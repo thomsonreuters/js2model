@@ -58,7 +58,7 @@
 </div>
 <p>Five simple steps to native model goodness:</p>
 <ol class="arabic simple">
-<li>Install js2Model.</li>
+<li>Install js2model.</li>
 <li>Get (or create) <a class="reference external" href="http://json-schema.org">JSON Schema</a> file(s) for your JSON data.</li>
 <li>Run js2model to generate your models&#8217; source code.</li>
 <li>Add the generated source files to your project.</li>
@@ -66,6 +66,7 @@
 </ol>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>You can install js2model from PyPI using pip, or clone the git repository from GitHub and run the setup.py script.</p>
 <div class="section" id="install-from-pypi">
 <h3>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Permalink to this headline">¶</a></h3>
 <p>Run the pip install command:</p>
@@ -77,11 +78,8 @@
 <h3>Install from source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h3>
 <p>Clone the repository from github, install the dependencies, then run the setup.py script:</p>
 <div class="highlight-shell"><div class="highlight"><pre>git clone git@github.com:thomsonreuters/js2model.git
-
 <span class="nb">cd </span>js2model
-
 pip install -r requirements.txt
-
 python setup.py install
 </pre></div>
 </div>
@@ -111,7 +109,7 @@ python setup.py install
 </div>
 <div class="section" id="run-js2model">
 <h2>Run js2model<a class="headerlink" href="#run-js2model" title="Permalink to this headline">¶</a></h2>
-<p>Run js2Model to generate the model source files:</p>
+<p>Run js2model to generate the model source files:</p>
 <div class="highlight-shell"><div class="highlight"><pre>js2model -o output quickstart.schema.json
 </pre></div>
 </div>
