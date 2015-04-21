@@ -1,0 +1,2 @@
+recursive-include tr/jsonschema/templates.cpp *
+recursive-include tr/jsonschema/templates.objc *

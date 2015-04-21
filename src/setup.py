@@ -32,7 +32,7 @@ You can review the documentation `here <http://thomsonreuters.github.io/js2model
 
 setup(
     name='js2model',
-    version='0.2.dev7',
+    version='0.2.dev9',
     packages=find_packages(),
     package_data={'tr.jsonschema': [
         'templates.objc/*.mako',
