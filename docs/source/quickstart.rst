@@ -31,7 +31,7 @@ Run the pip install command:
 
 ::
 
-        pip install js2model
+        $ pip install js2model
 
 Install from source
 -------------------
@@ -42,10 +42,10 @@ Clone the repository from github, install the dependencies, then run the setup.p
 
 ::
 
-        git clone git@github.com:thomsonreuters/js2model.git
-        cd js2model
-        pip install -r requirements.txt
-        python setup.py install
+        $ git clone git@github.com:thomsonreuters/js2model.git
+        $ cd js2model
+        $ pip install -r requirements.txt
+        $ python setup.py install
 
 
 Get JSON Schema describing your JSON
@@ -84,7 +84,7 @@ Run js2model to generate the model source files:
 
 ::
 
-   js2model -o output quickstart.schema.json
+        $ js2model -o output quickstart.schema.json
 
 Add the generated source code files and dependencies to your project
 =====================================================================
