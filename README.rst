@@ -1,18 +1,20 @@
 Overview
 ========
 
-Js2model makes it easy to use JSON data as native class models.
+Js2model makes it easy to use JSON data as plain old Objective C or C++ objects.
 
 JSON is ubiquitous and convenient, but parsing JSON into generic data
 structures like dictionaries and arrays precludes the use of many native
-language features. Js2model.py generates model classes
-and custom deserialization code from JSON schema definitions.
+language features. Hand rolling your own model classes and deserialization code is laborious and error
+prone. Js2model.py eliminates the pain by automatically generating plain old model classes and custom
+deserialization code from JSON schema definitions. The generated classes can deserialize your JSON into regular,
+typed class instances.
 
 Languages
 =========
 
 The script is designed to target multiple output languages. Currently, Objective-C and C++ are supported out of the box.
-Future versions will add the ability to add your own language templates to support any language.
+Future versions will add additional languages, and support for adding your own language templates.
 
 Documentation
 =============

@@ -500,21 +500,21 @@ class JsonSchema2Model(object):
             #
             # support for additionalProperties
             #
-            include_additional_properties = self.include_additional_properties if not extended else False
+            # include_additional_properties = self.include_additional_properties if not extended else False
 
-            if JsonSchemaKeywords.ADDITIONAL_PROPERTIES in schema_object:
+            # if JsonSchemaKeywords.ADDITIONAL_PROPERTIES in schema_object:
+            #
+            #     additional_properties = schema_object[JsonSchemaKeywords.ADDITIONAL_PROPERTIES]
+            #
+            #     if type(additional_properties) is int and not additional_properties:
+            #         include_additional_properties = False
+            #     else:
+            #         include_additional_properties = True
 
-                additional_properties = schema_object[JsonSchemaKeywords.ADDITIONAL_PROPERTIES]
-
-                if type(additional_properties) is int and not additional_properties:
-                    include_additional_properties = False
-                else:
-                    include_additional_properties = True
-
-            if include_additional_properties:
-                add_prop_var_def = VariableDef(JsonSchemaKeywords.ADDITIONAL_PROPERTIES)
-                add_prop_var_def.type = JsonSchemaTypes.DICT
-                class_def.variable_defs.append(add_prop_var_def)
+            # if include_additional_properties:
+            #     add_prop_var_def = VariableDef(JsonSchemaKeywords.ADDITIONAL_PROPERTIES)
+            #     add_prop_var_def.type = JsonSchemaTypes.DICT
+            #     class_def.variable_defs.append(add_prop_var_def)
 
             # add custom keywords
             class_def.custom = {k: v for k, v in schema_object.items() if k.startswith('#')}

@@ -9,9 +9,9 @@
 % endif
 
 @implementation ${classDef.name}{
-    % if include_additional_properties:
-    NSMutableDictionary *_additionalProperties;
-    % endif
+##    % if include_additional_properties:
+##    NSMutableDictionary *_additionalProperties;
+##    % endif
 }
 
 % if classDef.has_var_defaults:
@@ -20,9 +20,9 @@
     self = [super init];
     if (self) {
     	// custom intialization code
-        % if include_additional_properties:
-        _additionalProperties = [NSMutableDictionary new];
-        % endif
+##        % if include_additional_properties:
+##        _additionalProperties = [NSMutableDictionary new];
+##        % endif
 
 % for v in classDef.variable_defs:
 ${ base.initVarToDefault(v) }\
@@ -150,30 +150,132 @@ staticInitName = classDef.plain_name
 ${ base.lazyPropGetter(v) }\
 % endfor
 
--(NSMutableDictionary*)additionalProperties {
-% if include_additional_properties:
-    return _additionalProperties;
-% else:
-    [NSException raise:@"Method not implemented" format:@"additionalProperties is not implemented. Additional property support was disabled when generating this class."];
-    return nil;
-% endif
+##-(NSMutableDictionary*)additionalProperties {
+##% if include_additional_properties:
+##    return _additionalProperties;
+##% else:
+##    [NSException raise:@"Method not implemented" format:@"additionalProperties is not implemented. Additional property support was disabled when generating this class."];
+##    return nil;
+##% endif
+##}
+\
+##-(void)setValue:(id)value forAdditionalProperty:(NSString*)propertyName {
+##% if include_additional_properties:
+##    [_additionalProperties setObject:value forKey:propertyName];
+##% else:
+##    [NSException raise:@"Method not implemented" format:@"setValue:forAdditionalProperty: is not implemented. Additional property support was disabled when generating this class."];
+##% endif
+##}
+
+##-(id)valueForAdditionalProperty:(NSString*)propertyName {
+##% if include_additional_properties:
+##    return [_additionalProperties valueForKey:propertyName];
+##% else:
+##    [NSException raise:@"Method not implemented" format:@"valueForAdditionalProperty is not implemented. Additional property support was disabled when generating this class."];
+##    return nil;
+##% endif
+##}
+\
+-(NSDictionary*)JSONObject {
+
+    NSMutableDictionary *jsonObj = [NSMutableDictionary new];
+
+% for v in classDef.variable_defs:
+\
+<%
+propName = base.attr.normalize_prop_name(v.name)
+%>\
+    % if v.isArray:
+<%
+    (varType, isRef, itemsType) = base.attr.convertType(v)
+%>\
+    __block NSMutableArray *${propName}JSONObjects = [NSMutableArray new];
+    [self.${propName} enumerateObjectsUsingBlock:^(NSObject *obj, NSUInteger idx, BOOL *stop) {
+
+        if ([obj respondsToSelector:@selector(JSONObject)]) {
+            [${propName}JSONObjects addObject:[obj performSelector:@selector(JSONObject)]];
+        }
+        else {
+            [${propName}JSONObjects addObject:obj];
+        }
+    }];
+    jsonObj[@"${propName}"] = ${propName}JSONObjects;
+
+    % elif v.schema_type == "object":
+<%
+    (varType, isRef, itemsType) = base.attr.convertType(v)
+%>\
+    if( !self.${propName} ) {
+        jsonObj[@"${propName}"] = [NSNull null];
+    }
+    else {
+        if ([self.${propName} respondsToSelector:@selector(JSONObject)]) {
+            jsonObj[@"${propName}"] = [self.${propName} performSelector:@selector(JSONObject)];
+        }
+        else {
+            jsonObj[@"${propName}"] = self.${propName};
+        }
+    }
+    % else:
+    jsonObj[@"${propName}"] = self.${propName} ? self.${propName} : [NSNull null];
+    % endif
+% endfor
+
+    return jsonObj;
 }
 
--(void)setValue:(id)value forAdditionalProperty:(NSString*)propertyName {
-% if include_additional_properties:
-    [_additionalProperties setObject:value forKey:propertyName];
-% else:
-    [NSException raise:@"Method not implemented" format:@"setValue:forAdditionalProperty: is not implemented. Additional property support was disabled when generating this class."];
-% endif
+-(NSData*)JSONData {
+
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:[self JSONObject] options:0 error:&error];
+
+    if (error) {
+        NSLog(@"%@", error);
+        return nil;
+    }
+
+    return data;
 }
 
--(id)valueForAdditionalProperty:(NSString*)propertyName {
-% if include_additional_properties:
-    return [_additionalProperties valueForKey:propertyName];
-% else:
-    [NSException raise:@"Method not implemented" format:@"valueForAdditionalProperty is not implemented. Additional property support was disabled when generating this class."];
-    return nil;
-% endif
+-(NSString*)debugDescription {
+
+    NSMutableString *dd = [NSMutableString new];
+
+    [dd appendString:@"{"];
+
+% for v in classDef.variable_defs:
+
+<%
+propName = base.attr.normalize_prop_name(v.name)
+%>\
+    % if v.isArray:
+<%
+    (varType, isRef, itemsType) = base.attr.convertType(v)
+%>\
+    [dd appendString:@"\n${propName}: ["];
+
+    [self.${propName} enumerateObjectsUsingBlock:^(NSObject *obj, NSUInteger idx, BOOL *stop) {
+        [dd appendFormat:@"%@,", obj.debugDescription];
+    }];
+
+    [dd appendString:@"]"];
+
+    % elif v.schema_type == "object":
+<%
+    (varType, isRef, itemsType) = base.attr.convertType(v)
+%>\
+    [dd appendFormat:@"\n${propName}: %@", self.${propName}.debugDescription];
+    % elif v.schema_type == "string":
+    [dd appendFormat:@"\n${propName}: \"%@\"", self.${propName}];
+    % else:
+    [dd appendFormat:@"\n${propName}: %@", self.${propName}];
+    % endif
+% endfor
+    [dd appendString:@"}"];
+
+    return dd;
 }
+
+
 @end
 </%block>

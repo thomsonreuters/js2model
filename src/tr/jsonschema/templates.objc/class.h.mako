@@ -56,6 +56,9 @@ staticInitName = classDef.plain_name
 +(NSArray*) ${staticInitName}ArrayWithJSONFromFileNamed:(NSString *)filename
                                          error:(NSError* __autoreleasing *)error;
 
+-(NSDictionary*)JSONObject;
+-(NSData*)JSONData;
+
 % endif
 @end
 </%block>
