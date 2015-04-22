@@ -40,7 +40,7 @@ setup(
     license='BSD',
     author='Kevin Zimmerman',
     author_email="%s.%s@%s.%s"%('kevin', 'zimmerman', 'thomsonreuters', 'com'), # half hearted attempt to avoid spam
-    description='A fine attempt to auto-generate source models + deserialization code from JSON schema definitions.',
+    description='Auto-generate plain old object models + custom JSON serialization/deserialization code from JSON schema definitions.',
     long_description=open('../README.rst').read(),
     url='https://github.com/thomsonreuters/js2model',
     zip_safe=False,
