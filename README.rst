@@ -3,18 +3,24 @@ Overview
 
 Js2model makes it easy to use JSON data as plain old Objective C or C++ objects.
 
-JSON is ubiquitous and convenient, but parsing JSON into generic data
-structures like dictionaries and arrays precludes the use of many native
-language features. Hand rolling your own model classes and deserialization code is laborious and error
-prone. Js2model.py eliminates the pain by automatically generating plain old model classes and custom
-deserialization code from JSON schema definitions. The generated classes can deserialize your JSON into regular,
-typed class instances.
+JSON is as a data protocol is simple, convenient, ubiquitous. When working in Javascript, a valid JSON string can be
+simply eval'ed to yield a native data instance. When working in other languages, things are not as simple. The usual
+approach is to use a general language-specific JSON parser which yields a generalized data structure composed of
+dictionaries, arrays, string and numbers. You can use these general structures, at the cost of decreased efficiency,
+no type safety, harder code maintainability, etc. You can regain efficiency, type safety, etc by hand rolling some
+post-processing logic to load the data into native, custom class instances - a task that is usually tedious,
+bug prone, and hard to maintain.
+
+Js2model addresses the aforementioned shortcomings of typical JSON deserialization approaches by automatically
+generating model classes and serialization/deserialization code. Js2model uses the
+`JSON Schema <http://tools.ietf.org/html/draft-zyp-json-schema-04>`_ definition of your JSON data to generate source
+files which you include and build with the rest of your project.
 
 Languages
 =========
 
-The script is designed to target multiple output languages. Currently, Objective-C and C++ are supported out of the box.
-Future versions will add additional languages, and support for adding your own language templates.
+The script is designed to target multiple output languages. Objective-C and C++ are supported out of the box.
+Future versions will add additional languages, as well as support for adding your own language templates.
 
 Documentation
 =============
