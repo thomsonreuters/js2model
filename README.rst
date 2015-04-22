@@ -27,6 +27,16 @@ Documentation
 
 You can review the documentation `here <http://thomsonreuters.github.io/js2model/>`_
 
+JSON Schema
+===========
+
+Chances are you do not have existing JSON Schema definitions for your JSON data. Theoretically, creating a schema is
+simply a matter of creating JSON file per the `JSON Schema specifications <http://tools.ietf.org/html/draft-zyp-json-schema-04>`_.
+Realistically, creating a schema definition manually can be tedious and time intensive, depending on the complexity of your
+data. Luckily, there is a better way. `GenSON <http://tools.ietf.org/html/draft-zyp-json-schema-04>`_ is a script that
+will automatically generate JSON Schema from one or more JSON files. The resulting schema definitions may need some tweaking,
+but GenSON will save you considerable time and effort.
+
 Usage
 =====
 
