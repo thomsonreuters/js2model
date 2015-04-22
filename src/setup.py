@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='js2model',
-    version='0.2.dev9',
+    version='0.2.dev10',
     packages=find_packages(),
     package_data={'tr.jsonschema': [
         'templates.objc/*.mako',
@@ -51,9 +51,6 @@ setup(
         'jsonref>=0.1',
         'jsonschema>=2.4',
     ],
-    dependency_links = [
-        'https://pypi.python.org/simple'
-    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -64,7 +61,7 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
 ],
