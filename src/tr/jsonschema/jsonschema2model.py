@@ -218,7 +218,7 @@ class LanguageTemplates(object):
 
 class LanguageConventions(object):
 
-    def __init__(self,cap_class_name=True, use_prefix=True, type_suffix=None):
+    def __init__(self,cap_class_name=True, use_prefix=True, type_suffix=None, separate_class_files=True):
         self.cap_class_name=cap_class_name
         self.use_prefix = use_prefix
         self.type_suffix=type_suffix
@@ -229,11 +229,13 @@ class TemplateManager(object):
         self.lang_templates = {
             'objc': LanguageTemplates(header_template="class.h.mako", impl_template="class.m.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
             'cpp': LanguageTemplates(header_template="class.h.mako", impl_template="class.cpp.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
+            'py': LanguageTemplates(global_templates=["class.py.mako"]),
         }
 
         self.lang_conventions = {
             'objc': LanguageConventions(cap_class_name=True, use_prefix=True, type_suffix=None),
             'cpp': LanguageConventions(cap_class_name=False, use_prefix=False, type_suffix='_t'),
+            'py': LanguageConventions(cap_class_name=True, use_prefix=False, type_suffix=None),
         }
 
     def get_template_lookup(self, language):
@@ -314,6 +316,7 @@ class JsonSchema2Model(object):
             os.makedirs(self.outdir)
 
         template_files = self.template_manager.get_template_files(self.lang)
+        conventions = self.template_manager.get_conventions(self.lang)
 
         for classDef in self.models.values():
 
@@ -521,8 +524,12 @@ class JsonSchema2Model(object):
 
             # Derive the source file names from the corresponding template names
             template_files = self.template_manager.get_template_files(self.lang)
-            class_def.header_file = self.mk_source_file_name(class_def, template_files.header_template)
-            class_def.impl_file = self.mk_source_file_name(class_def, template_files.impl_template)
+
+            if template_files.header_template:
+                class_def.header_file = self.mk_source_file_name(class_def, template_files.header_template)
+
+            if template_files.impl_template:
+                class_def.impl_file = self.mk_source_file_name(class_def, template_files.impl_template)
 
             return class_def
 
