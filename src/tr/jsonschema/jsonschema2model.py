@@ -229,7 +229,7 @@ class TemplateManager(object):
         self.lang_templates = {
             'objc': LanguageTemplates(header_template="class.h.mako", impl_template="class.m.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
             'cpp': LanguageTemplates(header_template="class.h.mako", impl_template="class.cpp.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
-            'py': LanguageTemplates(global_templates=["class.py.mako"]),
+            'py': LanguageTemplates(global_templates=["models.py.mako"]),
         }
 
         self.lang_conventions = {
@@ -619,18 +619,30 @@ class JsonSchema2Model(object):
                 var_def.type = schema_type
 
             #
-            # Enum types
+            # Union types
             #
             elif isinstance(schema_type, list):
 
                 #
-                # Special case: If enum definition has only two items and one is NULL,
-                # then use the non-NULL type as the vartype.
+                # Special cases:
+                #       1. has two items and one is NULL,
+                #          then use the non-NULL type as the vartype.
                 #
-                if len(schema_type) == 2 and JsonSchemaTypes.NULL in schema_type:
-                    var_def.type = [t for t in schema_type if t != JsonSchemaTypes.NULL][0]
-                    logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
-                                   var_def.effective_schema_type(), schema_type, name)
+                #       2. has two items, one each of OBJECT and ARRAY,
+                #          then use the OBJECT type as the vartype.
+                #
+                if len(schema_type) == 2:
+                    if JsonSchemaTypes.NULL in schema_type:
+                        var_def.type = [t for t in schema_type if t != JsonSchemaTypes.NULL][0]
+                        logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
+                                       var_def.effective_schema_type(), schema_type, name)
+                    # elif JsonSchemaTypes.OBJECT in schema_type and JsonSchemaTypes.ARRAY in schema_type:
+                    #     var_def.type = [t for t in schema_type if t != JsonSchemaTypes.ARRAY][0]
+                    #     logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
+                    #                    var_def.effective_schema_type(), schema_type, name)
+                    else:
+                        # TODO: handle this case
+                        logger.warning("Complex union types not currently supported")
                 else:
                     # TODO: handle this case
                     logger.warning("Complex union types not currently supported")
@@ -639,6 +651,9 @@ class JsonSchema2Model(object):
                 # TODO: handle this case
                 logger.warning("Unknown type definition")
 
+        #
+        # Enum types
+        #
         elif JsonSchemaKeywords.ENUM in schema_object:
 
             enum_def = EnumDef()
