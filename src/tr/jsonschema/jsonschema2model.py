@@ -94,9 +94,13 @@ class JsonSchemaKeywords(object):
     TYPENAME = 'typeName'
     ID = 'id'
     PROPERTIES = 'properties'
-    SUPERCLASS = '#superclass'
     EXTENDS = 'extends'
     ADDITIONAL_PROPERTIES = 'additionalProperties'
+
+    # Extended keywords
+    SUPERCLASS = '#superclass'
+    MODEL_TYPE = '#modeltype'
+    MODEL_DEFAULT = '#modeldefault'
 
     def __setattr__(self, *_):
         raise ValueError("Trying to change a constant value", self)
@@ -166,12 +170,14 @@ class VariableDef(object):
     def __init__(self, name, json_name=None):
         self.schema_type = JsonSchemaTypes.STRING
         self.type = JsonSchemaTypes.INTEGER
+        self.model_type = None
         self.name = name
         self.json_name = json_name if json_name else name
         self.header_file = None
         self.visibility = VariableDef.ACCESS_PROTECTED
         self.storage = VariableDef.STORAGE_IVAR
         self.default = None
+        self.model_default = None
         self.isArray = False
         self.isEnum = False
         self.isRequired = False
@@ -218,7 +224,7 @@ class LanguageTemplates(object):
 
 class LanguageConventions(object):
 
-    def __init__(self,cap_class_name=True, use_prefix=True, type_suffix=None):
+    def __init__(self,cap_class_name=True, use_prefix=True, type_suffix=None, separate_class_files=True):
         self.cap_class_name=cap_class_name
         self.use_prefix = use_prefix
         self.type_suffix=type_suffix
@@ -229,11 +235,13 @@ class TemplateManager(object):
         self.lang_templates = {
             'objc': LanguageTemplates(header_template="class.h.mako", impl_template="class.m.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
             'cpp': LanguageTemplates(header_template="class.h.mako", impl_template="class.cpp.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
+            'py': LanguageTemplates(global_templates=["models.py.mako"]),
         }
 
         self.lang_conventions = {
             'objc': LanguageConventions(cap_class_name=True, use_prefix=True, type_suffix=None),
             'cpp': LanguageConventions(cap_class_name=False, use_prefix=False, type_suffix='_t'),
+            'py': LanguageConventions(cap_class_name=True, use_prefix=False, type_suffix=None),
         }
 
     def get_template_lookup(self, language):
@@ -314,6 +322,7 @@ class JsonSchema2Model(object):
             os.makedirs(self.outdir)
 
         template_files = self.template_manager.get_template_files(self.lang)
+        conventions = self.template_manager.get_conventions(self.lang)
 
         for classDef in self.models.values():
 
@@ -521,8 +530,12 @@ class JsonSchema2Model(object):
 
             # Derive the source file names from the corresponding template names
             template_files = self.template_manager.get_template_files(self.lang)
-            class_def.header_file = self.mk_source_file_name(class_def, template_files.header_template)
-            class_def.impl_file = self.mk_source_file_name(class_def, template_files.impl_template)
+
+            if template_files.header_template:
+                class_def.header_file = self.mk_source_file_name(class_def, template_files.header_template)
+
+            if template_files.impl_template:
+                class_def.impl_file = self.mk_source_file_name(class_def, template_files.impl_template)
 
             return class_def
 
@@ -572,6 +585,9 @@ class JsonSchema2Model(object):
         if JsonSchemaKeywords.DEFAULT in schema_object:
             var_def.default = schema_object[JsonSchemaKeywords.DEFAULT]
 
+        if JsonSchemaKeywords.MODEL_DEFAULT in schema_object:
+            var_def.model_default = schema_object[JsonSchemaKeywords.MODEL_DEFAULT]
+
         if JsonSchemaKeywords.FORMAT in schema_object:
             var_def.format = schema_object[JsonSchemaKeywords.FORMAT]
 
@@ -580,6 +596,9 @@ class JsonSchema2Model(object):
             schema_type = schema_object[JsonSchemaKeywords.TYPE]
 
             var_def.schema_type = schema_type
+
+            if JsonSchemaKeywords.MODEL_TYPE in schema_object:
+                var_def.model_type = schema_object[JsonSchemaKeywords.MODEL_TYPE]
 
             if schema_type == JsonSchemaTypes.OBJECT:
 
@@ -612,18 +631,30 @@ class JsonSchema2Model(object):
                 var_def.type = schema_type
 
             #
-            # Enum types
+            # Union types
             #
             elif isinstance(schema_type, list):
 
                 #
-                # Special case: If enum definition has only two items and one is NULL,
-                # then use the non-NULL type as the vartype.
+                # Special cases:
+                #       1. has two items and one is NULL,
+                #          then use the non-NULL type as the vartype.
                 #
-                if len(schema_type) == 2 and JsonSchemaTypes.NULL in schema_type:
-                    var_def.type = [t for t in schema_type if t != JsonSchemaTypes.NULL][0]
-                    logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
-                                   var_def.effective_schema_type(), schema_type, name)
+                #       2. has two items, one each of OBJECT and ARRAY,
+                #          then use the OBJECT type as the vartype.
+                #
+                if len(schema_type) == 2:
+                    if JsonSchemaTypes.NULL in schema_type:
+                        var_def.type = [t for t in schema_type if t != JsonSchemaTypes.NULL][0]
+                        logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
+                                       var_def.effective_schema_type(), schema_type, name)
+                    # elif JsonSchemaTypes.OBJECT in schema_type and JsonSchemaTypes.ARRAY in schema_type:
+                    #     var_def.type = [t for t in schema_type if t != JsonSchemaTypes.ARRAY][0]
+                    #     logger.warning("Schema using '%s' from %s for 'type' of variable '%s'.",
+                    #                    var_def.effective_schema_type(), schema_type, name)
+                    else:
+                        # TODO: handle this case
+                        logger.warning("Complex union types not currently supported")
                 else:
                     # TODO: handle this case
                     logger.warning("Complex union types not currently supported")
@@ -632,6 +663,9 @@ class JsonSchema2Model(object):
                 # TODO: handle this case
                 logger.warning("Unknown type definition")
 
+        #
+        # Enum types
+        #
         elif JsonSchemaKeywords.ENUM in schema_object:
 
             enum_def = EnumDef()
