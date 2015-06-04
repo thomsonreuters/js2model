@@ -35,9 +35,15 @@ def to_int(str_val):
 class ${classDef.name}(object):
 
     def __init__(self):
+
+        % if len(classDef.variable_defs):
         % for v in classDef.variable_defs:
         self.${v.name} = ${default_value(v)}
         % endfor
+        % else:
+        pass
+        % endif
+
 
     @staticmethod
     def load_from_dict(data):
