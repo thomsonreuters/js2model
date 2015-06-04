@@ -245,7 +245,7 @@ class TemplateManager(object):
         }
 
     def get_template_lookup(self, language):
-        template_dir = pkg_resources.resource_filename(__name__, 'templates.' + language)
+        template_dir = pkg_resources.resource_filename(__name__, 'templates.' + ('python' if language == 'py' else language))
         return TemplateLookup(directories=[template_dir])
 
     def get_template_files(self, lang):

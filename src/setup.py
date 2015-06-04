@@ -11,7 +11,7 @@ setup(
     version='0.2.dev10',
     packages=find_packages(),
     package_data={'tr.jsonschema': [
-        'templates.py/*.mako',
+        'templates.python/*.mako',
         'templates.objc/*.mako',
         'templates.objc/dependencies/*.h',
         'templates.objc/dependencies/*.c',
