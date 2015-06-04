@@ -11,14 +11,24 @@ type_default_map = {
 
 def default_value(var_def):
 
+    if var_def.model_default:
+        return var_def.model_default
     if var_def.default:
         return var_def.default
+    elif var_def.model_type and var_def.model_type in type_default_map:
+        return type_default_map[var_def.model_type]
     elif var_def.type in type_default_map:
         return type_default_map[var_def.type]
     else:
         return None
 %>
 import json
+
+def to_int(str_val):
+    try:
+        return int(str_val)
+    except:
+        return 0
 % for classDef in models:
 
 
@@ -53,7 +63,12 @@ class ${classDef.name}(object):
         ${v.name}_data = data.get("${v.json_name}", ${default_value(v)})
         instance.${v.name} = ${v.type}.load_from_dict(${v.name}_data) if ${v.name}_data else None
     % else:
+
+        % if v.model_type == "integer" and v.type == "string":
+        instance.${v.name} = to_int(data.get("${v.json_name}", ${default_value(v)}))
+        % else:
         instance.${v.name} = data.get("${v.json_name}", ${default_value(v)})
+        % endif
     % endif
     % endfor
 

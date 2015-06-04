@@ -94,9 +94,13 @@ class JsonSchemaKeywords(object):
     TYPENAME = 'typeName'
     ID = 'id'
     PROPERTIES = 'properties'
-    SUPERCLASS = '#superclass'
     EXTENDS = 'extends'
     ADDITIONAL_PROPERTIES = 'additionalProperties'
+
+    # Extended keywords
+    SUPERCLASS = '#superclass'
+    MODEL_TYPE = '#modeltype'
+    MODEL_DEFAULT = '#modeldefault'
 
     def __setattr__(self, *_):
         raise ValueError("Trying to change a constant value", self)
@@ -166,12 +170,14 @@ class VariableDef(object):
     def __init__(self, name, json_name=None):
         self.schema_type = JsonSchemaTypes.STRING
         self.type = JsonSchemaTypes.INTEGER
+        self.model_type = None
         self.name = name
         self.json_name = json_name if json_name else name
         self.header_file = None
         self.visibility = VariableDef.ACCESS_PROTECTED
         self.storage = VariableDef.STORAGE_IVAR
         self.default = None
+        self.model_default = None
         self.isArray = False
         self.isEnum = False
         self.isRequired = False
@@ -579,6 +585,9 @@ class JsonSchema2Model(object):
         if JsonSchemaKeywords.DEFAULT in schema_object:
             var_def.default = schema_object[JsonSchemaKeywords.DEFAULT]
 
+        if JsonSchemaKeywords.MODEL_DEFAULT in schema_object:
+            var_def.model_default = schema_object[JsonSchemaKeywords.MODEL_DEFAULT]
+
         if JsonSchemaKeywords.FORMAT in schema_object:
             var_def.format = schema_object[JsonSchemaKeywords.FORMAT]
 
@@ -587,6 +596,9 @@ class JsonSchema2Model(object):
             schema_type = schema_object[JsonSchemaKeywords.TYPE]
 
             var_def.schema_type = schema_type
+
+            if JsonSchemaKeywords.MODEL_TYPE in schema_object:
+                var_def.model_type = schema_object[JsonSchemaKeywords.MODEL_TYPE]
 
             if schema_type == JsonSchemaTypes.OBJECT:
 
