@@ -52,14 +52,12 @@ def to_int(str_val):
         return 0
 % for classDef in models:
 
-<% print('Class: ' + classDef.name) %>
 class ${classDef.name}(object):
 
     def __init__(self):
 
         % if len(classDef.variable_defs):
         % for v in classDef.variable_defs:
-        <% print('IVar: ' + v.name) %>
         self.${v.name} = ${default_value(v)}
         % endfor
         % else:
