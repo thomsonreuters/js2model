@@ -28,7 +28,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='js2model',
-    version='0.2.dev10',
+    version='0.2.dev11',
     packages=find_packages(),
     package_data={'tr.jsonschema': [
         'templates_py/*.mako',
