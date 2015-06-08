@@ -1,12 +1,33 @@
+<%doc>
+Copyright (c) 2015 Thomson Reuters
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+</%doc>
 <%
 type_default_map = {
-    'string':  None,
-    'dict':    {},
-    'integer': 0,
-    'number':  0,
-    'boolean': false,
-    'null':	   None,
-    'any':	   None
+    'string':  'None',
+    'dict':    '{}',
+    'integer': '0',
+    'number':  '0',
+    'boolean': 'false',
+    'null':	   'None',
+    'any':	   'None'
 }
 
 def default_value(var_def):
@@ -20,7 +41,7 @@ def default_value(var_def):
     elif var_def.type in type_default_map:
         return type_default_map[var_def.type]
     else:
-        return None
+        return 'None'
 %>
 import json
 
@@ -31,13 +52,14 @@ def to_int(str_val):
         return 0
 % for classDef in models:
 
-
+<% print('Class: ' + classDef.name) %>
 class ${classDef.name}(object):
 
     def __init__(self):
 
         % if len(classDef.variable_defs):
         % for v in classDef.variable_defs:
+        <% print('IVar: ' + v.name) %>
         self.${v.name} = ${default_value(v)}
         % endfor
         % else:
