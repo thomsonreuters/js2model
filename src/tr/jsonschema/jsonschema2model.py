@@ -24,9 +24,9 @@ __author__ = 'kevin zimmerman'
 # For  python 2/3 compatibility
 #
 try:
-  basestring
+    basestring
 except NameError:
-  basestring = str
+    basestring = str
 
 # create logger with 'spam_application'
 logger = logging.getLogger('tr.jsonschema.JsonSchema2Model')
@@ -209,43 +209,58 @@ def whitespace_to_camel_case(matched):
         return ''
 
 
+def whitespace_to_underbar(matched):
+    if matched.lastindex == 1:
+        return '_' + matched.group(1).lower()
+    else:
+        return '_'
+
 # def firstUpperFilter(var):
 # return var[0].upper() + var[1:]
 
 LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template', 'global_templates'])
 
-class LanguageTemplates(object):
 
+class LanguageTemplates(object):
     def __init__(self, header_template=None, impl_template=None, enum_template=None, global_templates=[]):
         self.header_template = header_template
         self.impl_template = impl_template
-        self.enum_template=enum_template
-        self.global_templates=global_templates
+        self.enum_template = enum_template
+        self.global_templates = global_templates
+
 
 class LanguageConventions(object):
 
-    def __init__(self,cap_class_name=True, use_prefix=True, type_suffix=None, separate_class_files=True):
-        self.cap_class_name=cap_class_name
+    NAME_CAMEL_CASE = 0
+    NAME_UNDERBAR = 1
+
+    def __init__(self, cap_class_name=True, use_prefix=True, type_suffix=None, ivar_name_convention=NAME_CAMEL_CASE,
+                 class_name_convention=NAME_CAMEL_CASE):
+        self.cap_class_name = cap_class_name
         self.use_prefix = use_prefix
-        self.type_suffix=type_suffix
+        self.type_suffix = type_suffix
+        self.ivar_name_convention = ivar_name_convention
+        self.class_name_convention = class_name_convention
 
 
 class TemplateManager(object):
     def __init__(self):
         self.lang_templates = {
-            'objc': LanguageTemplates(header_template="class.h.mako", impl_template="class.m.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
-            'cpp': LanguageTemplates(header_template="class.h.mako", impl_template="class.cpp.mako", enum_template='enum.h.mako', global_templates=["models.h.mako"]),
+            'objc': LanguageTemplates(header_template="class.h.mako", impl_template="class.m.mako",
+                                      enum_template='enum.h.mako', global_templates=["models.h.mako"]),
+            'cpp': LanguageTemplates(header_template="class.h.mako", impl_template="class.cpp.mako",
+                                     enum_template='enum.h.mako', global_templates=["models.h.mako"]),
             'py': LanguageTemplates(global_templates=["models.py.mako"]),
         }
 
         self.lang_conventions = {
-            'objc': LanguageConventions(cap_class_name=True, use_prefix=True, type_suffix=None),
+            'objc': LanguageConventions(),
             'cpp': LanguageConventions(cap_class_name=False, use_prefix=False, type_suffix='_t'),
-            'py': LanguageConventions(cap_class_name=True, use_prefix=False, type_suffix=None),
+            'py': LanguageConventions(use_prefix=False, ivar_name_convention=LanguageConventions.NAME_UNDERBAR),
         }
 
     def get_template_lookup(self, language):
-        template_dir = pkg_resources.resource_filename(__name__, 'templates.' + ('python' if language == 'py' else language))
+        template_dir = pkg_resources.resource_filename(__name__, 'templates_' + language)
         return TemplateLookup(directories=[template_dir])
 
     def get_template_files(self, lang):
@@ -350,10 +365,10 @@ class JsonSchema2Model(object):
             try:
                 self.verbose_output("Writing %s" % outfile_name)
                 f.write(template.render(classDef=class_def, import_files=self.import_files,
-                                             namespace=self.namespace,
-                                             include_additional_properties=self.include_additional_properties,
-                                             timestamp=str(datetime.date.today()), file_name=src_file_name,
-                                             skip_deserialization=self.skip_deserialization))
+                                        namespace=self.namespace,
+                                        include_additional_properties=self.include_additional_properties,
+                                        timestamp=str(datetime.date.today()), file_name=src_file_name,
+                                        skip_deserialization=self.skip_deserialization))
             except:
                 print(exceptions.text_error_template().render())
 
@@ -361,7 +376,7 @@ class JsonSchema2Model(object):
 
         # remove '.jinja', then use extension from the template name
         src_file_name = self.mk_source_file_name(enum_def, templ_name)
-        #src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
+        # src_file_name = enum_def.name + os.path.splitext(templ_name.replace('.mako', ''))[1]
         outfile_name = os.path.join(self.outdir, src_file_name)
 
         decl_template = self.makolookup.get_template(templ_name)
@@ -446,7 +461,8 @@ class JsonSchema2Model(object):
 
     def create_class_def(self, schema_object, scope):
 
-        assert JsonSchemaKeywords.TYPE in schema_object and schema_object[JsonSchemaKeywords.TYPE] == JsonSchemaTypes.OBJECT
+        assert JsonSchemaKeywords.TYPE in schema_object and schema_object[
+                                                                JsonSchemaKeywords.TYPE] == JsonSchemaTypes.OBJECT
 
         class_id = self.get_schema_id(schema_object, scope)
 
@@ -473,8 +489,9 @@ class JsonSchema2Model(object):
             else:
                 class_name = scope[-1]
 
+            lang_conventions = self.template_manager.get_conventions(self.lang)
             class_def.name = self.mk_class_name(class_name)
-            class_def.plain_name = self.mk_var_name(class_name)
+            class_def.plain_name = self.mk_var_name(class_name, lang_conventions.class_name_convention)
 
             # set super class, in increasing precendence
             extended = False
@@ -549,7 +566,8 @@ class JsonSchema2Model(object):
         assert isinstance(schema_object, dict)
 
         json_name = scope[-1]
-        name = self.mk_var_name(json_name)
+        lang_conventions = self.template_manager.get_conventions(self.lang)
+        name = self.mk_var_name(json_name, lang_conventions.ivar_name_convention)
         var_def = VariableDef(name, json_name)
 
         if JsonSchemaKeywords.TITLE in schema_object:
@@ -669,7 +687,9 @@ class JsonSchema2Model(object):
         elif JsonSchemaKeywords.ENUM in schema_object:
 
             enum_def = EnumDef()
-            enum_def.name = self.mk_class_name(schema_object[JsonSchemaKeywords.TYPENAME] if JsonSchemaKeywords.TYPENAME in schema_object else scope[-1])
+            enum_def.name = self.mk_class_name(
+                schema_object[JsonSchemaKeywords.TYPENAME] if JsonSchemaKeywords.TYPENAME in schema_object else scope[
+                    -1])
 
             # TODO: should I check to see if the enum is already in the models dict?
 
@@ -685,16 +705,20 @@ class JsonSchema2Model(object):
 
         return var_def
 
-    @staticmethod
-    def mk_var_name(name):
-        var_name = re.sub('[ _-]+([a-z])?', whitespace_to_camel_case, name)
+    def mk_var_name(self, name, conventions):
+
+        var_name = re.sub('[ _-]+([A-Za-z])?',
+                          whitespace_to_camel_case
+                          if conventions == LanguageConventions.NAME_CAMEL_CASE
+                          else whitespace_to_underbar, name)
+
         var_name = re.sub('[^\w]', '', var_name)
         return var_name
 
     def mk_class_name(self, name):
 
         lang_conventions = self.template_manager.get_conventions(self.lang)
-        class_name = self.mk_var_name(name)
+        class_name = self.mk_var_name(name, lang_conventions.class_name_convention)
 
         if lang_conventions.cap_class_name:
             class_name = class_name[:1].upper() + class_name[1:]
@@ -719,8 +743,7 @@ class JsonSchema2Model(object):
         if self.prefix is not None and lang_conventions and lang_conventions.use_prefix:
             src_file_name = self.prefix + src_file_name[0].upper() + src_file_name[1:]
 
-        return  src_file_name
-
+        return src_file_name
 
     def generate_models(self, files):
 
