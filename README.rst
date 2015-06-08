@@ -1,7 +1,7 @@
 Overview
 ========
 
-Js2model makes it easy to use JSON data as plain old Objective C or C++ objects.
+Js2model makes it easy to use JSON data as plain old Objective C, C++, or Python objects.
 
 JSON is as a data protocol is simple, convenient, ubiquitous. When working in Javascript, a valid JSON string can be
 simply eval'ed to yield a native data instance. When working in other languages, things are not as simple. The usual

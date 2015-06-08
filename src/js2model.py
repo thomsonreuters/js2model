@@ -32,7 +32,7 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description='Generate native data models from JSON Schema definitions.')
 
-    parser.add_argument('-l', '--lang', default='objc', help='Target language. Supported values: objc, cpp (default: objc)')
+    parser.add_argument('-l', '--lang', default='objc', help='Target language. Supported values: objc, cpp, py (default: objc)')
     parser.add_argument('--prefix', default='TR', help='prefix for class names (default: TR)')
     parser.add_argument('--namespace', default='tr', help='parent namespace for generated code (default: tr)')
     parser.add_argument('--rootname', default=None,

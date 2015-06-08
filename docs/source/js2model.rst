@@ -48,9 +48,10 @@ A simple sample
 Given the JSON schema definition:
 
 .. highlight:: javascript
+
 ::
 
-   {
+    {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "title": "address",
       "type": "object",
@@ -68,6 +69,7 @@ js2Model will generate the class source files:
 **address.h**
 
 .. highlight:: objective-c
+
 ::
 
    @interface Address : NSObject <JSONModelSerialize>
