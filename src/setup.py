@@ -28,7 +28,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='js2model',
-    version='0.2.dev11',
+    version='0.3.dev11',
     packages=find_packages(),
     package_data={'tr.jsonschema': [
         'templates_py/*.mako',
@@ -62,7 +62,7 @@ setup(
     author='Kevin Zimmerman',
     author_email="%s.%s@%s.%s"%('kevin', 'zimmerman', 'thomsonreuters', 'com'), # half hearted attempt to avoid spam
     description='Auto-generate plain old object models + custom JSON serialization/deserialization code from JSON schema definitions.',
-    long_description=open('../README.rst').read(),
+    long_description=open('README.rst').read(),
     url='https://github.com/thomsonreuters/js2model',
     zip_safe=False,
     platforms='any',

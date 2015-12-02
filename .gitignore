@@ -124,3 +124,4 @@ test/JsonModelGenTest/JsonModelGenTest/JsonModels/*.m
 .hg
 .hgignore
 
+.ropeproject/
