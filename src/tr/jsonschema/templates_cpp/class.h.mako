@@ -33,12 +33,12 @@ THE SOFTWARE.
 #include "document.h"
 % if import_files:
 % for import_file in import_files:
-#import <${import_file}>
+#include <${import_file}>
 % endfor
 % endif
 % if classDef.super_types:
 % for dep in classDef.super_types:
-#import "${dep}.h"
+#include "${dep}.h"
 % endfor
 % endif
 
