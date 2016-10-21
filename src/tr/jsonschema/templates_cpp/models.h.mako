@@ -24,5 +24,5 @@
 //  THE SOFTWARE.
 
 % for classDef in models:
-#import "${classDef.header_file}"
+#include "${classDef.header_file}"
 % endfor
