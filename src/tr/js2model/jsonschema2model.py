@@ -23,6 +23,7 @@
 from __future__ import print_function, nested_scopes, generators, division, absolute_import, with_statement, \
     unicode_literals
 
+import sys
 import glob
 import os
 import datetime
@@ -32,8 +33,7 @@ import logging
 import pkg_resources
 from mako.lookup import TemplateLookup
 from mako import exceptions
-
-from jsonschema import Draft4Validator
+from jsonschema.validators import Draft4Validator
 from jsonschema.exceptions import SchemaError
 from shutil import copytree, copy2, rmtree
 from collections import namedtuple
@@ -49,7 +49,7 @@ except NameError:
     basestring = str
 
 # create logger with 'spam_application'
-logger = logging.getLogger('tr.jsonschema.JsonSchema2Model')
+logger = logging.getLogger('tr.js2model.JsonSchema2Model')
 logger.setLevel(logging.DEBUG)
 
 # create console handler with a higher log level

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-__author__ = 'Kevin Zimmerman'
 
 # Copyright (c) 2015 Thomson Reuters
 #
@@ -22,6 +21,9 @@ __author__ = 'Kevin Zimmerman'
 # THE SOFTWARE.
 
 import ez_setup
+
+__author__ = 'Kevin Zimmerman'
+
 ez_setup.use_setuptools()
 
 from setuptools import setup, find_packages
@@ -30,7 +32,7 @@ setup(
     name='js2model',
     version='0.3.dev11',
     packages=find_packages(),
-    package_data={'tr.jsonschema': [
+    package_data={'tr.js2model': [
         'templates_py/*.mako',
         'templates_objc/*.mako',
         'templates_objc/dependencies/*.h',
@@ -46,10 +48,10 @@ setup(
         'templates_cpp/static/*.*',
     ]},
     include_package_data=True,
-    scripts=['js2model.py', 'js2model', 'ez_setup.py'],
+    scripts=['ez_setup.py'],
     keywords=['json',
               'schema',
-              'jsonschema',
+              'js2model',
               'json-schema',
               'json schema',
               'json object',
@@ -57,10 +59,10 @@ setup(
               'generator',
               'builder',
               'draft 4',
-    ],
+              ],
     license='BSD',
     author='Kevin Zimmerman',
-    author_email="%s.%s@%s.%s"%('kevin', 'zimmerman', 'thomsonreuters', 'com'), # half hearted attempt to avoid spam
+    author_email="%s.%s@%s.%s" % ('kevin', 'zimmerman', 'thomsonreuters', 'com'),  # half hearted attempt to avoid spam
     description='Auto-generate plain old object models + custom JSON serialization/deserialization code from JSON schema definitions.',
     long_description=open('README.rst').read(),
     url='https://github.com/thomsonreuters/js2model',
@@ -70,7 +72,8 @@ setup(
         'mako>=1.0.1',
         'jsonpointer>=1.4',
         'jsonref>=0.1',
-        'jsonschema>=2.4',
+        'jsonschema>=2.5',
+        'click'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -85,5 +88,10 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
-],
+    ],
+    entry_points='''
+        [console_scripts]
+        js2model=tr.js2model.cli:main
+    ''',
+
 )
