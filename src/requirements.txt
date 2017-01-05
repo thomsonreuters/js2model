@@ -5,3 +5,5 @@ jsonpointer==1.4
 jsonref==0.1
 jsonschema==2.5.1
 click
+genson==0.2.0
+inflection==0.3.1

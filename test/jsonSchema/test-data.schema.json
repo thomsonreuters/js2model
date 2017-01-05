@@ -1,7 +1,6 @@
 {
 	"type":"object",
 	"$schema": "http://json-schema.org/draft-04/schema",
-	"required":false,
 	"properties": {
 
 		"favoriteFruit": {
@@ -25,9 +24,13 @@
 				}
 			}
 		},
+		"dogs": {
+          "type": "object",
+          "#raw": true
+		},
 		"range": {
 			"type": "array",
-			"items": { 
+			"items": {
 				"type": "integer"
 			}
 		},
@@ -41,7 +44,7 @@
 		"longitude": {
 			"type": "number"
 		},
-		"latitude": { 
+		"latitude": {
 			"type": "number"
 		},
 		"registered": {

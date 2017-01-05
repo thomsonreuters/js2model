@@ -73,7 +73,7 @@ ${class_name}::${class_name}(const rapidjson::Value &json_value) {
             %endif
         }
         %else:
-        % if v.schema_type == 'string':
+        %if v.schema_type == 'string':
         if (${var_iter}->value.IsNull()) {
             ${inst_name}.clear();
         }
@@ -93,8 +93,17 @@ ${class_name}::${class_name}(const rapidjson::Value &json_value) {
         }
         %elif v.schema_type == 'object':
         if (!${var_iter}->value.IsNull()) {
+
+            %if v.type == 'dict':
+            ## TODO: #raw objects are not implemented in this template yet
+            ## TODO: For #raw objects, must do a conversion here to from rapidjson::Object to std::unordered_map
+            // TODO: #raw objects are not implemented in this template yet
+            // TODO: For #raw objects, must do a conversion here to from rapidjson::Object to std::unordered_map
+            assert(false);
+            %else:
             assert(${var_iter}->value.IsObject());
             ${inst_name} = ${v.type}(${var_iter}->value);
+            %endif
         }
         %endif
         %endif

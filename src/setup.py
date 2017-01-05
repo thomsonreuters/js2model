@@ -73,7 +73,10 @@ setup(
         'jsonpointer>=1.4',
         'jsonref>=0.1',
         'jsonschema>=2.5',
-        'click'
+        'genson>=0.2.0',
+        'click',
+        'inflection>=0.3',
+
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -82,10 +85,8 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
     ],

@@ -20,10 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from __future__ import print_function, nested_scopes, generators, division, absolute_import, with_statement, \
-    unicode_literals
-
-import sys
 import glob
 import os
 import datetime
@@ -32,21 +28,16 @@ import jsonref
 import logging
 import pkg_resources
 from mako.lookup import TemplateLookup
-from mako import exceptions
+import mako.exceptions
 from jsonschema.validators import Draft4Validator
 from jsonschema.exceptions import SchemaError
 from shutil import copytree, copy2, rmtree
 from collections import namedtuple
+import genson
+import json
+import inflection
 
 __author__ = 'kevin zimmerman'
-
-#
-# For  python 2/3 compatibility
-#
-try:
-    basestring
-except NameError:
-    basestring = str
 
 # create logger with 'spam_application'
 logger = logging.getLogger('tr.js2model.JsonSchema2Model')
@@ -72,12 +63,12 @@ class JmgLoader(object):
         self.defaultLoader = jsonref.JsonLoader(store, cache_results)
 
     def __call__(self, uri, **kwargs):
-        json = self.defaultLoader(uri, **kwargs)
+        json_obj = self.defaultLoader(uri, **kwargs)
 
         # keep track of URI that the schema was loaded from
-        json['__uri__'] = uri
+        json_obj['__uri__'] = uri
 
-        return json
+        return json_obj
 
 
 class JsonSchemaTypes(object):
@@ -121,6 +112,7 @@ class JsonSchemaKeywords(object):
     SUPERCLASS = '#superclass'
     MODEL_TYPE = '#modeltype'
     MODEL_DEFAULT = '#modeldefault'
+    MODEL_RAW = '#raw'  # Treat object property as raw data, not a separate model
 
     def __setattr__(self, *_):
         raise ValueError("Trying to change a constant value", self)
@@ -242,7 +234,7 @@ LangTemplates = namedtuple('LangTemplates', ['class_templates', 'enum_template',
 
 
 class LanguageTemplates(object):
-    def __init__(self, header_template=None, impl_template=None, enum_template=None, global_templates=[]):
+    def __init__(self, header_template=None, impl_template=None, enum_template=None, global_templates=list()):
         self.header_template = header_template
         self.impl_template = impl_template
         self.enum_template = enum_template
@@ -252,7 +244,7 @@ class LanguageTemplates(object):
 class LanguageConventions(object):
 
     NAME_CAMEL_CASE = 0
-    NAME_UNDERBAR = 1
+    NAME_SNAKE_CASE = 1
 
     def __init__(self, cap_class_name=True, use_prefix=True, type_suffix=None, ivar_name_convention=NAME_CAMEL_CASE,
                  class_name_convention=NAME_CAMEL_CASE):
@@ -276,10 +268,11 @@ class TemplateManager(object):
         self.lang_conventions = {
             'objc': LanguageConventions(),
             'cpp': LanguageConventions(cap_class_name=False, use_prefix=False, type_suffix='_t'),
-            'py': LanguageConventions(use_prefix=False, ivar_name_convention=LanguageConventions.NAME_UNDERBAR),
+            'py': LanguageConventions(use_prefix=False, ivar_name_convention=LanguageConventions.NAME_SNAKE_CASE),
         }
 
-    def get_template_lookup(self, language):
+    @staticmethod
+    def get_template_lookup(language):
         template_dir = pkg_resources.resource_filename(__name__, 'templates_' + language)
         return TemplateLookup(directories=[template_dir])
 
@@ -389,8 +382,8 @@ class JsonSchema2Model(object):
                                         include_additional_properties=self.include_additional_properties,
                                         timestamp=str(datetime.date.today()), file_name=src_file_name,
                                         skip_deserialization=self.skip_deserialization))
-            except:
-                print(exceptions.text_error_template().render())
+            except mako.exceptions.MakoException:
+                logger.exception(mako.exceptions.text_error_template().render())
 
     def render_enum_to_file(self, enum_def, templ_name):
 
@@ -409,8 +402,8 @@ class JsonSchema2Model(object):
                                              namespace=self.namespace,
                                              timestamp=str(datetime.date.today()), file_name=src_file_name,
                                              include_additional_properties=self.include_additional_properties))
-            except:
-                print(exceptions.text_error_template().render())
+            except mako.exceptions.MakoException:
+                print(mako.exceptions.text_error_template().render())
 
     def render_global_template(self, models, templ_name):
 
@@ -433,8 +426,8 @@ class JsonSchema2Model(object):
                                              namespace=self.namespace,
                                              include_additional_properties=self.include_additional_properties,
                                              file_name=src_file_name))
-            except:
-                print(exceptions.text_error_template().render())
+            except mako.exceptions.MakoException:
+                print(mako.exceptions.text_error_template().render())
 
     def copy_dependencies(self):
         support_path = os.path.join(os.path.dirname(__file__), 'templates.' + self.lang, 'dependencies')
@@ -576,7 +569,7 @@ class JsonSchema2Model(object):
 
             return class_def
 
-    def create_model(self, schema_object, scope):
+    def create_model(self, schema_object, scope) -> VariableDef:
         """
 
         :rtype : VariableDef
@@ -640,9 +633,12 @@ class JsonSchema2Model(object):
 
             if schema_type == JsonSchemaTypes.OBJECT:
 
-                class_def = self.create_class_def(schema_object, scope)
-                var_def.type = class_def.name
-                var_def.header_file = class_def.header_file
+                if JsonSchemaKeywords.MODEL_RAW in schema_object and schema_object[JsonSchemaKeywords.MODEL_RAW] == True:
+                    var_def.type = JsonSchemaTypes.DICT
+                else:
+                    class_def = self.create_class_def(schema_object, scope)
+                    var_def.type = class_def.name
+                    var_def.header_file = class_def.header_file
 
             elif schema_type == JsonSchemaTypes.ARRAY:
 
@@ -654,6 +650,7 @@ class JsonSchema2Model(object):
                 # If *items* is a dict, then there is only a single item schema
                 # for the array.
                 #
+                items_schema = None
                 if isinstance(items, dict):
                     items_schema = items
                 elif isinstance(items, list) and len(items):
@@ -665,7 +662,7 @@ class JsonSchema2Model(object):
                 var_def = self.create_model(items_schema, scope)
                 var_def.isArray = True
 
-            elif isinstance(schema_type, basestring):
+            elif isinstance(schema_type, str):
                 var_def.type = schema_type
 
             #
@@ -725,14 +722,19 @@ class JsonSchema2Model(object):
 
         return var_def
 
-    def mk_var_name(self, name, conventions):
+    @staticmethod
+    def mk_var_name(name, conventions):
 
-        var_name = re.sub('[ _-]+([A-Za-z])?',
-                          whitespace_to_camel_case
-                          if conventions == LanguageConventions.NAME_CAMEL_CASE
-                          else whitespace_to_underbar, name)
-
+        var_name = re.sub('[ _-]', '_', name)
         var_name = re.sub('[^\w]', '', var_name)
+
+        if conventions == LanguageConventions.NAME_CAMEL_CASE:
+            var_name = inflection.camelize(var_name)
+        elif conventions == LanguageConventions.NAME_SNAKE_CASE:
+            var_name =  inflection.underscore(var_name)
+        else:
+            var_name = inflection.camelize(var_name)
+
         return var_name
 
     def mk_class_name(self, name):
@@ -765,25 +767,45 @@ class JsonSchema2Model(object):
 
         return src_file_name
 
-    def generate_models(self, files):
+    def generate_models(self, files, generate_schema: bool = False):
 
         loader = JmgLoader()
 
-        for fname in (f for fileGlob in files for f in glob.glob(fileGlob)):
+        for file_path in (f for fileGlob in files for f in glob.glob(fileGlob)):
+
+            if generate_schema:
+                #
+                # Generate the a JSON Schema file from the given JSON file
+                #
+                schema = genson.Schema()
+
+                with open(file_path) as f:
+                    json_sample = json.load(f)
+                    schema.add_object(json_sample)
+
+                schema_base_name = os.path.basename(file_path)
+                schema_root_name, schema_ext = os.path.splitext(schema_base_name)
+                schema_file_path = os.path.join(self.outdir, schema_root_name + '.schema' + schema_ext)
+
+                with open(schema_file_path, 'w') as s_f:
+                    s_f.write(schema.to_json())
+
+            else:
+                schema_file_path = file_path
 
             if self.root_name:
                 scope = [self.root_name]
             else:
-                base_name = os.path.basename(fname)
+                base_name = os.path.basename(schema_file_path)
                 base_uri = os.path.splitext(base_name)[0]
                 base_uri = base_uri.replace('.schema', '')
                 scope = [base_uri]
 
-            with open(fname) as jsonFile:
+            with open(schema_file_path) as jsonFile:
 
                 # root_schema = json.load(jsonFile)
                 # base_uri = 'file://' + os.path.split(os.path.realpath(f))[0]
-                base_uri = 'file://' + os.path.realpath(fname)
+                base_uri = 'file://' + os.path.realpath(schema_file_path)
                 root_schema = jsonref.load(jsonFile, base_uri=base_uri, jsonschema=True, loader=loader)
 
                 if self.validate:
@@ -796,7 +818,7 @@ class JsonSchema2Model(object):
                 assert isinstance(root_schema, dict)
 
                 if JsonSchema2Model.SCHEMA_URI not in root_schema:
-                    root_schema[JsonSchema2Model.SCHEMA_URI] = fname
+                    root_schema[JsonSchema2Model.SCHEMA_URI] = schema_file_path
 
                 self.create_model(root_schema, scope)
 
