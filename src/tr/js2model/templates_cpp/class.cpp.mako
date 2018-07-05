@@ -137,6 +137,8 @@ string to_string(const ${class_name} &val, std::string indent/* = "" */, std::st
         os << "\"" << array_item << "\",";
         %elif v.schema_type == 'integer':
         os << array_item << ",";
+        %elif v.schema_type == 'number':
+        os << array_item << ",";
         %elif v.schema_type == 'boolean':
         os << (array_item ? "true" : "false") << ",";
         %elif v.schema_type == 'object':
@@ -153,6 +155,8 @@ string to_string(const ${class_name} &val, std::string indent/* = "" */, std::st
     % if v.schema_type == 'string':
     os << indent << pretty_print << "\"${v.name}\": \"" << val.${inst_name} << "\"," << endl;
     %elif v.schema_type == 'integer':
+    os << indent << pretty_print << "\"${v.name}\": " << val.${inst_name} << "," << endl;
+    %elif v.schema_type == 'number':
     os << indent << pretty_print << "\"${v.name}\": " << val.${inst_name} << "," << endl;
     %elif v.schema_type == 'boolean':
     os << indent << pretty_print << "\"${v.name}\": " << (val.${inst_name} ? "true" : "false") << "," << endl;
