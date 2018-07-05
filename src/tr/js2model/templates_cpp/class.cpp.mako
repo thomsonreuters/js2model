@@ -59,6 +59,9 @@ ${class_name}::${class_name}(const rapidjson::Value &json_value) {
             %elif v.schema_type == 'integer':
             assert(array_item->IsInt());
             ${inst_name}.push_back(array_item->GetInt());
+            %elif v.schema_type == 'number':
+            assert(array_item->IsDouble());
+            ${inst_name}.push_back(array_item->GetDouble());
             %elif v.schema_type == 'boolean':
             assert(array_item->IsBool());
             ${inst_name}.push_back(array_item->GetBool());
@@ -85,6 +88,11 @@ ${class_name}::${class_name}(const rapidjson::Value &json_value) {
         if (!${var_iter}->value.IsNull()) {
             assert(${var_iter}->value.IsInt());
             ${inst_name} = ${var_iter}->value.GetInt();
+        }
+        %elif v.schema_type == 'number':
+        if (!${var_iter}->value.IsNull()) {
+            assert(${var_iter}->value.IsDouble());
+            ${inst_name} = ${var_iter}->value.GetDouble();
         }
         %elif v.schema_type == 'boolean':
         if (!${var_iter}->value.IsNull()) {
@@ -129,6 +137,8 @@ string to_string(const ${class_name} &val, std::string indent/* = "" */, std::st
         os << "\"" << array_item << "\",";
         %elif v.schema_type == 'integer':
         os << array_item << ",";
+        %elif v.schema_type == 'number':
+        os << array_item << ",";
         %elif v.schema_type == 'boolean':
         os << (array_item ? "true" : "false") << ",";
         %elif v.schema_type == 'object':
@@ -145,6 +155,8 @@ string to_string(const ${class_name} &val, std::string indent/* = "" */, std::st
     % if v.schema_type == 'string':
     os << indent << pretty_print << "\"${v.name}\": \"" << val.${inst_name} << "\"," << endl;
     %elif v.schema_type == 'integer':
+    os << indent << pretty_print << "\"${v.name}\": " << val.${inst_name} << "," << endl;
+    %elif v.schema_type == 'number':
     os << indent << pretty_print << "\"${v.name}\": " << val.${inst_name} << "," << endl;
     %elif v.schema_type == 'boolean':
     os << indent << pretty_print << "\"${v.name}\": " << (val.${inst_name} ? "true" : "false") << "," << endl;
