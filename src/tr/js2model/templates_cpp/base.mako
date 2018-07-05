@@ -48,7 +48,7 @@ Maps for mapping JSON types to Obj C types.
         'string':  'std::string',
         'dict':    'std::unordered_map',
         'integer': 'int',
-        'number':  'float',
+        'number':  'double',
         'boolean': 'bool',
         'null':	   'void',
         'any':	   'void'
