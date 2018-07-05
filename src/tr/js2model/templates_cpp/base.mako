@@ -33,7 +33,7 @@ def firstupper(value):
 
 def inst_name(value):
 ##    return 'm' + value[0].upper() + value[1:]
-    return normalize_prop_name(value)
+    return firstlower(normalize_prop_name(value))
 %>
 <%
 def normalize_class_name(value):
@@ -48,7 +48,7 @@ Maps for mapping JSON types to Obj C types.
         'string':  'std::string',
         'dict':    'std::unordered_map',
         'integer': 'int',
-        'number':  'float',
+        'number':  'double',
         'boolean': 'bool',
         'null':	   'void',
         'any':	   'void'
